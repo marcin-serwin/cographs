@@ -2,7 +2,7 @@ import networkx as nx
 import itertools
 
 
-def bruteForcePartition(graph: nx.Graph):
+def bruteForcePartition(graph: nx.Graph) -> list:
     partition = [set(graph.nodes)]
 
     while any(len(part) > 1 for part in partition):
@@ -36,7 +36,7 @@ def bruteForcePartition(graph: nx.Graph):
     return [s.pop() for s in partition]
 
 
-def areTheseTwins(graph: nx.Graph, partition: list, x: any, y: any):
+def areTheseTwins(graph: nx.Graph, partition: list, x: any, y: any) -> bool:
     if x is None or y is None:
         return False
 
@@ -47,7 +47,7 @@ def areTheseTwins(graph: nx.Graph, partition: list, x: any, y: any):
         x_neighbors | set([x])) == (y_neighbors | set([y]))
 
 
-def isCograph(graph: nx.Graph, partition: list):
+def isCograph(graph: nx.Graph, partition: list) -> bool:
     partition = [None, *partition, None]
 
     z = 1
