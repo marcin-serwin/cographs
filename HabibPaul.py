@@ -36,6 +36,21 @@ def bruteForcePartition(graph: nx.Graph) -> list:
     return [s.pop() for s in partition]
 
 
+def computePermutation(g: nx.Graph) -> list:
+    graph = nx.Graph(g)
+
+    uninterestingVertices = []
+    for node in list(graph.nodes):
+        print(node, len(graph[node]))
+        if len(graph[node]) in [len(graph.nodes) - 1, 0]:
+            uninterestingVertices.append(node)
+            graph.remove_node(node)
+        else:
+            break
+
+    return uninterestingVertices
+
+
 def areTheseTwins(graph: nx.Graph, partition: list, x: any, y: any) -> bool:
     if x is None or y is None:
         return False
