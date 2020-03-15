@@ -36,13 +36,20 @@ def bruteForcePartition(graph: nx.Graph) -> list:
     return [s.pop() for s in partition]
 
 
+class Part(object):
+    vertices = set()
+    pivot = None
+
+    def __init__(self, vertices):
+        self.vertices = set(vertices)
+
+
 def computePermutation(g: nx.Graph) -> list:
     graph = nx.Graph(g)
 
     origin = None
     uninterestingVertices = []
     for node in list(graph.nodes):
-        print(node, len(graph[node]))
         if len(graph[node]) in [len(graph.nodes) - 1, 0]:
             uninterestingVertices.append(node)
             graph.remove_node(node)
@@ -53,26 +60,77 @@ def computePermutation(g: nx.Graph) -> list:
     if origin is None:
         return uninterestingVertices
 
-    partition = [set(graph.nodes)]
+    partition = [Part(graph.nodes)]
     origin_part_index = 0
     unused_parts = []
 
-    while any(len(part) > 1 for part in partition):
+    while any(len(part.vertices) > 1 for part in partition):
         origin_part = partition[origin_part_index]
-        if len(origin_part) > 1:
-            origin_part.remove(origin)
-            neighbors = set(graph[origin]) & origin_part
-            notNeighbors = origin_part - neighbors
-            refined = [notNeighbors,
-                       set([origin]), neighbors]
 
-            partition = [*partition[:origin_part_index], *
-                         refined, *partition[origin_part_index + 1:]]
+        if len(origin_part.vertices) > 1:
+            origin_part.vertices.remove(origin)
+            neighbors = Part(set(graph[origin]) & origin_part.vertices)
+            notNeighbors = Part(origin_part.vertices - neighbors.vertices)
+            origin_part = Part([origin])
+            refined = [notNeighbors, origin_part, neighbors]
 
-            unused_parts.extend([neighbors, notNeighbors])
-        break
+            partition = [*partition[:origin_part_index],
+                         *refined, *partition[origin_part_index + 1:]]
 
-    return uninterestingVertices + [s.pop() for s in partition]
+            unused_parts.extend(
+                p for p in (neighbors, notNeighbors) if len(p.vertices) > 0)
+
+        while len(unused_parts) > 0:
+            part = unused_parts.pop()
+            for vertex in part.vertices:
+                break
+            part.pivot = vertex
+
+            neighbors = set(graph[part.pivot])
+            notNeighbors = graph.nodes - neighbors
+            notNeighbors.remove(part.pivot)
+
+            new_partition = []
+            for part_prime in partition:
+                if len(part_prime.vertices) <= 1 or part == part_prime:
+                    new_partition.append(part_prime)
+                else:
+                    l, r = (Part(part_prime.vertices & notNeighbors),
+                            Part(part_prime.vertices & neighbors))
+
+                    new_partition.extend(
+                        (x for x in (l, r) if len(x.vertices) > 0))
+                    unused_parts.extend(
+                        (x for x in (l, r) if len(x.vertices) > 0))
+            partition = new_partition
+
+        z_l_index, z_r_index = None, None
+        pastOrigin = False
+        for index, part in enumerate(partition):
+            if len(part.vertices) == 1 and part == origin_part:
+                pastOrigin = True
+            elif len(part.vertices) > 1:
+                if pastOrigin and part.pivot is not None:
+                    z_r_index = index
+                    break
+                elif not pastOrigin and part.pivot is not None:
+                    z_l_index = index
+
+        if z_l_index is None:
+            origin_part_index = z_r_index
+        elif z_r_index is None:
+            origin_part_index = z_l_index
+        elif partition[z_l_index].pivot in graph[partition[z_r_index].pivot]:
+            origin_part_index = z_l_index
+        else:
+            origin_part_index = z_r_index
+
+        if origin_part_index is None:
+            break
+        origin = partition[origin_part_index].pivot
+
+    return uninterestingVertices + [p.vertices.pop()
+                                    for p in partition if len(p.vertices) > 0]
 
 
 def areTheseTwins(graph: nx.Graph, partition: list, x: any, y: any) -> bool:
@@ -108,7 +166,7 @@ def isCograph(graph: nx.Graph, partition: list) -> bool:
 
 if __name__ == "__main__":
     graph = nx.read_yaml("./graphs/example.yaml")
-    partition = bruteForcePartition(graph)
+    partition = computePermutation(graph)
     if isCograph(graph, partition):
         print('example is cograph')
     else:
