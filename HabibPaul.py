@@ -37,11 +37,9 @@ def bruteForcePartition(graph: nx.Graph) -> list:
 
 
 class Part(object):
-    vertices = set()
-    pivot = None
-
     def __init__(self, vertices):
         self.vertices = set(vertices)
+        self.pivot = None
 
 
 def computePermutation(g: nx.Graph) -> list:
@@ -149,9 +147,7 @@ def isCograph(graph: nx.Graph, partition: list) -> bool:
 
     z = 1
     while z + 1 != len(partition):
-        prec = partition[z - 1]
-        curr = partition[z]
-        succ = partition[z + 1]
+        prec, curr, succ = partition[z - 1:z + 2]
 
         if areTheseTwins(graph, partition, curr, prec):
             z -= 1
