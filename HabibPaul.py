@@ -42,6 +42,64 @@ class Part(object):
         self.pivot = None
 
 
+def first_refinement_rule(
+        graph: nx.Graph, origin_part: Part, origin) -> (list, list, list):
+    origin_part.vertices.remove(origin)
+    neighbors = Part(set(graph[origin]) & origin_part.vertices)
+    notNeighbors = Part(origin_part.vertices - neighbors.vertices)
+    origin_part = Part([origin])
+
+    return notNeighbors, origin_part, neighbors
+
+
+def second_refinement_rule(
+        graph: nx.Graph,
+        part: Part,
+        unused_parts: list,
+        partition: list) -> list:
+    neighbors = set(graph[part.pivot])
+    notNeighbors = graph.nodes - neighbors
+    notNeighbors.remove(part.pivot)
+
+    new_partition = []
+    for part_prime in partition:
+        if len(part_prime.vertices) <= 1 or part == part_prime:
+            new_partition.append(part_prime)
+        else:
+            l, r = (Part(part_prime.vertices & notNeighbors),
+                    Part(part_prime.vertices & neighbors))
+
+            new_partition.extend(
+                (x for x in (l, r) if len(x.vertices) > 0))
+            unused_parts.extend(
+                (x for x in (l, r) if len(x.vertices) > 0))
+
+    return new_partition
+
+
+def get_new_origin_index(origin_part: Part, partition: list) -> int:
+    z_l_index, z_r_index = None, None
+    pastOrigin = False
+    for index, part in enumerate(partition):
+        if len(part.vertices) == 1 and part == origin_part:
+            pastOrigin = True
+        elif len(part.vertices) > 1:
+            if pastOrigin and part.pivot is not None:
+                z_r_index = index
+                break
+            elif not pastOrigin and part.pivot is not None:
+                z_l_index = index
+
+    if z_l_index is None:
+        return z_r_index
+    elif z_r_index is None:
+        return z_l_index
+    elif partition[z_l_index].pivot in graph[partition[z_r_index].pivot]:
+        return z_l_index
+    else:
+        return z_r_index
+
+
 def computePermutation(g: nx.Graph) -> list:
     graph = nx.Graph(g)
 
@@ -66,14 +124,11 @@ def computePermutation(g: nx.Graph) -> list:
         origin_part = partition[origin_part_index]
 
         if len(origin_part.vertices) > 1:
-            origin_part.vertices.remove(origin)
-            neighbors = Part(set(graph[origin]) & origin_part.vertices)
-            notNeighbors = Part(origin_part.vertices - neighbors.vertices)
-            origin_part = Part([origin])
-            refined = [notNeighbors, origin_part, neighbors]
+            notNeighbors, origin_part, neighbors = first_refinement_rule(
+                graph, origin_part, origin)
 
-            partition = [*partition[:origin_part_index],
-                         *refined, *partition[origin_part_index + 1:]]
+            partition = [*partition[:origin_part_index], notNeighbors,
+                         origin_part, neighbors, *partition[origin_part_index + 1:]]
 
             unused_parts.extend(
                 p for p in (neighbors, notNeighbors) if len(p.vertices) > 0)
@@ -84,44 +139,10 @@ def computePermutation(g: nx.Graph) -> list:
                 break
             part.pivot = vertex
 
-            neighbors = set(graph[part.pivot])
-            notNeighbors = graph.nodes - neighbors
-            notNeighbors.remove(part.pivot)
+            partition = second_refinement_rule(
+                graph, part, unused_parts, partition)
 
-            new_partition = []
-            for part_prime in partition:
-                if len(part_prime.vertices) <= 1 or part == part_prime:
-                    new_partition.append(part_prime)
-                else:
-                    l, r = (Part(part_prime.vertices & notNeighbors),
-                            Part(part_prime.vertices & neighbors))
-
-                    new_partition.extend(
-                        (x for x in (l, r) if len(x.vertices) > 0))
-                    unused_parts.extend(
-                        (x for x in (l, r) if len(x.vertices) > 0))
-            partition = new_partition
-
-        z_l_index, z_r_index = None, None
-        pastOrigin = False
-        for index, part in enumerate(partition):
-            if len(part.vertices) == 1 and part == origin_part:
-                pastOrigin = True
-            elif len(part.vertices) > 1:
-                if pastOrigin and part.pivot is not None:
-                    z_r_index = index
-                    break
-                elif not pastOrigin and part.pivot is not None:
-                    z_l_index = index
-
-        if z_l_index is None:
-            origin_part_index = z_r_index
-        elif z_r_index is None:
-            origin_part_index = z_l_index
-        elif partition[z_l_index].pivot in graph[partition[z_r_index].pivot]:
-            origin_part_index = z_l_index
-        else:
-            origin_part_index = z_r_index
+        origin_part_index = get_new_origin_index(origin_part, partition)
 
         if origin_part_index is None:
             break
