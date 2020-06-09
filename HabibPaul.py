@@ -182,7 +182,7 @@ def isCograph(graph: nx.Graph, partition: list) -> bool:
 
 
 if __name__ == "__main__":
-    graph = nx.read_yaml("./graphs/example.yaml")
+    graph = nx.read_yaml("./graphs/example1.yaml")
     partition = computePermutation(graph)
     if isCograph(graph, partition):
         print('example is cograph')

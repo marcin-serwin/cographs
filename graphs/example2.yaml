@@ -1,0 +1,110 @@
+!!python/object:networkx.classes.graph.Graph
+_adj:
+  a:
+    c: &id001 {}
+    d: &id003 {}
+    e: &id006 {}
+    v: &id029 {}
+  b:
+    c: &id002 {}
+    d: &id004 {}
+    e: &id007 {}
+    v: &id030 {}
+  c:
+    a: *id001
+    b: *id002
+    d: &id005 {}
+    e: &id008 {}
+    v: &id031 {}
+  d:
+    a: *id003
+    b: *id004
+    c: *id005
+    e: &id009 {}
+    f: &id010 {}
+    g: &id012 {}
+    v: &id032 {}
+  e:
+    a: *id006
+    b: *id007
+    c: *id008
+    d: *id009
+    f: &id011 {}
+    g: &id013 {}
+    h: &id015 {}
+    v: &id033 {}
+  f:
+    d: *id010
+    e: *id011
+    g: &id014 {}
+  g:
+    d: *id012
+    e: *id013
+    f: *id014
+  h:
+    e: *id015
+    l: &id018 {}
+  i:
+    j: &id016 {}
+    l: &id019 {}
+  j:
+    i: *id016
+    k: &id017 {}
+    l: &id020 {}
+  k:
+    j: *id017
+    l: &id021 {}
+  l:
+    h: *id018
+    i: *id019
+    j: *id020
+    k: *id021
+    m: &id022 {}
+    n: &id023 {}
+    p: &id025 {}
+  m:
+    l: *id022
+    n: &id024 {}
+    q: &id026 {}
+  n:
+    l: *id023
+    m: *id024
+    q: &id027 {}
+  p:
+    l: *id025
+    q: &id028 {}
+  q:
+    m: *id026
+    n: *id027
+    p: *id028
+  v:
+    a: *id029
+    b: *id030
+    c: *id031
+    d: *id032
+    e: *id033
+_node:
+  a: {}
+  b: {}
+  c: {}
+  d: {}
+  e: {}
+  f: {}
+  g: {}
+  h: {}
+  i: {}
+  j: {}
+  k: {}
+  l: {}
+  m: {}
+  n: {}
+  p: {}
+  q: {}
+  v: {}
+adjlist_inner_dict_factory: &id034 !!python/name:builtins.dict ''
+adjlist_outer_dict_factory: *id034
+edge_attr_dict_factory: *id034
+graph: {}
+graph_attr_dict_factory: *id034
+node_attr_dict_factory: *id034
+node_dict_factory: *id034
