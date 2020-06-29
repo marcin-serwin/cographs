@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import networkx as nx
 import itertools
 from typing import List
+from enum import Enum
 
 
 class TreeNode(ABC):
@@ -43,11 +44,17 @@ class InternalNode(TreeNode):
             "Union" if self.is_union else "Join", self.children)
 
 
+class MarkResult(Enum):
+    ALL_MARKED = 0
+    NONE_MARKED = 1
+    SOME_MARKED = 2
+
+
 def mark(
         newNode: LeafNode,
         cotree_leaves: List[LeafNode],
         graph: nx.Graph,
-        root: TreeNode):
+        root: TreeNode) -> MarkResult:
     toUnmark = []
     nMarked = 0
     for node in cotree_leaves:
@@ -55,6 +62,9 @@ def mark(
             node.is_marked = True
             toUnmark.append(node)
             nMarked += 1
+
+    if nMarked == 0:
+        return MarkResult.NONE_MARKED
 
     while len(toUnmark) > 0:
         node = toUnmark.pop()
@@ -73,6 +83,8 @@ def mark(
     if nMarked > 0 and root.degree() == 1:
         root.is_marked = True
 
+    return MarkResult.SOME_MARKED if nMarked > 0 else MarkResult.ALL_MARKED
+
 
 def computeCotree(graph: nx.Graph) -> TreeNode:
     leaves = [LeafNode(None, x) for x in graph.nodes]
@@ -83,22 +95,39 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
     if graph.number_of_nodes() == 1:
         return leaves[0]
 
-    cotree = InternalNode(None, False)
+    root = InternalNode(None, False)
 
     if graph.has_edge(leaves[0].node, leaves[1].node):
         for leaf in leaves[:2]:
-            leaf.parent = cotree
-        cotree.children = leaves[:2]
+            leaf.parent = root
+        root.children = leaves[:2]
     else:
-        node = InternalNode(cotree, True, leaves[:2])
+        node = InternalNode(root, True, leaves[:2])
         for leaf in leaves[:2]:
             leaf.parent = node
-        cotree.children = [node]
+        root.children = [node]
 
     for index, leaf in enumerate(leaves[2:]):
-        mark(leaf, leaves[:index], graph, cotree)
+        result = mark(leaf, leaves[:index], graph, root)
+        if result == MarkResult.ALL_MARKED:
+            leaf.parent = root
+            root.children.append(leaf)
+        elif result == MarkResult.NONE_MARKED:
+            if root.degree() == 1:
+                root_child = root.children[0]
+                leaf.parent = root_child
+                root_child.children.append(leaf)
+            else:
+                new_root_child = InternalNode(None, True, [root, leaf])
+                root.parent = new_root_child
+                leaf.parent = new_root_child
 
-    return cotree
+                root = InternalNode(None, False, [new_root_child])
+                new_root_child.parent = root
+        else:
+            pass
+
+    return root
 
 
 if __name__ == "__main__":
