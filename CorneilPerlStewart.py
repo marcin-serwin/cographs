@@ -15,6 +15,9 @@ class TreeNode(ABC):
     def degree(self):
         pass
 
+    def clear(self):
+        self.is_marked = False
+
 
 class LeafNode(TreeNode):
     def __init__(self, parent, node):
@@ -39,6 +42,13 @@ class InternalNode(TreeNode):
     def degree(self):
         return len(self.children)
 
+    def clear(self):
+        super().clear()
+        self.marked_degree = 0
+        self.marked_or_unmarked_children = []
+        for child in self.children:
+            child.clear()
+
     def __repr__(self):
         return "InternalNode{{{}, {}}}".format(
             "Union" if self.is_union else "Join", self.children)
@@ -55,6 +65,8 @@ def mark(
         cotree_leaves: List[LeafNode],
         graph: nx.Graph,
         root: TreeNode) -> MarkResult:
+    root.clear()
+
     toUnmark = []
     nMarked = 0
     for node in cotree_leaves:
