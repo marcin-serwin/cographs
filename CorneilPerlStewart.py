@@ -43,8 +43,35 @@ class InternalNode(TreeNode):
             "Union" if self.is_union else "Join", self.children)
 
 
-def mark(node: LeafNode, cotreeLeaves: List[LeafNode], graph: nx.Graph):
-    pass
+def mark(
+        newNode: LeafNode,
+        cotree_leaves: List[LeafNode],
+        graph: nx.Graph,
+        root: TreeNode):
+    toUnmark = []
+    nMarked = 0
+    for node in cotree_leaves:
+        if graph.has_edge(node.node, newNode.node):
+            node.is_marked = True
+            toUnmark.append(node)
+            nMarked += 1
+
+    while len(toUnmark) > 0:
+        node = toUnmark.pop()
+        node.is_marked = False
+        nMarked -= 1
+        if isinstance(node, InternalNode):
+            node.marked_degree = 0
+        parent = node.parent
+        if parent is not None:
+            parent.is_marked = True
+            nMarked += 1
+            parent.marked_degree += 1
+            if parent.marked_degree == parent.degree():
+                toUnmark.append(parent)
+            parent.marked_or_unmarked_children.append(node)
+    if nMarked > 0 and root.degree() == 1:
+        root.is_marked = True
 
 
 def computeCotree(graph: nx.Graph) -> TreeNode:
@@ -69,7 +96,7 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
         cotree.children = [node]
 
     for index, leaf in enumerate(leaves[2:]):
-        mark(leaf, leaves[:index], graph)
+        mark(leaf, leaves[:index], graph, cotree)
 
     return cotree
 
