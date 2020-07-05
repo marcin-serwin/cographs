@@ -63,7 +63,7 @@ def mark(
         newNode: LeafNode,
         cotree_leaves: List[LeafNode],
         graph: nx.Graph,
-        root: TreeNode) -> (MarkResult, Set[TreeNode]):
+        root: InternalNode) -> (MarkResult, Set[InternalNode]):
     root.clear()
 
     toUnmark = []
