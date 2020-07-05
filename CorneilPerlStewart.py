@@ -8,7 +8,6 @@ from enum import Enum
 class TreeNode(ABC):
     def __init__(self, parent):
         self.parent = parent
-        self.is_marked = False
         super().__init__()
 
     @abstractmethod
@@ -16,7 +15,7 @@ class TreeNode(ABC):
         pass
 
     def clear(self):
-        self.is_marked = False
+        pass
 
 
 class LeafNode(TreeNode):
@@ -72,7 +71,6 @@ def mark(
     marked = set()
     for node in cotree_leaves:
         if graph.has_edge(node.node, newNode.node):
-            node.is_marked = True
             marked.add(node)
             toUnmark.append(node)
             nMarked += 1
@@ -82,14 +80,12 @@ def mark(
 
     while len(toUnmark) > 0:
         node = toUnmark.pop()
-        node.is_marked = False
         marked.remove(node)
         nMarked -= 1
         if isinstance(node, InternalNode):
             node.marked_degree = 0
         parent = node.parent
         if parent is not None:
-            parent.is_marked = True
             marked.add(parent)
             nMarked += 1
             parent.marked_degree += 1
@@ -97,7 +93,6 @@ def mark(
                 toUnmark.append(parent)
             parent.marked_or_unmarked_children.append(node)
     if nMarked > 0 and root.degree() == 1:
-        root.is_marked = True
         marked.add(root)
 
     return (MarkResult.SOME_MARKED if nMarked >
