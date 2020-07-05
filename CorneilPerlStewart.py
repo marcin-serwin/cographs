@@ -116,6 +116,20 @@ def findLowest(root: InternalNode, marked: Set[InternalNode]) -> InternalNode:
 
     while len(marked) > 0:
         u = marked.pop()
+        if y is not None:
+            return None
+        if not u.is_union:
+            if u.marked_degree != u.degree() - 1:
+                y = u
+            if u.parent in marked:
+                return None
+            else:
+                t = u.parent.parent
+        else:
+            y = u
+            t = u.parent
+
+        u.marked_degree = 0
 
     return u
 
