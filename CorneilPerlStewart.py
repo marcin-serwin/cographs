@@ -6,7 +6,7 @@ from enum import Enum
 
 
 class TreeNode(ABC):
-    def __init__(self, parent):
+    def __init__(self, parent: TreeNode):
         self.parent = parent
         super().__init__()
 
@@ -19,7 +19,7 @@ class TreeNode(ABC):
 
 
 class LeafNode(TreeNode):
-    def __init__(self, parent, node):
+    def __init__(self, parent: TreeNode, node):
         self.node = node
         super().__init__(parent)
 
@@ -31,7 +31,11 @@ class LeafNode(TreeNode):
 
 
 class InternalNode(TreeNode):
-    def __init__(self, parent, is_union, children=None):
+    def __init__(
+            self,
+            parent: TreeNode,
+            is_union: bool,
+            children: List[TreeNode] = None):
         self.is_union = is_union
         self.children = children if children is not None else []
         self.marked_degree = 0
