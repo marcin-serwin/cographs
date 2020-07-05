@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import networkx as nx
 import itertools
-from typing import List
+from typing import List, Set
 from enum import Enum
 
 
@@ -64,29 +64,33 @@ def mark(
         newNode: LeafNode,
         cotree_leaves: List[LeafNode],
         graph: nx.Graph,
-        root: TreeNode) -> MarkResult:
+        root: TreeNode) -> (MarkResult, Set[TreeNode]):
     root.clear()
 
     toUnmark = []
     nMarked = 0
+    marked = set()
     for node in cotree_leaves:
         if graph.has_edge(node.node, newNode.node):
             node.is_marked = True
+            marked.add(node)
             toUnmark.append(node)
             nMarked += 1
 
     if nMarked == 0:
-        return MarkResult.NONE_MARKED
+        return (MarkResult.NONE_MARKED, marked)
 
     while len(toUnmark) > 0:
         node = toUnmark.pop()
         node.is_marked = False
+        marked.remove(node)
         nMarked -= 1
         if isinstance(node, InternalNode):
             node.marked_degree = 0
         parent = node.parent
         if parent is not None:
             parent.is_marked = True
+            marked.add(parent)
             nMarked += 1
             parent.marked_degree += 1
             if parent.marked_degree == parent.degree():
@@ -94,8 +98,10 @@ def mark(
             parent.marked_or_unmarked_children.append(node)
     if nMarked > 0 and root.degree() == 1:
         root.is_marked = True
+        marked.add(root)
 
-    return MarkResult.SOME_MARKED if nMarked > 0 else MarkResult.ALL_MARKED
+    return (MarkResult.SOME_MARKED if nMarked >
+            0 else MarkResult.ALL_MARKED, marked)
 
 
 def computeCotree(graph: nx.Graph) -> TreeNode:
@@ -120,7 +126,7 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
         root.children = [node]
 
     for index, leaf in enumerate(leaves[2:]):
-        result = mark(leaf, leaves[:index], graph, root)
+        result, marked = mark(leaf, leaves[:index], graph, root)
         if result == MarkResult.ALL_MARKED:
             leaf.parent = root
             root.children.append(leaf)
