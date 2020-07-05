@@ -99,6 +99,23 @@ def mark(
             0 else MarkResult.ALL_MARKED, marked)
 
 
+def findLowest(root: InternalNode, marked: Set[InternalNode]) -> InternalNode:
+    y = None
+    if root not in marked:
+        return None
+
+    if root.marked_degree != root.degree() - 1:
+        y = root
+    marked.remove(root)
+    root.marked_degree = 0
+    u = w = root
+
+    while len(marked) > 0:
+        u = marked.pop()
+
+    return u
+
+
 def computeCotree(graph: nx.Graph) -> TreeNode:
     leaves = [LeafNode(None, x) for x in graph.nodes]
 
@@ -138,7 +155,7 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
                 root = InternalNode(None, False, [new_root_child])
                 new_root_child.parent = root
         else:
-            pass
+            u = findLowest(root, marked)
 
     return root
 
