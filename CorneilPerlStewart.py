@@ -39,9 +39,16 @@ class InternalNode(TreeNode):
             children: Set[TreeNode] = None):
         self.is_union = is_union
         self.children = children if children is not None else set()
+        for child in self.children:
+            child.parent = self
         self.marked_degree = 0
         self.marked_or_unmarked_children = set()
         super().__init__(parent)
+
+    def addChild(self, *newChilren: TreeNode):
+        for newChild in newChilren:
+            newChild.parent = self
+            self.children.add(newChild)
 
     def degree(self):
         return len(self.children)
@@ -162,32 +169,21 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
     root = InternalNode(None, False)
 
     if graph.has_edge(leaves[0].node, leaves[1].node):
-        for leaf in leaves[:2]:
-            leaf.parent = root
-        root.children = set(leaves[:2])
+        root.addChild(*leaves[:2])
     else:
-        node = InternalNode(root, True, set(leaves[:2]))
-        for leaf in leaves[:2]:
-            leaf.parent = node
-        root.children = set([node])
+        root.addChild(InternalNode(root, True, set(leaves[:2])))
 
     for index, leaf in enumerate(leaves[2:], 2):
         result, marked = mark(leaf, leaves[:index], graph, root)
         if result == MarkResult.ALL_MARKED:
-            leaf.parent = root
-            root.children.add(leaf)
+            root.addChild(leaf)
         elif result == MarkResult.NONE_MARKED:
             if root.degree() == 1:
                 root_child = pickFromSet(root.children)
-                leaf.parent = root_child
-                root_child.children.add(leaf)
+                root_child.addChild(leaf)
             else:
-                new_root_child = InternalNode(None, True, set([root, leaf]))
-                root.parent = new_root_child
-                leaf.parent = new_root_child
-
-                root = InternalNode(None, False, set([new_root_child]))
-                new_root_child.parent = root
+                root = InternalNode(None, False, set(
+                    [InternalNode(None, True, set([root, leaf]))]))
         else:
             pathStart = findLowest(root, marked)
 
