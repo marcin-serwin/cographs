@@ -157,6 +157,39 @@ def pickFromSet(s: set):
         return x
 
 
+def updateCotree(
+        leaf: LeafNode,
+        lowestMarked: InternalNode,
+        root: InternalNode):
+    children = lowestMarked.marked_or_unmarked_children if lowestMarked.is_union else lowestMarked.children - \
+        lowestMarked.marked_or_unmarked_children
+
+    if len(children) == 1:
+        child = pickFromSet(children)
+        if isinstance(child, LeafNode):
+            lowestMarked.children.remove(child)
+            lowestMarked.children.add(InternalNode(
+                lowestMarked, not lowestMarked.is_union, set([child, leaf])))
+        else:
+            child.addChild(leaf)
+    else:
+        lowestMarked.children -= lowestMarked.marked_or_unmarked_children
+        newNode = InternalNode(
+            None, lowestMarked.is_union, set(
+                lowestMarked.marked_or_unmarked_children))
+        if lowestMarked.is_union:
+            lowestMarked.addChild(InternalNode(
+                None, not lowestMarked.is_union, set([newNode, leaf])))
+        else:
+            if lowestMarked.parent is not None:
+                lowestMarked.parent.children.remove(lowestMarked)
+                lowestMarked.parent.addChild(newNode)
+            else:
+                root = newNode
+                newNode.addChild(InternalNode(
+                    None, True, set([lowestMarked, leaf])))
+
+
 def computeCotree(graph: nx.Graph) -> TreeNode:
     leaves = [LeafNode(None, x) for x in graph.nodes]
 
@@ -188,34 +221,7 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
             lowestMarked = findLowest(root, marked)
             if lowestMarked is None:
                 return None
-
-            children = lowestMarked.marked_or_unmarked_children if lowestMarked.is_union else lowestMarked.children - \
-                lowestMarked.marked_or_unmarked_children
-
-            if len(children) == 1:
-                child = pickFromSet(children)
-                if isinstance(child, LeafNode):
-                    lowestMarked.children.remove(child)
-                    lowestMarked.children.add(InternalNode(
-                        lowestMarked, not lowestMarked.is_union, set([child, leaf])))
-                else:
-                    child.addChild(leaf)
-            else:
-                lowestMarked.children -= lowestMarked.marked_or_unmarked_children
-                newNode = InternalNode(
-                    None, lowestMarked.is_union, set(
-                        lowestMarked.marked_or_unmarked_children))
-                if lowestMarked.is_union:
-                    lowestMarked.addChild(InternalNode(
-                        None, not lowestMarked.is_union, set([newNode, leaf])))
-                else:
-                    if lowestMarked.parent is not None:
-                        lowestMarked.parent.children.remove(lowestMarked)
-                        lowestMarked.parent.addChild(newNode)
-                    else:
-                        root = newNode
-                        newNode.addChild(InternalNode(
-                            None, True, set([lowestMarked, leaf])))
+            updateCotree(leaf, lowestMarked, root)
 
     return root
 
