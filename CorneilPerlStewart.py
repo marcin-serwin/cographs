@@ -185,7 +185,37 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
                 root = InternalNode(None, False, set(
                     [InternalNode(None, True, set([root, leaf]))]))
         else:
-            pathStart = findLowest(root, marked)
+            lowestMarked = findLowest(root, marked)
+            if lowestMarked is None:
+                return None
+
+            children = lowestMarked.marked_or_unmarked_children if lowestMarked.is_union else lowestMarked.children - \
+                lowestMarked.marked_or_unmarked_children
+
+            if len(children) == 1:
+                child = pickFromSet(children)
+                if isinstance(child, LeafNode):
+                    lowestMarked.children.remove(child)
+                    lowestMarked.children.add(InternalNode(
+                        lowestMarked, not lowestMarked.is_union, set([child, leaf])))
+                else:
+                    child.addChild(leaf)
+            else:
+                lowestMarked.children -= lowestMarked.marked_or_unmarked_children
+                newNode = InternalNode(
+                    None, lowestMarked.is_union, set(
+                        lowestMarked.marked_or_unmarked_children))
+                if lowestMarked.is_union:
+                    lowestMarked.addChild(InternalNode(
+                        None, not lowestMarked.is_union, set([newNode, leaf])))
+                else:
+                    if lowestMarked.parent is not None:
+                        lowestMarked.parent.children.remove(lowestMarked)
+                        lowestMarked.parent.addChild(newNode)
+                    else:
+                        root = newNode
+                        newNode.addChild(InternalNode(
+                            None, True, set([lowestMarked, leaf])))
 
     return root
 
@@ -194,7 +224,7 @@ if __name__ == "__main__":
     graph = nx.read_yaml("./graphs/example2.yaml")
     cotree = computeCotree(graph)
     print(cotree)
-    # if isCograph(graph, partition):
-    #     print('example is cograph')
-    # else:
-    #     print('example contains a P4')
+    if cotree is not None:
+        print('example is cograph')
+    else:
+        print('example contains a P4')
