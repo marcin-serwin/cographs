@@ -1,3 +1,4 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 import networkx as nx
 import itertools
@@ -6,7 +7,7 @@ from enum import Enum
 
 
 class TreeNode(ABC):
-    def __init__(self, parent: TreeNode):
+    def __init__(self, parent: InternalNode):
         self.parent = parent
         super().__init__()
 
@@ -19,7 +20,7 @@ class TreeNode(ABC):
 
 
 class LeafNode(TreeNode):
-    def __init__(self, parent: TreeNode, node):
+    def __init__(self, parent: InternalNode, node):
         self.node = node
         super().__init__(parent)
 
@@ -33,7 +34,7 @@ class LeafNode(TreeNode):
 class InternalNode(TreeNode):
     def __init__(
             self,
-            parent: TreeNode,
+            parent: InternalNode,
             is_union: bool,
             children: List[TreeNode] = None):
         self.is_union = is_union
