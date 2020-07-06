@@ -113,35 +113,35 @@ def findLowest(root: InternalNode, marked: Set[InternalNode]) -> InternalNode:
         y = root
     marked.remove(root)
     root.marked_degree = 0
-    u = w = root
+    pathStart = pathEnd = root
 
     while len(marked) > 0:
-        u = marked.pop()
+        pathStart = marked.pop()
         if y is not None:
             return None
-        if not u.is_union:
-            if u.marked_degree != u.degree() - 1:
-                y = u
-            if u.parent in marked:
+        if not pathStart.is_union:
+            if pathStart.marked_degree != pathStart.degree() - 1:
+                y = pathStart
+            if pathStart.parent in marked:
                 return None
             else:
-                t = u.parent.parent
+                current = pathStart.parent.parent
         else:
-            y = u
-            t = u.parent
+            y = pathStart
+            current = pathStart.parent
 
-        u.marked_degree = 0
+        pathStart.marked_degree = 0
 
-        while t != w:
-            if (t == root or t not in marked or t.marked_degree != t.degree() -
-                    1 or t.parent in marked):
+        while current != pathEnd:
+            if (current == root or current not in marked or current.marked_degree !=
+                    current.degree() - 1 or current.parent in marked):
                 return None
-            marked.remove(t)
-            t.marked_degree = 0
-            t = t.parent.parent
+            marked.remove(current)
+            current.marked_degree = 0
+            current = current.parent.parent
 
-        w = u
-    return u
+        pathEnd = pathStart
+    return pathStart
 
 
 def computeCotree(graph: nx.Graph) -> TreeNode:
@@ -183,7 +183,7 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
                 root = InternalNode(None, False, [new_root_child])
                 new_root_child.parent = root
         else:
-            u = findLowest(root, marked)
+            pathStart = findLowest(root, marked)
 
     return root
 
