@@ -36,11 +36,11 @@ class InternalNode(TreeNode):
             self,
             parent: InternalNode,
             is_union: bool,
-            children: List[TreeNode] = None):
+            children: Set[TreeNode] = None):
         self.is_union = is_union
-        self.children = children if children is not None else []
+        self.children = children if children is not None else set()
         self.marked_degree = 0
-        self.marked_or_unmarked_children = []
+        self.marked_or_unmarked_children = set()
         super().__init__(parent)
 
     def degree(self):
@@ -49,7 +49,7 @@ class InternalNode(TreeNode):
     def clear(self):
         super().clear()
         self.marked_degree = 0
-        self.marked_or_unmarked_children = []
+        self.marked_or_unmarked_children = set()
         for child in self.children:
             child.clear()
 
@@ -97,7 +97,7 @@ def mark(
             parent.marked_degree += 1
             if parent.marked_degree == parent.degree():
                 toUnmark.append(parent)
-            parent.marked_or_unmarked_children.append(node)
+            parent.marked_or_unmarked_children.add(node)
     if nMarked > 0 and root.degree() == 1:
         marked.add(root)
 
@@ -145,6 +145,11 @@ def findLowest(root: InternalNode, marked: Set[InternalNode]) -> InternalNode:
     return pathStart
 
 
+def pickFromSet(s: set):
+    for x in s:
+        return x
+
+
 def computeCotree(graph: nx.Graph) -> TreeNode:
     leaves = [LeafNode(None, x) for x in graph.nodes]
 
@@ -159,29 +164,29 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
     if graph.has_edge(leaves[0].node, leaves[1].node):
         for leaf in leaves[:2]:
             leaf.parent = root
-        root.children = leaves[:2]
+        root.children = set(leaves[:2])
     else:
-        node = InternalNode(root, True, leaves[:2])
+        node = InternalNode(root, True, set(leaves[:2]))
         for leaf in leaves[:2]:
             leaf.parent = node
-        root.children = [node]
+        root.children = set([node])
 
     for index, leaf in enumerate(leaves[2:], 2):
         result, marked = mark(leaf, leaves[:index], graph, root)
         if result == MarkResult.ALL_MARKED:
             leaf.parent = root
-            root.children.append(leaf)
+            root.children.add(leaf)
         elif result == MarkResult.NONE_MARKED:
             if root.degree() == 1:
-                root_child = root.children[0]
+                root_child = pickFromSet(root.children)
                 leaf.parent = root_child
-                root_child.children.append(leaf)
+                root_child.children.add(leaf)
             else:
-                new_root_child = InternalNode(None, True, [root, leaf])
+                new_root_child = InternalNode(None, True, set([root, leaf]))
                 root.parent = new_root_child
                 leaf.parent = new_root_child
 
-                root = InternalNode(None, False, [new_root_child])
+                root = InternalNode(None, False, set([new_root_child]))
                 new_root_child.parent = root
         else:
             pathStart = findLowest(root, marked)
