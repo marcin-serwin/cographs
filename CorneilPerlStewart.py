@@ -132,6 +132,15 @@ def findLowest(root: InternalNode, marked: Set[InternalNode]) -> InternalNode:
 
         u.marked_degree = 0
 
+        while t != w:
+            if (t == root or t not in marked or t.marked_degree != t.degree() -
+                    1 or t.parent in marked):
+                return None
+            marked.remove(t)
+            t.marked_degree = 0
+            t = t.parent.parent
+
+        w = u
     return u
 
 
