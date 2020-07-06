@@ -91,8 +91,9 @@ def mark(
             node.marked_degree = 0
         parent = node.parent
         if parent is not None:
-            marked.add(parent)
-            nMarked += 1
+            if parent not in marked:
+                marked.add(parent)
+                nMarked += 1
             parent.marked_degree += 1
             if parent.marked_degree == parent.degree():
                 toUnmark.append(parent)
@@ -165,7 +166,7 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
             leaf.parent = node
         root.children = [node]
 
-    for index, leaf in enumerate(leaves[2:]):
+    for index, leaf in enumerate(leaves[2:], 2):
         result, marked = mark(leaf, leaves[:index], graph, root)
         if result == MarkResult.ALL_MARKED:
             leaf.parent = root
