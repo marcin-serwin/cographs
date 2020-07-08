@@ -1,6 +1,6 @@
 {
     "include": [
-        "./*.py"
+        "src"
     ],
     "typeCheckingMode": "basic",
     "verboseOutput": true,
