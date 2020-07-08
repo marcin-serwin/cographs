@@ -33,9 +33,9 @@ def brute_force_partition(graph: nx.Graph) -> list:
                 [sub_part - node_neighbors, sub_part & node_neighbors]
                 for sub_part in left) if len(s) > 0]
 
-        refined = [*left, set([origin]), *right]
+        refined = left + [set([origin])] + right
 
-        partition = [*partition[:index], *refined, *partition[index + 1:]]
+        partition = partition[:index] + refined + partition[index + 1:]
 
     return [s.pop() for s in partition]
 
@@ -135,11 +135,9 @@ def compute_permutation(graph: nx.Graph) -> list:
             not_neighbors, origin_part, neighbors = first_refinement_rule(
                 graph, origin_part, origin)
 
-            partition = [*partition[:origin_part_index],
-                         not_neighbors,
-                         origin_part,
-                         neighbors,
-                         *partition[origin_part_index + 1:]]
+            partition = (partition[:origin_part_index] +
+                         [not_neighbors] + [origin_part] + [neighbors] +
+                         partition[origin_part_index + 1:])
 
             unused_parts.extend(
                 p for p in (neighbors, not_neighbors) if len(p.vertices) > 0)
