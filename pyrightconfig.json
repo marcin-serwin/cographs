@@ -1,0 +1,11 @@
+{
+    "include": [
+        "./*.py"
+    ],
+    "typeCheckingMode": "basic",
+    "verboseOutput": true,
+    "pythonPlatform": "Linux",
+    "pythonVersion": "3.8",
+    "venvPath": ".",
+    "venv": ".venv"
+}
