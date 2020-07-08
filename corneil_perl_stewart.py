@@ -34,6 +34,7 @@ class LeafNode(TreeNode):
 class InternalNode(TreeNode):
     def __init__(
             self,
+            *,
             is_union: bool,
             children: Set[TreeNode] = None):
         super().__init__()
@@ -164,16 +165,18 @@ def updated_cotree(
         if isinstance(child, LeafNode):
             lowest_marked.children.remove(child)
             lowest_marked.add_child(InternalNode(
-                not lowest_marked.is_union, set([child, leaf])))
+                is_union=not lowest_marked.is_union,
+                children=set([child, leaf])))
         else:
             child.add_child(leaf)
     else:
         lowest_marked.children -= lowest_marked.processed_children
-        new_node = InternalNode(lowest_marked.is_union, set(
+        new_node = InternalNode(is_union=lowest_marked.is_union, children=set(
             lowest_marked.processed_children))
         if lowest_marked.is_union:
             lowest_marked.add_child(InternalNode(
-                not lowest_marked.is_union, set([new_node, leaf])))
+                is_union=not lowest_marked.is_union,
+                children=set([new_node, leaf])))
         else:
             if lowest_marked.parent is not None:
                 lowest_marked.parent.children.remove(lowest_marked)
@@ -181,7 +184,7 @@ def updated_cotree(
             else:
                 root = new_node
                 new_node.add_child(InternalNode(
-                    True, set([lowest_marked, leaf])))
+                    is_union=True, children=set([lowest_marked, leaf])))
 
     return root
 
@@ -195,12 +198,12 @@ def compute_cotree(graph: nx.Graph) -> Optional[TreeNode]:
     if graph.number_of_nodes() == 1:
         return leaves[0]
 
-    root = InternalNode(False)
+    root = InternalNode(is_union=False)
 
     if graph.has_edge(leaves[0].node, leaves[1].node):
         root.add_child(*leaves[:2])
     else:
-        root.add_child(InternalNode(True, set(leaves[:2])))
+        root.add_child(InternalNode(is_union=True, children=set(leaves[:2])))
 
     for index, leaf in enumerate(leaves[2:], 2):
         result, marked = mark(leaf, leaves[:index], graph, root)
@@ -212,8 +215,8 @@ def compute_cotree(graph: nx.Graph) -> Optional[TreeNode]:
                 assert isinstance(root_child, InternalNode)
                 root_child.add_child(leaf)
             else:
-                root = InternalNode(False, set(
-                    [InternalNode(True, set([root, leaf]))]))
+                root = InternalNode(is_union=False, children=set(
+                    [InternalNode(is_union=True, children=set([root, leaf]))]))
         else:
             lowest_marked = find_lowest(root, marked)
             if lowest_marked is None:
