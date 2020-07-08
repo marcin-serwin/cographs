@@ -7,9 +7,9 @@ from utilities import pick
 
 
 class TreeNode(ABC):
-    def __init__(self, parent: Optional[InternalNode]):
-        self.parent = parent
+    def __init__(self):
         super().__init__()
+        self.parent: Optional[InternalNode] = None
 
     @abstractmethod
     def degree(self):
@@ -20,9 +20,9 @@ class TreeNode(ABC):
 
 
 class LeafNode(TreeNode):
-    def __init__(self, parent: Optional[InternalNode], node):
+    def __init__(self, node):
+        super().__init__()
         self.node = node
-        super().__init__(parent)
 
     def degree(self):
         return 0
@@ -34,16 +34,16 @@ class LeafNode(TreeNode):
 class InternalNode(TreeNode):
     def __init__(
             self,
-            parent: Optional[InternalNode],
             is_union: bool,
             children: Set[TreeNode] = None):
+        super().__init__()
         self.is_union = is_union
         self.children = children if children is not None else set()
         for child in self.children:
             child.parent = self
         self.marked_degree = 0
         self.processed_children = set()
-        super().__init__(parent)
+        super().__init__()
 
     def add_child(self, *new_chilren: TreeNode):
         for new_child in new_chilren:
@@ -168,18 +168,17 @@ def updated_cotree(
         child = pick(children)
         if isinstance(child, LeafNode):
             lowest_marked.children.remove(child)
-            lowest_marked.children.add(InternalNode(
-                lowest_marked, not lowest_marked.is_union, set([child, leaf])))
+            lowest_marked.add_child(InternalNode(
+                not lowest_marked.is_union, set([child, leaf])))
         else:
             child.add_child(leaf)
     else:
         lowest_marked.children -= lowest_marked.processed_children
-        new_node = InternalNode(
-            None, lowest_marked.is_union, set(
-                lowest_marked.processed_children))
+        new_node = InternalNode(lowest_marked.is_union, set(
+            lowest_marked.processed_children))
         if lowest_marked.is_union:
             lowest_marked.add_child(InternalNode(
-                None, not lowest_marked.is_union, set([new_node, leaf])))
+                not lowest_marked.is_union, set([new_node, leaf])))
         else:
             if lowest_marked.parent is not None:
                 lowest_marked.parent.children.remove(lowest_marked)
@@ -187,13 +186,13 @@ def updated_cotree(
             else:
                 root = new_node
                 new_node.add_child(InternalNode(
-                    None, True, set([lowest_marked, leaf])))
+                    True, set([lowest_marked, leaf])))
 
     return root
 
 
 def compute_cotree(graph: nx.Graph) -> Optional[TreeNode]:
-    leaves = [LeafNode(None, x) for x in graph.nodes]
+    leaves = [LeafNode(x) for x in graph.nodes]
 
     if graph.number_of_nodes() == 0:
         return None
@@ -201,12 +200,12 @@ def compute_cotree(graph: nx.Graph) -> Optional[TreeNode]:
     if graph.number_of_nodes() == 1:
         return leaves[0]
 
-    root = InternalNode(None, False)
+    root = InternalNode(False)
 
     if graph.has_edge(leaves[0].node, leaves[1].node):
         root.add_child(*leaves[:2])
     else:
-        root.add_child(InternalNode(root, True, set(leaves[:2])))
+        root.add_child(InternalNode(True, set(leaves[:2])))
 
     for index, leaf in enumerate(leaves[2:], 2):
         result, marked = mark(leaf, leaves[:index], graph, root)
@@ -218,8 +217,8 @@ def compute_cotree(graph: nx.Graph) -> Optional[TreeNode]:
                 assert isinstance(root_child, InternalNode)
                 root_child.add_child(leaf)
             else:
-                root = InternalNode(None, False, set(
-                    [InternalNode(None, True, set([root, leaf]))]))
+                root = InternalNode(False, set(
+                    [InternalNode(True, set([root, leaf]))]))
         else:
             lowest_marked = find_lowest(root, marked)
             if lowest_marked is None:
