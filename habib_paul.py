@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import itertools
+from typing import Any, Optional, Tuple
 import networkx as nx
 from utilities import pick
 
@@ -42,11 +43,11 @@ def brute_force_partition(graph: nx.Graph) -> list:
 @dataclass
 class Part:
     vertices: set
-    pivot: any = None
+    pivot: Any = None
 
 
 def first_refinement_rule(
-        graph: nx.Graph, origin_part: Part, origin) -> (list, list, list):
+        graph: nx.Graph, origin_part: Part, origin) -> Tuple[Part, Part, Part]:
     origin_part.vertices.remove(origin)
     neighbors = Part(set(graph[origin]) & origin_part.vertices)
     not_neighbors = Part(origin_part.vertices - neighbors.vertices)
@@ -84,7 +85,8 @@ def get_new_origin_index(
         origin_part: Part,
         partition: list,
         graph: nx.Graph) -> int:
-    z_l_index, z_r_index = None, None
+    z_l_index: Optional[int] = None
+    z_r_index: Optional[int] = None
     past_origin = False
     for index, part in enumerate(partition):
         if len(part.vertices) == 1 and part == origin_part:
@@ -97,6 +99,7 @@ def get_new_origin_index(
                 z_l_index = index
 
     if z_l_index is None:
+        assert z_r_index is not None
         return z_r_index
     if z_r_index is None:
         return z_l_index
@@ -162,8 +165,8 @@ def compute_permutation(graph: nx.Graph) -> list:
 def are_these_twins(
         graph: nx.Graph,
         partition: list,
-        lhs: any,
-        rhs: any) -> bool:
+        lhs: Any,
+        rhs: Any) -> bool:
     if lhs is None or rhs is None:
         return False
 
