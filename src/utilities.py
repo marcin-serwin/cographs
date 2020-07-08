@@ -1,3 +1,4 @@
+# pyright: strict
 from typing import Iterable, TypeVar
 
 Elem = TypeVar('Elem')
