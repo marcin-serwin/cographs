@@ -62,7 +62,7 @@ def second_refinement_rule(
         unused_parts: list,
         partition: list) -> list:
     neighbors = set(graph[part.pivot])
-    not_neighbors = graph.nodes - neighbors
+    not_neighbors = set(graph.nodes - neighbors)
     not_neighbors.remove(part.pivot)
 
     new_partition = []
