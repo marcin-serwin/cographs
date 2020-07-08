@@ -4,7 +4,7 @@ import networkx as nx
 import itertools
 from typing import List, Set
 from enum import Enum
-from utilities import pickFromSet
+from utilities import pick
 
 
 class TreeNode(ABC):
@@ -161,7 +161,7 @@ def updateCotree(
         lowestMarked.marked_or_unmarked_children
 
     if len(children) == 1:
-        child = pickFromSet(children)
+        child = pick(children)
         if isinstance(child, LeafNode):
             lowestMarked.children.remove(child)
             lowestMarked.children.add(InternalNode(
@@ -208,7 +208,7 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
             root.addChild(leaf)
         elif result == MarkResult.NONE_MARKED:
             if root.degree() == 1:
-                root_child = pickFromSet(root.children)
+                root_child = pick(root.children)
                 root_child.addChild(leaf)
             else:
                 root = InternalNode(None, False, set(

@@ -1,8 +1,8 @@
-from typing import Set, TypeVar
+from typing import Iterable, TypeVar
 
-T = TypeVar('T')
+Elem = TypeVar('Elem')
 
 
-def pickFromSet(s: Set[T]) -> T:
-    for x in s:
-        return x
+def pick(elements: Iterable[Elem]) -> Elem:
+    for elem in elements:
+        return elem
