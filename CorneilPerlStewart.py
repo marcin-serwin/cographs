@@ -4,6 +4,7 @@ import networkx as nx
 import itertools
 from typing import List, Set
 from enum import Enum
+from utilities import pickFromSet
 
 
 class TreeNode(ABC):
@@ -150,11 +151,6 @@ def findLowest(root: InternalNode, marked: Set[InternalNode]) -> InternalNode:
 
         pathEnd = pathStart
     return pathStart
-
-
-def pickFromSet(s: set):
-    for x in s:
-        return x
 
 
 def updateCotree(

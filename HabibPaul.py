@@ -1,5 +1,6 @@
 import networkx as nx
 import itertools
+from utilities import pickFromSet
 
 
 def bruteForcePartition(graph: nx.Graph) -> list:
@@ -23,8 +24,7 @@ def bruteForcePartition(graph: nx.Graph) -> list:
         left = [notNeighbors]
 
         for sp in right:
-            for y in sp:
-                break
+            y = pickFromSet(sp)
             y_neighbors = set(graph.neighbors(y))
             left = [s for s in itertools.chain.from_iterable(
                 [subPart - y_neighbors, subPart & y_neighbors] for subPart in left) if len(s) > 0]
@@ -135,8 +135,7 @@ def computePermutation(g: nx.Graph) -> list:
 
         while len(unused_parts) > 0:
             part = unused_parts.pop()
-            for vertex in part.vertices:
-                break
+            vertex = pickFromSet(part.vertices)
             part.pivot = vertex
 
             partition = second_refinement_rule(
