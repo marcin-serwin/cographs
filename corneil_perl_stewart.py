@@ -43,7 +43,6 @@ class InternalNode(TreeNode):
             child.parent = self
         self.marked_degree = 0
         self.processed_children = set()
-        super().__init__()
 
     def add_child(self, *new_chilren: TreeNode):
         for new_child in new_chilren:
@@ -79,36 +78,32 @@ def mark(
     root.clear()
 
     to_unmark = []
-    n_marked = 0
     marked = set()
     for node in cotree_leaves:
         if graph.has_edge(node.node, new_node.node):
             marked.add(node)
             to_unmark.append(node)
-            n_marked += 1
 
-    if n_marked == 0:
+    if len(marked) == 0:
         return (MarkResult.NONE_MARKED, marked)
 
     while len(to_unmark) > 0:
         node = to_unmark.pop()
         marked.remove(node)
-        n_marked -= 1
         if isinstance(node, InternalNode):
             node.marked_degree = 0
         parent = node.parent
         if parent is not None:
             if parent not in marked:
                 marked.add(parent)
-                n_marked += 1
             parent.marked_degree += 1
             if parent.marked_degree == parent.degree():
                 to_unmark.append(parent)
             parent.processed_children.add(node)
-    if n_marked > 0 and root.degree() == 1:
+    if len(marked) > 0 and root.degree() == 1:
         marked.add(root)
 
-    return (MarkResult.SOME_MARKED if n_marked >
+    return (MarkResult.SOME_MARKED if len(marked) >
             0 else MarkResult.ALL_MARKED, marked)
 
 
