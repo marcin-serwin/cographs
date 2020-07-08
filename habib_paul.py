@@ -199,9 +199,9 @@ def main():
     graph = nx.read_yaml("./graphs/example1.yaml")
     partition = compute_permutation(graph)
     if is_cograph(graph, partition):
-        print('example is cograph')
+        print("example is cograph")
     else:
-        print('example contains a P4')
+        print("example contains a P4")
 
 
 if __name__ == "__main__":

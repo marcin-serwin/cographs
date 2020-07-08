@@ -234,9 +234,9 @@ def main():
     cotree = compute_cotree(graph)
     print(cotree)
     if cotree is not None:
-        print('example is cograph')
+        print("example is cograph")
     else:
-        print('example contains a P4')
+        print("example contains a P4")
 
 
 if __name__ == "__main__":
