@@ -1,13 +1,13 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import List, Set
+from typing import List, Set, Tuple, Optional
 from enum import Enum
 import networkx as nx
 from utilities import pick
 
 
 class TreeNode(ABC):
-    def __init__(self, parent: InternalNode):
+    def __init__(self, parent: Optional[InternalNode]):
         self.parent = parent
         super().__init__()
 
@@ -20,7 +20,7 @@ class TreeNode(ABC):
 
 
 class LeafNode(TreeNode):
-    def __init__(self, parent: InternalNode, node):
+    def __init__(self, parent: Optional[InternalNode], node):
         self.node = node
         super().__init__(parent)
 
@@ -34,7 +34,7 @@ class LeafNode(TreeNode):
 class InternalNode(TreeNode):
     def __init__(
             self,
-            parent: InternalNode,
+            parent: Optional[InternalNode],
             is_union: bool,
             children: Set[TreeNode] = None):
         self.is_union = is_union
@@ -75,7 +75,7 @@ def mark(
         new_node: LeafNode,
         cotree_leaves: List[LeafNode],
         graph: nx.Graph,
-        root: InternalNode) -> (MarkResult, Set[InternalNode]):
+        root: InternalNode) -> Tuple[MarkResult, Set[InternalNode]]:
     root.clear()
 
     to_unmark = []
@@ -112,7 +112,9 @@ def mark(
             0 else MarkResult.ALL_MARKED, marked)
 
 
-def find_lowest(root: InternalNode, marked: Set[InternalNode]) -> InternalNode:
+def find_lowest(
+        root: InternalNode,
+        marked: Set[InternalNode]) -> Optional[InternalNode]:
     invalid_node = None
     if root not in marked:
         return None
@@ -140,7 +142,8 @@ def find_lowest(root: InternalNode, marked: Set[InternalNode]) -> InternalNode:
         path_start.marked_degree = 0
 
         while current != path_end:
-            if (current == root or
+            if (current is None or
+                    current == root or
                     current not in marked or
                     current.marked_degree != current.degree() - 1 or
                     current.parent in marked):
@@ -189,7 +192,7 @@ def updated_cotree(
     return root
 
 
-def compute_cotree(graph: nx.Graph) -> TreeNode:
+def compute_cotree(graph: nx.Graph) -> Optional[TreeNode]:
     leaves = [LeafNode(None, x) for x in graph.nodes]
 
     if graph.number_of_nodes() == 0:
@@ -212,6 +215,7 @@ def compute_cotree(graph: nx.Graph) -> TreeNode:
         elif result == MarkResult.NONE_MARKED:
             if root.degree() == 1:
                 root_child = pick(root.children)
+                assert isinstance(root_child, InternalNode)
                 root_child.add_child(leaf)
             else:
                 root = InternalNode(None, False, set(
