@@ -1,9 +1,8 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-import networkx as nx
-import itertools
 from typing import List, Set
 from enum import Enum
+import networkx as nx
 from utilities import pick
 
 
@@ -43,13 +42,13 @@ class InternalNode(TreeNode):
         for child in self.children:
             child.parent = self
         self.marked_degree = 0
-        self.marked_or_unmarked_children = set()
+        self.processed_children = set()
         super().__init__(parent)
 
-    def addChild(self, *newChilren: TreeNode):
-        for newChild in newChilren:
-            newChild.parent = self
-            self.children.add(newChild)
+    def add_child(self, *new_chilren: TreeNode):
+        for new_child in new_chilren:
+            new_child.parent = self
+            self.children.add(new_child)
 
     def degree(self):
         return len(self.children)
@@ -57,7 +56,7 @@ class InternalNode(TreeNode):
     def clear(self):
         super().clear()
         self.marked_degree = 0
-        self.marked_or_unmarked_children = set()
+        self.processed_children = set()
         for child in self.children:
             child.clear()
 
@@ -73,120 +72,124 @@ class MarkResult(Enum):
 
 
 def mark(
-        newNode: LeafNode,
+        new_node: LeafNode,
         cotree_leaves: List[LeafNode],
         graph: nx.Graph,
         root: InternalNode) -> (MarkResult, Set[InternalNode]):
     root.clear()
 
-    toUnmark = []
-    nMarked = 0
+    to_unmark = []
+    n_marked = 0
     marked = set()
     for node in cotree_leaves:
-        if graph.has_edge(node.node, newNode.node):
+        if graph.has_edge(node.node, new_node.node):
             marked.add(node)
-            toUnmark.append(node)
-            nMarked += 1
+            to_unmark.append(node)
+            n_marked += 1
 
-    if nMarked == 0:
+    if n_marked == 0:
         return (MarkResult.NONE_MARKED, marked)
 
-    while len(toUnmark) > 0:
-        node = toUnmark.pop()
+    while len(to_unmark) > 0:
+        node = to_unmark.pop()
         marked.remove(node)
-        nMarked -= 1
+        n_marked -= 1
         if isinstance(node, InternalNode):
             node.marked_degree = 0
         parent = node.parent
         if parent is not None:
             if parent not in marked:
                 marked.add(parent)
-                nMarked += 1
+                n_marked += 1
             parent.marked_degree += 1
             if parent.marked_degree == parent.degree():
-                toUnmark.append(parent)
-            parent.marked_or_unmarked_children.add(node)
-    if nMarked > 0 and root.degree() == 1:
+                to_unmark.append(parent)
+            parent.processed_children.add(node)
+    if n_marked > 0 and root.degree() == 1:
         marked.add(root)
 
-    return (MarkResult.SOME_MARKED if nMarked >
+    return (MarkResult.SOME_MARKED if n_marked >
             0 else MarkResult.ALL_MARKED, marked)
 
 
-def findLowest(root: InternalNode, marked: Set[InternalNode]) -> InternalNode:
-    y = None
+def find_lowest(root: InternalNode, marked: Set[InternalNode]) -> InternalNode:
+    invalid_node = None
     if root not in marked:
         return None
 
     if root.marked_degree != root.degree() - 1:
-        y = root
+        invalid_node = root
     marked.remove(root)
     root.marked_degree = 0
-    pathStart = pathEnd = root
+    path_start = path_end = root
 
     while len(marked) > 0:
-        pathStart = marked.pop()
-        if y is not None:
+        path_start = marked.pop()
+        if invalid_node is not None:
             return None
-        if not pathStart.is_union:
-            if pathStart.marked_degree != pathStart.degree() - 1:
-                y = pathStart
-            if pathStart.parent in marked:
+        if not path_start.is_union:
+            if path_start.marked_degree != path_start.degree() - 1:
+                invalid_node = path_start
+            if path_start.parent in marked:
                 return None
-            else:
-                current = pathStart.parent.parent
+            current = path_start.parent.parent
         else:
-            y = pathStart
-            current = pathStart.parent
+            invalid_node = path_start
+            current = path_start.parent
 
-        pathStart.marked_degree = 0
+        path_start.marked_degree = 0
 
-        while current != pathEnd:
-            if (current == root or current not in marked or current.marked_degree !=
-                    current.degree() - 1 or current.parent in marked):
+        while current != path_end:
+            if (current == root or
+                    current not in marked or
+                    current.marked_degree != current.degree() - 1 or
+                    current.parent in marked):
                 return None
             marked.remove(current)
             current.marked_degree = 0
             current = current.parent.parent
 
-        pathEnd = pathStart
-    return pathStart
+        path_end = path_start
+    return path_start
 
 
-def updateCotree(
+def updated_cotree(
         leaf: LeafNode,
-        lowestMarked: InternalNode,
-        root: InternalNode):
-    children = lowestMarked.marked_or_unmarked_children if lowestMarked.is_union else lowestMarked.children - \
-        lowestMarked.marked_or_unmarked_children
+        lowest_marked: InternalNode,
+        root: InternalNode) -> InternalNode:
+    children = (lowest_marked.processed_children
+                if lowest_marked.is_union
+                else lowest_marked.children - lowest_marked.processed_children)
 
     if len(children) == 1:
         child = pick(children)
         if isinstance(child, LeafNode):
-            lowestMarked.children.remove(child)
-            lowestMarked.children.add(InternalNode(
-                lowestMarked, not lowestMarked.is_union, set([child, leaf])))
+            lowest_marked.children.remove(child)
+            lowest_marked.children.add(InternalNode(
+                lowest_marked, not lowest_marked.is_union, set([child, leaf])))
         else:
-            child.addChild(leaf)
+            child.add_child(leaf)
     else:
-        lowestMarked.children -= lowestMarked.marked_or_unmarked_children
-        newNode = InternalNode(
-            None, lowestMarked.is_union, set(
-                lowestMarked.marked_or_unmarked_children))
-        if lowestMarked.is_union:
-            lowestMarked.addChild(InternalNode(
-                None, not lowestMarked.is_union, set([newNode, leaf])))
+        lowest_marked.children -= lowest_marked.processed_children
+        new_node = InternalNode(
+            None, lowest_marked.is_union, set(
+                lowest_marked.processed_children))
+        if lowest_marked.is_union:
+            lowest_marked.add_child(InternalNode(
+                None, not lowest_marked.is_union, set([new_node, leaf])))
         else:
-            if lowestMarked.parent is not None:
-                lowestMarked.parent.children.remove(lowestMarked)
-                lowestMarked.parent.addChild(newNode)
+            if lowest_marked.parent is not None:
+                lowest_marked.parent.children.remove(lowest_marked)
+                lowest_marked.parent.add_child(new_node)
             else:
-                root = newNode
-                newNode.addChild(InternalNode(
-                    None, True, set([lowestMarked, leaf])))
+                root = new_node
+                new_node.add_child(InternalNode(
+                    None, True, set([lowest_marked, leaf])))
+
+    return root
 
 
-def computeCotree(graph: nx.Graph) -> TreeNode:
+def compute_cotree(graph: nx.Graph) -> TreeNode:
     leaves = [LeafNode(None, x) for x in graph.nodes]
 
     if graph.number_of_nodes() == 0:
@@ -198,35 +201,39 @@ def computeCotree(graph: nx.Graph) -> TreeNode:
     root = InternalNode(None, False)
 
     if graph.has_edge(leaves[0].node, leaves[1].node):
-        root.addChild(*leaves[:2])
+        root.add_child(*leaves[:2])
     else:
-        root.addChild(InternalNode(root, True, set(leaves[:2])))
+        root.add_child(InternalNode(root, True, set(leaves[:2])))
 
     for index, leaf in enumerate(leaves[2:], 2):
         result, marked = mark(leaf, leaves[:index], graph, root)
         if result == MarkResult.ALL_MARKED:
-            root.addChild(leaf)
+            root.add_child(leaf)
         elif result == MarkResult.NONE_MARKED:
             if root.degree() == 1:
                 root_child = pick(root.children)
-                root_child.addChild(leaf)
+                root_child.add_child(leaf)
             else:
                 root = InternalNode(None, False, set(
                     [InternalNode(None, True, set([root, leaf]))]))
         else:
-            lowestMarked = findLowest(root, marked)
-            if lowestMarked is None:
+            lowest_marked = find_lowest(root, marked)
+            if lowest_marked is None:
                 return None
-            updateCotree(leaf, lowestMarked, root)
+            root = updated_cotree(leaf, lowest_marked, root)
 
     return root
 
 
-if __name__ == "__main__":
+def main():
     graph = nx.read_yaml("./graphs/example2.yaml")
-    cotree = computeCotree(graph)
+    cotree = compute_cotree(graph)
     print(cotree)
     if cotree is not None:
         print('example is cograph')
     else:
         print('example contains a P4')
+
+
+if __name__ == "__main__":
+    main()
