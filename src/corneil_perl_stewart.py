@@ -1,9 +1,13 @@
+# pyright: strict
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import List, Set, Tuple, Optional
+from typing import List, Set, Tuple, Optional, TypeVar
 from enum import Enum
 import networkx as nx
 from utilities import pick
+
+
+NodeType = TypeVar("NodeType")
 
 
 class TreeNode(ABC):
@@ -12,19 +16,19 @@ class TreeNode(ABC):
         self.parent: Optional[InternalNode] = None
 
     @abstractmethod
-    def degree(self):
-        pass
+    def degree(self) -> int:
+        return 0
 
     def clear(self):
         pass
 
 
 class LeafNode(TreeNode):
-    def __init__(self, node):
+    def __init__(self, node: NodeType):
         super().__init__()
         self.node = node
 
-    def degree(self):
+    def degree(self) -> int:
         return 0
 
     def __repr__(self):
@@ -36,7 +40,7 @@ class InternalNode(TreeNode):
             self,
             *,
             is_union: bool,
-            children: Set[TreeNode] = None):
+            children: Optional[Set[TreeNode]] = None):
         super().__init__()
         self.is_union = is_union
         self.children = children if children is not None else set()
@@ -74,7 +78,7 @@ class MarkResult(Enum):
 def mark(
         new_node: LeafNode,
         cotree_leaves: List[LeafNode],
-        graph: nx.Graph,
+        graph: nx.Graph[NodeType],
         root: InternalNode) -> Tuple[MarkResult, Set[InternalNode]]:
     root.clear()
 
@@ -130,6 +134,7 @@ def find_lowest(
                 invalid_node = path_start
             if path_start.parent in marked:
                 return None
+            assert path_start.parent is not None
             current = path_start.parent.parent
         else:
             invalid_node = path_start
@@ -146,6 +151,7 @@ def find_lowest(
                 return None
             marked.remove(current)
             current.marked_degree = 0
+            assert current.parent is not None
             current = current.parent.parent
 
         path_end = path_start
@@ -189,7 +195,7 @@ def updated_cotree(
     return root
 
 
-def compute_cotree(graph: nx.Graph) -> Optional[TreeNode]:
+def compute_cotree(graph: nx.Graph[NodeType]) -> Optional[TreeNode]:
     leaves = [LeafNode(x) for x in graph.nodes]
 
     if graph.number_of_nodes() == 0:
