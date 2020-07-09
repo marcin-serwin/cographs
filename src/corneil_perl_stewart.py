@@ -7,7 +7,7 @@ import networkx as nx
 from utilities import pick
 
 
-NodeType = TypeVar("NodeType")
+VertexType = TypeVar("VertexType")
 
 
 class TreeNode(ABC):
@@ -24,7 +24,7 @@ class TreeNode(ABC):
 
 
 class LeafNode(TreeNode):
-    def __init__(self, node: NodeType):
+    def __init__(self, node: VertexType):
         super().__init__()
         self.node = node
 
@@ -78,7 +78,7 @@ class MarkResult(Enum):
 def mark(
         new_node: LeafNode,
         cotree_leaves: List[LeafNode],
-        graph: nx.Graph[NodeType],
+        graph: nx.Graph[VertexType],
         root: InternalNode) -> Tuple[MarkResult, Set[InternalNode]]:
     root.clear()
 
@@ -195,7 +195,7 @@ def updated_cotree(
     return root
 
 
-def compute_cotree(graph: nx.Graph[NodeType]) -> Optional[TreeNode]:
+def compute_cotree(graph: nx.Graph[VertexType]) -> Optional[TreeNode]:
     leaves = [LeafNode(x) for x in graph.nodes]
 
     if graph.number_of_nodes() == 0:
