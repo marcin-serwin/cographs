@@ -238,11 +238,13 @@ def compute_cotree(graph: nx.Graph[VT]) -> Optional[TreeNode[VT]]:
     return root
 
 
+def is_cograph(graph: nx.Graph[VT]) -> bool:
+    return compute_cotree(graph) is not None
+
+
 def main():
     graph = nx.read_yaml("./graphs/example2.yaml")
-    cotree = compute_cotree(graph)
-    print(cotree)
-    if cotree is not None:
+    if is_cograph(graph):
         print("example is cograph")
     else:
         print("example contains a P4")
