@@ -84,7 +84,7 @@ def second_refinement_rule(
 def get_new_origin_index(
         origin_part: Part,
         partition: list,
-        graph: nx.Graph) -> int:
+        graph: nx.Graph) -> Optional[int]:
     z_l_index: Optional[int] = None
     z_r_index: Optional[int] = None
     past_origin = False
@@ -99,7 +99,6 @@ def get_new_origin_index(
                 z_l_index = index
 
     if z_l_index is None:
-        assert z_r_index is not None
         return z_r_index
     if z_r_index is None:
         return z_l_index
