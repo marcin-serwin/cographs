@@ -1,4 +1,5 @@
 import unittest
+import os
 import networkx as nx
 import cographs.corneil_perl_stewart as cps
 
@@ -7,20 +8,28 @@ NOT_COGRAPHS_PATH = "resources/example-not-cographs/"
 
 
 class ExampleCPSTest(unittest.TestCase):
-    def test_habib_paul_example(self):
-        graph: nx.Graph[int] = nx.read_yaml(
-            COGRAPHS_PATH + "habib_paul_fig_1.yaml")
-        self.assertIsNotNone(cps.compute_cotree(graph))
+    pass
 
-    def test_corneil_perl_stewart_example(self):
-        graph: nx.Graph[int] = nx.read_yaml(
-            COGRAPHS_PATH + "corneil_perl_stewart_fig_1.yaml")
-        self.assertIsNotNone(cps.compute_cotree(graph))
 
-    def test_dahlhaus_gustedt_mcconnel_example(self):
-        graph: nx.Graph[int] = nx.read_yaml(
-            NOT_COGRAPHS_PATH + "dahlhaus_gustedt_mcconnel_fig_1.yaml")
-        self.assertIsNone(cps.compute_cotree(graph))
+def add_test(cls, filename, is_cograph):
+    def test(self: ExampleCPSTest):
+        path = COGRAPHS_PATH if is_cograph else NOT_COGRAPHS_PATH
+        graph: nx.Graph[int] = nx.read_yaml(path + filename)
+        assertion = self.assertIsNotNone if is_cograph else self.assertIsNone
+        assertion(cps.compute_cotree(graph))
+    test.__name__ = "test_example_{}".format(os.path.splitext(filename)[0])
+    setattr(cls, test.__name__, test)
+
+
+def clsinit():
+    for path in os.listdir(COGRAPHS_PATH):
+        add_test(ExampleCPSTest, path, True)
+
+    for path in os.listdir(NOT_COGRAPHS_PATH):
+        add_test(ExampleCPSTest, path, False)
+
+
+clsinit()
 
 
 if __name__ == "__main__":
