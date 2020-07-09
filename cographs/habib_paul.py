@@ -195,15 +195,3 @@ def check_partition(graph: nx.Graph, partition: list) -> bool:
 
 def is_cograph(graph: nx.Graph):
     return check_partition(graph, compute_permutation(graph))
-
-
-def main():
-    graph = nx.read_yaml("./graphs/example1.yaml")
-    if is_cograph(graph):
-        print("example is cograph")
-    else:
-        print("example contains a P4")
-
-
-if __name__ == "__main__":
-    main()
