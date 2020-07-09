@@ -6,8 +6,8 @@ from enum import Enum
 import networkx as nx
 from cographs.utilities import pick
 
-
-VertexType = TypeVar("VertexType")
+# TODO: Remove bounding when typing bug is resolved
+VertexType = TypeVar("VertexType", bound=str)
 VT = VertexType
 
 
@@ -98,7 +98,7 @@ def mark(new_node: LeafNode[VT],
         node = to_unmark.pop()
         marked.remove(node)
         parent = node.parent
-        if isinstance(node, InternalNode[VT]):
+        if isinstance(node, InternalNode):
             node.marked_degree = 0
         if parent is not None:
             if parent not in marked:
@@ -110,7 +110,7 @@ def mark(new_node: LeafNode[VT],
     if len(marked) > 0 and root.degree() == 1:
         marked.add(root)
 
-    assert all([isinstance(vertex, InternalNode[VT])
+    assert all([isinstance(vertex, InternalNode)
                 for vertex in marked])
 
     return (MarkResult.SOME_MARKED if len(marked) > 0
@@ -174,12 +174,12 @@ def updated_cotree(
 
     if len(children) == 1:
         child = pick(children)
-        if isinstance(child, LeafNode[VT]):
+        if isinstance(child, LeafNode):
             lowest_marked.children.remove(child)
             lowest_marked.add_child(InternalNode(
                 is_union=not lowest_marked.is_union,
                 children=set([child, leaf])))
-        elif isinstance(child, InternalNode[VT]):
+        elif isinstance(child, InternalNode):
             child.add_child(leaf)
     else:
         lowest_marked.children -= lowest_marked.processed_children
@@ -224,7 +224,7 @@ def compute_cotree(graph: nx.Graph[VT]) -> Optional[TreeNode[VT]]:
         elif result == MarkResult.NONE_MARKED:
             if root.degree() == 1:
                 root_child = pick(root.children)
-                assert isinstance(root_child, InternalNode[VT])
+                assert isinstance(root_child, InternalNode)
                 root_child.add_child(leaf)
             else:
                 root = InternalNode(is_union=False, children=set(
