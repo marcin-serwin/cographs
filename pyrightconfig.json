@@ -1,6 +1,6 @@
 {
     "include": [
-        "src"
+        "cographs"
     ],
     "typeCheckingMode": "basic",
     "verboseOutput": true,
@@ -10,7 +10,7 @@
     "venv": ".venv",
     "executionEnvironments": [
         {
-            "root": "src"
+            "root": "cographs"
         }
     ]
 }
