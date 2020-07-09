@@ -175,7 +175,7 @@ def are_these_twins(
         x_neighbors | set([lhs])) == (y_neighbors | set([rhs]))
 
 
-def is_cograph(graph: nx.Graph, partition: list) -> bool:
+def check_partition(graph: nx.Graph, partition: list) -> bool:
     partition = [None, *partition, None]
 
     position = 1
@@ -193,10 +193,13 @@ def is_cograph(graph: nx.Graph, partition: list) -> bool:
     return len(partition) == 3
 
 
+def is_cograph(graph: nx.Graph):
+    return check_partition(graph, compute_permutation(graph))
+
+
 def main():
     graph = nx.read_yaml("./graphs/example1.yaml")
-    partition = compute_permutation(graph)
-    if is_cograph(graph, partition):
+    if is_cograph(graph):
         print("example is cograph")
     else:
         print("example contains a P4")
