@@ -1,19 +1,20 @@
 # pyright: strict
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import List, Set, Tuple, Optional, TypeVar
+from typing import Generic, List, Set, Tuple, Optional, TypeVar, cast
 from enum import Enum
 import networkx as nx
 from utilities import pick
 
 
 VertexType = TypeVar("VertexType")
+VT = VertexType
 
 
-class TreeNode(ABC):
+class TreeNode(ABC, Generic[VT]):
     def __init__(self):
         super().__init__()
-        self.parent: Optional[InternalNode] = None
+        self.parent: Optional[InternalNode[VT]] = None
 
     @abstractmethod
     def degree(self) -> int:
@@ -23,8 +24,8 @@ class TreeNode(ABC):
         pass
 
 
-class LeafNode(TreeNode):
-    def __init__(self, node: VertexType):
+class LeafNode(TreeNode[VT]):
+    def __init__(self, node: VT):
         super().__init__()
         self.node = node
 
@@ -35,21 +36,22 @@ class LeafNode(TreeNode):
         return "LeafNode{{{}}}".format(self.node)
 
 
-class InternalNode(TreeNode):
+class InternalNode(TreeNode[VT]):
     def __init__(
             self,
             *,
             is_union: bool,
-            children: Optional[Set[TreeNode]] = None):
+            children: Optional[Set[TreeNode[VT]]] = None):
         super().__init__()
         self.is_union = is_union
-        self.children = children if children is not None else set()
+        self.children: Set[TreeNode[VT]
+                           ] = children if children is not None else set()
         for child in self.children:
             child.parent = self
-        self.marked_degree = 0
-        self.processed_children = set()
+        self.marked_degree: int = 0
+        self.processed_children: Set[TreeNode[VT]] = set()
 
-    def add_child(self, *new_chilren: TreeNode):
+    def add_child(self, *new_chilren: TreeNode[VT]):
         for new_child in new_chilren:
             new_child.parent = self
             self.children.add(new_child)
@@ -75,29 +77,29 @@ class MarkResult(Enum):
     SOME_MARKED = 2
 
 
-def mark(
-        new_node: LeafNode,
-        cotree_leaves: List[LeafNode],
-        graph: nx.Graph[VertexType],
-        root: InternalNode) -> Tuple[MarkResult, Set[InternalNode]]:
+def mark(new_node: LeafNode[VT],
+         cotree_leaves: List[LeafNode[VT]],
+         graph: nx.Graph[VT],
+         root: InternalNode[VT]) -> Tuple[MarkResult, Set[InternalNode[VT]]]:
     root.clear()
 
-    to_unmark = []
-    marked = set()
+    to_unmark: List[TreeNode[VT]] = []
+    marked: Set[TreeNode[VT]] = set()
     for node in cotree_leaves:
         if graph.has_edge(node.node, new_node.node):
             marked.add(node)
             to_unmark.append(node)
 
     if len(marked) == 0:
-        return (MarkResult.NONE_MARKED, marked)
+        return (MarkResult.NONE_MARKED,
+                cast(Set[InternalNode[VT]], marked))
 
     while len(to_unmark) > 0:
         node = to_unmark.pop()
         marked.remove(node)
-        if isinstance(node, InternalNode):
-            node.marked_degree = 0
         parent = node.parent
+        if isinstance(node, InternalNode[VT]):
+            node.marked_degree = 0
         if parent is not None:
             if parent not in marked:
                 marked.add(parent)
@@ -108,13 +110,17 @@ def mark(
     if len(marked) > 0 and root.degree() == 1:
         marked.add(root)
 
-    return (MarkResult.SOME_MARKED if len(marked) >
-            0 else MarkResult.ALL_MARKED, marked)
+    assert all([isinstance(vertex, InternalNode[VT])
+                for vertex in marked])
+
+    return (MarkResult.SOME_MARKED if len(marked) > 0
+            else MarkResult.ALL_MARKED,
+            cast(Set[InternalNode[VT]], marked))
 
 
 def find_lowest(
-        root: InternalNode,
-        marked: Set[InternalNode]) -> Optional[InternalNode]:
+        root: InternalNode[VT],
+        marked: Set[InternalNode[VT]]) -> Optional[InternalNode[VT]]:
     invalid_node = None
     if root not in marked:
         return None
@@ -159,21 +165,21 @@ def find_lowest(
 
 
 def updated_cotree(
-        leaf: LeafNode,
-        lowest_marked: InternalNode,
-        root: InternalNode) -> InternalNode:
+        leaf: LeafNode[VT],
+        lowest_marked: InternalNode[VT],
+        root: InternalNode[VT]) -> InternalNode[VT]:
     children = (lowest_marked.processed_children
                 if lowest_marked.is_union
                 else lowest_marked.children - lowest_marked.processed_children)
 
     if len(children) == 1:
         child = pick(children)
-        if isinstance(child, LeafNode):
+        if isinstance(child, LeafNode[VT]):
             lowest_marked.children.remove(child)
             lowest_marked.add_child(InternalNode(
                 is_union=not lowest_marked.is_union,
                 children=set([child, leaf])))
-        else:
+        elif isinstance(child, InternalNode[VT]):
             child.add_child(leaf)
     else:
         lowest_marked.children -= lowest_marked.processed_children
@@ -195,16 +201,16 @@ def updated_cotree(
     return root
 
 
-def compute_cotree(graph: nx.Graph[VertexType]) -> Optional[TreeNode]:
+def compute_cotree(graph: nx.Graph[VT]) -> Optional[TreeNode[VT]]:
     leaves = [LeafNode(x) for x in graph.nodes]
 
     if graph.number_of_nodes() == 0:
         return None
 
     if graph.number_of_nodes() == 1:
-        return leaves[0]
+        return pick(leaves)
 
-    root = InternalNode(is_union=False)
+    root: InternalNode[VT] = InternalNode(is_union=False)
 
     if graph.has_edge(leaves[0].node, leaves[1].node):
         root.add_child(*leaves[:2])
@@ -218,7 +224,7 @@ def compute_cotree(graph: nx.Graph[VertexType]) -> Optional[TreeNode]:
         elif result == MarkResult.NONE_MARKED:
             if root.degree() == 1:
                 root_child = pick(root.children)
-                assert isinstance(root_child, InternalNode)
+                assert isinstance(root_child, InternalNode[VT])
                 root_child.add_child(leaf)
             else:
                 root = InternalNode(is_union=False, children=set(
