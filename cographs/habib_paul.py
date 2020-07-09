@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import itertools
 from typing import Any, Optional, Tuple
 import networkx as nx
-from utilities import pick
+from cographs.utilities import pick
 
 
 def brute_force_partition(graph: nx.Graph) -> list:

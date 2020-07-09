@@ -1,5 +1,5 @@
 import unittest
-from .. import utilities
+from cographs import utilities
 
 
 class TestUtilities(unittest.TestCase):

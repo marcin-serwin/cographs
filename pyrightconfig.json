@@ -7,10 +7,5 @@
     "pythonPlatform": "Linux",
     "pythonVersion": "3.8",
     "venvPath": ".",
-    "venv": ".venv",
-    "executionEnvironments": [
-        {
-            "root": "cographs"
-        }
-    ]
+    "venv": ".venv"
 }

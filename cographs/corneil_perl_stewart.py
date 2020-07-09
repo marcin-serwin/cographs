@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import Generic, List, Set, Tuple, Optional, TypeVar, cast
 from enum import Enum
 import networkx as nx
-from utilities import pick
+from cographs.utilities import pick
 
 
 VertexType = TypeVar("VertexType")
