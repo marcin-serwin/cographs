@@ -1,4 +1,4 @@
-all: check
+all: check test
 
 check: lint type-check
 
@@ -7,3 +7,8 @@ lint:
 
 type-check:
 	npx pyright 
+
+test: test-small
+
+test-small:
+	python3 -m unittest -v cographs/test/*.py
