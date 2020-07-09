@@ -143,8 +143,8 @@ def find_lowest(
         path_start.marked_degree = 0
 
         while current != path_end:
-            if (current is None or
-                    current == root or
+            assert current is not None
+            if (current == root or
                     current not in marked or
                     current.marked_degree != current.degree() - 1 or
                     current.parent in marked):
