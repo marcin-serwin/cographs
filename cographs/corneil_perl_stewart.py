@@ -189,14 +189,13 @@ def updated_cotree(
             lowest_marked.add_child(InternalNode(
                 is_union=not lowest_marked.is_union,
                 children=set([new_node, leaf])))
+        elif lowest_marked.parent is not None:
+            lowest_marked.parent.children.remove(lowest_marked)
+            lowest_marked.parent.add_child(new_node)
         else:
-            if lowest_marked.parent is not None:
-                lowest_marked.parent.children.remove(lowest_marked)
-                lowest_marked.parent.add_child(new_node)
-            else:
-                root = new_node
-                new_node.add_child(InternalNode(
-                    is_union=True, children=set([lowest_marked, leaf])))
+            root = new_node
+            new_node.add_child(InternalNode(
+                is_union=True, children=set([lowest_marked, leaf])))
 
     return root
 
