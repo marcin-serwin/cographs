@@ -1,0 +1,12 @@
+# Latex compilation output
+*.pdf
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.dvi
+*.out
+*.toc
+*.nav
+*.snm
