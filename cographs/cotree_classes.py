@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from typing import Generic, Set, Optional, TypeVar, Any
 
-VertexType = TypeVar("VertexType", bound=Any)
+VertexType = TypeVar("VertexType", covariant=True, bound=Any)
 VT = VertexType
 
 
