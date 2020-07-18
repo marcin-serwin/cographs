@@ -7,8 +7,8 @@ import timeout_decorator
 import cographs.corneil_perl_stewart as cps
 import cographs.habib_paul as hp
 
-COGRAPHS_PATH = "resources/example-cographs/"
-NOT_COGRAPHS_PATH = "resources/example-not-cographs/"
+COGRAPHS_PATH = "resources/example-graphs/cographs/"
+NOT_COGRAPHS_PATH = "resources/example-graphs/not-cographs/"
 
 
 class ExampleTests(unittest.TestCase):
@@ -38,7 +38,7 @@ def clsinit():
             add_test(ExampleTests, prefix, func, path, expected_value)
 
 
-clsinit()
+# clsinit()
 
 
 if __name__ == "__main__":
