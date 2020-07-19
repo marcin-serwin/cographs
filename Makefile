@@ -11,4 +11,4 @@ type-check:
 test: test-small
 
 test-small:
-	python3 -m unittest -v cographs/test/*.py
+	python3 -m unittest cographs/test/*.py
