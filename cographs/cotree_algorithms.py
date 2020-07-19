@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from itertools import product
 from functools import reduce
-from typing import Callable, TypeVar, Set
+from typing import Callable, TypeVar, Set, List
 import networkx as nx
 from cographs.cotree_classes import InternalNode, LeafNode, TreeNode, VT
 
@@ -78,5 +78,28 @@ def find_max_independent_set(cotree: TreeNode[VT]) -> Set[VT]:
     return traverse_cotree(cotree, CotreeAlgorithm(
         join_independent_sets,
         pick_max,
+        trivial_graph
+    ))
+
+
+def find_min_coloring(cotree: TreeNode[VT]) -> List[Set[VT]]:
+    def union_colorings(
+            lhs: List[Set[VT]], rhs: List[Set[VT]]) -> List[Set[VT]]:
+        if len(lhs) > len(rhs):
+            rhs += (len(lhs) - len(rhs)) * [set()]
+        else:
+            lhs += (len(rhs) - len(lhs)) * [set()]
+        return [x | y for x, y in zip(lhs, rhs)]
+
+    def join_colorings(lhs: List[Set[VT]],
+                       rhs: List[Set[VT]]) -> List[Set[VT]]:
+        return lhs + rhs
+
+    def trivial_graph(leaf: LeafNode[VT]) -> List[Set[VT]]:
+        return [set([leaf.node])]
+
+    return traverse_cotree(cotree, CotreeAlgorithm(
+        union_colorings,
+        join_colorings,
         trivial_graph
     ))
