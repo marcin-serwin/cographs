@@ -63,3 +63,20 @@ def find_max_clique(cotree: TreeNode[VT]) -> Set[VT]:
         join_cliques,
         trivial_graph
     ))
+
+
+def find_max_independent_set(cotree: TreeNode[VT]) -> Set[VT]:
+    def join_independent_sets(lhs: Set[VT], rhs: Set[VT]) -> Set[VT]:
+        return lhs | rhs
+
+    def pick_max(lhs: Set[VT], rhs: Set[VT]) -> Set[VT]:
+        return lhs if len(lhs) >= len(rhs) else rhs
+
+    def trivial_graph(leaf: LeafNode[VT]) -> Set[VT]:
+        return set([leaf.node])
+
+    return traverse_cotree(cotree, CotreeAlgorithm(
+        join_independent_sets,
+        pick_max,
+        trivial_graph
+    ))
