@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from itertools import product
 from functools import reduce
-from typing import Callable, TypeVar
+from typing import Callable, TypeVar, Set
 import networkx as nx
 from cographs.cotree_classes import InternalNode, LeafNode, TreeNode, VT
 
@@ -45,4 +45,21 @@ def reconstruct_graph(cotree: TreeNode[VT]) -> nx.Graph[VT]:
         nx.union,
         join_graphs,
         lambda leaf: trivial_graph(leaf.node)
+    ))
+
+
+def find_max_clique(cotree: TreeNode[VT]) -> Set[VT]:
+    def pick_max(lhs: Set[VT], rhs: Set[VT]) -> Set[VT]:
+        return lhs if len(lhs) >= len(rhs) else rhs
+
+    def join_cliques(lhs: Set[VT], rhs: Set[VT]) -> Set[VT]:
+        return lhs | rhs
+
+    def trivial_graph(leaf: LeafNode[VT]) -> Set[VT]:
+        return set([leaf.node])
+
+    return traverse_cotree(cotree, CotreeAlgorithm(
+        pick_max,
+        join_cliques,
+        trivial_graph
     ))
