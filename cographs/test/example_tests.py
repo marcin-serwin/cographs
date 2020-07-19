@@ -1,4 +1,4 @@
-from typing import Callable, Any
+from typing import Callable, Any, Tuple
 import unittest
 import os
 import itertools
@@ -18,11 +18,12 @@ class ExampleTests(unittest.TestCase):
 def add_test(cls,
              prefix: str,
              is_cograph: Callable[[nx.Graph], bool],
-             filename: str,
+             full_path: Tuple[str, str],
              expected_value: bool):
+    path, filename = full_path
+
     @timeout_decorator.timeout(5)
     def test(self: ExampleTests):
-        path = COGRAPHS_PATH if expected_value else NOT_COGRAPHS_PATH
         graph: nx.Graph[Any] = nx.read_yaml(path + filename)
         self.assertEqual(is_cograph(graph), expected_value)
     test.__name__ = "test_example_{}_{}".format(
@@ -31,14 +32,15 @@ def add_test(cls,
 
 
 def clsinit():
-    for (prefix, func), (graph_path, expected_value) in itertools.product(
+    for (prefix, func), (path, expected_value) in itertools.product(
             [("cps", cps.is_cograph), ("hp", hp.is_cograph)],
             [(COGRAPHS_PATH, True), (NOT_COGRAPHS_PATH, False)]):
-        for path in os.listdir(graph_path):
-            add_test(ExampleTests, prefix, func, path, expected_value)
+        for filename in os.listdir(path):
+            add_test(ExampleTests, prefix, func,
+                     (path, filename), expected_value)
 
 
-# clsinit()
+clsinit()
 
 
 if __name__ == "__main__":
