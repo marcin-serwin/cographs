@@ -141,12 +141,13 @@ def compute_permutation(graph: nx.Graph) -> list:
     if origin is None:
         return uninteresting_vertices
 
-    partition = [Part(set(graph.nodes))]
+    partition = [Part(set(graph.nodes), origin)]
     origin_part_index = 0
     unused_parts = set()
 
-    while any(len(part.vertices) > 1 for part in partition):
+    while origin_part_index is not None:
         origin_part = partition[origin_part_index]
+        origin = origin_part.pivot
 
         if len(origin_part.vertices) > 1:
             not_neighbors, origin_part, neighbors = first_refinement_rule(
@@ -170,9 +171,6 @@ def compute_permutation(graph: nx.Graph) -> list:
 
         origin_part_index = get_new_origin_index(origin_part, partition, graph)
 
-        if origin_part_index is None:
-            break
-        origin = partition[origin_part_index].pivot
     return uninteresting_vertices + [p.vertices.pop()
                                      for p in partition if len(p.vertices) > 0]
 
