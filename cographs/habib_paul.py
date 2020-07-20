@@ -1,12 +1,14 @@
+# pyright: strict
+from __future__ import annotations
 from dataclasses import dataclass
 import itertools
-from typing import Any, Optional, Tuple, Set
+from typing import Generic, Optional, Tuple, Set, List
 import networkx as nx
 from cographs.cotree_classes import VT
 from cographs.utilities import pick
 
 
-def brute_force_partition(graph: nx.Graph) -> list:
+def brute_force_partition(graph: nx.Graph[VT]) -> List[VT]:
     partition = [set(graph.nodes)]
 
     while any(len(part) > 1 for part in partition):
@@ -42,16 +44,18 @@ def brute_force_partition(graph: nx.Graph) -> list:
 
 
 @dataclass
-class Part:
-    vertices: set
-    pivot: Any = None
+class Part(Generic[VT]):
+    vertices: Set[VT]
+    pivot: VT = None
 
     def __hash__(self) -> int:
         return id(self)
 
 
 def first_refinement_rule(
-        graph: nx.Graph, origin_part: Part, origin) -> Tuple[Part, Part, Part]:
+        graph: nx.Graph[VT],
+        origin_part: Part[VT],
+        origin: VT) -> Tuple[Part, Part, Part]:
     origin_part.vertices.remove(origin)
     neighbors = Part(set(graph[origin]) & origin_part.vertices)
     not_neighbors = Part(origin_part.vertices - neighbors.vertices)
@@ -61,10 +65,10 @@ def first_refinement_rule(
 
 
 def second_refinement_rule(
-        graph: nx.Graph,
-        part: Part,
+        graph: nx.Graph[VT],
+        part: Part[VT],
         unused_parts: Set[VT],
-        partition: list) -> list:
+        partition: List[VT]) -> List[VT]:
     pivot_set = set(graph[part.pivot])
     neighbors = set(graph[part.pivot])
     not_neighbors = set(graph.nodes - neighbors)
@@ -100,9 +104,9 @@ def second_refinement_rule(
 
 
 def get_new_origin_index(
-        origin_part: Part,
-        partition: list,
-        graph: nx.Graph) -> Optional[int]:
+        origin_part: Part[VT],
+        partition: List[VT],
+        graph: nx.Graph[VT]) -> Optional[int]:
     z_l_index: Optional[int] = None
     z_r_index: Optional[int] = None
     past_origin = False
@@ -125,7 +129,7 @@ def get_new_origin_index(
     return z_r_index
 
 
-def compute_permutation(graph: nx.Graph) -> list:
+def compute_permutation(graph: nx.Graph[VT]) -> List[VT]:
     graph = nx.Graph(graph)
 
     origin = None
@@ -176,10 +180,10 @@ def compute_permutation(graph: nx.Graph) -> list:
 
 
 def are_these_twins(
-        graph: nx.Graph,
-        partition: list,
-        lhs: Any,
-        rhs: Any) -> bool:
+        graph: nx.Graph[VT],
+        partition: List[VT],
+        lhs: Optional[VT],
+        rhs: Optional[VT]) -> bool:
     if lhs is None or rhs is None:
         return False
 
@@ -190,7 +194,7 @@ def are_these_twins(
         x_neighbors | set([lhs])) == (y_neighbors | set([rhs]))
 
 
-def check_partition(graph: nx.Graph, partition: list) -> bool:
+def check_partition(graph: nx.Graph[VT], partition: List[VT]) -> bool:
     partition = [None, *partition, None]
 
     position = 1
@@ -208,5 +212,5 @@ def check_partition(graph: nx.Graph, partition: list) -> bool:
     return len(partition) == 3
 
 
-def is_cograph(graph: nx.Graph):
+def is_cograph(graph: nx.Graph[VT]):
     return check_partition(graph, compute_permutation(graph))
