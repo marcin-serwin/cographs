@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 import itertools
-from typing import Any, Optional, Tuple
+from typing import Any, Optional, Tuple, Set
 import networkx as nx
+from cographs.cotree_classes import VT
 from cographs.utilities import pick
 
 
@@ -45,6 +46,9 @@ class Part:
     vertices: set
     pivot: Any = None
 
+    def __hash__(self) -> int:
+        return id(self)
+
 
 def first_refinement_rule(
         graph: nx.Graph, origin_part: Part, origin) -> Tuple[Part, Part, Part]:
@@ -59,24 +63,38 @@ def first_refinement_rule(
 def second_refinement_rule(
         graph: nx.Graph,
         part: Part,
-        unused_parts: list,
+        unused_parts: Set[VT],
         partition: list) -> list:
+    pivot_set = set(graph[part.pivot])
     neighbors = set(graph[part.pivot])
     not_neighbors = set(graph.nodes - neighbors)
     not_neighbors.remove(part.pivot)
 
     new_partition = []
+
     for part_prime in partition:
         if len(part_prime.vertices) <= 1 or part == part_prime:
             new_partition.append(part_prime)
-        else:
-            left, right = (Part(part_prime.vertices & not_neighbors),
-                           Part(part_prime.vertices & neighbors))
+            continue
 
-            new_partition.extend(
-                (x for x in (left, right) if len(x.vertices) > 0))
-            unused_parts.extend(
-                (x for x in (left, right) if len(x.vertices) > 0))
+        left, right = (Part(part_prime.vertices - pivot_set),
+                       Part(part_prime.vertices & pivot_set))
+
+        if len(left.vertices) == 0 or len(right.vertices) == 0:
+            new_partition.append(part_prime)
+            continue
+
+        new_partition.extend(x for x in (left, right))
+        if part_prime in unused_parts:
+            unused_parts.remove(part_prime)
+            unused_parts.add(left)
+            unused_parts.add(right)
+        else:
+            old, new = ((left, right)
+                        if part_prime.pivot in left.vertices
+                        else (right, left))
+            old.pivot = part_prime.pivot
+            unused_parts.add(new)
 
     return new_partition
 
@@ -89,7 +107,7 @@ def get_new_origin_index(
     z_r_index: Optional[int] = None
     past_origin = False
     for index, part in enumerate(partition):
-        if len(part.vertices) == 1 and part == origin_part:
+        if part == origin_part:
             past_origin = True
         elif len(part.vertices) > 1:
             if past_origin and part.pivot is not None:
@@ -125,7 +143,7 @@ def compute_permutation(graph: nx.Graph) -> list:
 
     partition = [Part(set(graph.nodes))]
     origin_part_index = 0
-    unused_parts = []
+    unused_parts = set()
 
     while any(len(part.vertices) > 1 for part in partition):
         origin_part = partition[origin_part_index]
@@ -135,12 +153,13 @@ def compute_permutation(graph: nx.Graph) -> list:
                 graph, origin_part, origin)
 
             partition = (partition[:origin_part_index] +
-                         [not_neighbors] + [origin_part] + [neighbors] +
+                         [x for x in [not_neighbors, origin_part, neighbors]
+                          if len(x.vertices) > 0] +
                          partition[origin_part_index + 1:])
 
-            unused_parts.extend(
-                p for p in (neighbors, not_neighbors) if len(p.vertices) > 0)
-
+            for part in (neighbors, not_neighbors):
+                if len(part.vertices) > 0:
+                    unused_parts.add(part)
         while len(unused_parts) > 0:
             part = unused_parts.pop()
             vertex = pick(part.vertices)
@@ -154,7 +173,6 @@ def compute_permutation(graph: nx.Graph) -> list:
         if origin_part_index is None:
             break
         origin = partition[origin_part_index].pivot
-
     return uninteresting_vertices + [p.vertices.pop()
                                      for p in partition if len(p.vertices) > 0]
 
