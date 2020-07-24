@@ -103,3 +103,34 @@ def find_min_coloring(cotree: TreeNode[VT]) -> List[Set[VT]]:
         join_colorings,
         trivial_graph
     ))
+
+
+class Path(List[VT]):
+    def __hash__(self) -> int:
+        return id(self)
+
+
+def find_min_path_cover(cotree: TreeNode[VT]) -> Set[Path[VT]]:
+    def union_min_paths(
+            lhs: Set[Path[VT]], rhs: Set[Path[VT]]) -> Set[Path[VT]]:
+        return lhs | rhs
+
+    def join_min_paths(lhs: Set[Path[VT]],
+                       rhs: Set[Path[VT]]) -> Set[Path[VT]]:
+        smaller, bigger = (lhs, rhs) if len(lhs) <= len(rhs) else (rhs, lhs)
+        path: Path[VT] = Path(bigger.pop())
+
+        for path_prime in smaller:
+            path += path_prime
+            if len(bigger) > 0:
+                path += bigger.pop()
+        return bigger | set([path])
+
+    def trivial_graph(leaf: LeafNode[VT]) -> Set[Path[VT]]:
+        return set([Path([leaf.node])])
+
+    return traverse_cotree(cotree, CotreeAlgorithm(
+        union_min_paths,
+        join_min_paths,
+        trivial_graph
+    ))
