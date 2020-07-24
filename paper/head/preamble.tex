@@ -1,0 +1,120 @@
+%
+% Niniejszy plik stanowi przykład formatowania pracy magisterskiej na
+% Wydziale MIM UW.  Szkielet użytych poleceń można wykorzystywać do
+% woli, np. formatujac wlasna prace.
+%
+% Zawartosc merytoryczna stanowi oryginalnosiagniecie
+% naukowosciowe Marcina Wolinskiego.  Wszelkie prawa zastrzeżone.
+%
+% Copyright (c) 2001 by Marcin Woliński <M.Wolinski@gust.org.pl>
+% Poprawki spowodowane zmianami przepisów - Marcin Szczuka, 1.10.2004
+% Poprawki spowodowane zmianami przepisow i ujednolicenie 
+% - Seweryn Karłowicz, 05.05.2006
+% Dodanie wielu autorów i tłumaczenia na angielski - Kuba Pochrybniak, 29.11.2016
+
+% dodaj opcję [licencjacka] dla pracy licencjackiej
+% dodaj opcję [en] dla wersji angielskiej (mogą być obie: [licencjacka,en])
+\documentclass[licencjacka,en]{pracamgr}
+\usepackage{hyperref}
+\usepackage[dvipsnames]{xcolor}
+
+\definecolor{dark-red}{HTML}{B30000}
+\definecolor{dark-green}{HTML}{00B300}
+\definecolor{dark-blue}{HTML}{0000B3}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=dark-red,
+    urlcolor=dark-blue,
+    citecolor=dark-green
+}
+\urlstyle{same}
+
+% Dane magistranta:
+\autor{Marcin Serwin}{1144988}
+
+% Dane magistrantów:
+%\autor{Autor Zerowy}{342007}
+%\autori{Autor Pierwszy}{342013}
+%\autorii{Drugi Autor-Z-Rzędu}{231023}
+%\autoriii{Trzeci z Autorów}{777321}
+%\autoriv{Autor nr Cztery}{432145}
+%\autorv{Autor nr Pięć}{342011}
+
+\title{Overview of cographs related algorithms}
+\titlepl{Przegląd algorytmów operujących na kografach}
+
+%\tytulang{An implementation of a difference blabalizer based on the theory of $\sigma$ -- $\rho$ phetors}
+
+%kierunek: 
+% - matematyka, informacyka, ...
+% - Mathematics, Computer Science, ...
+\kierunek{Computer Science}
+
+% informatyka - nie okreslamy zakresu (opcja zakomentowana)
+% matematyka - zakres moze pozostac nieokreslony,
+% a jesli ma byc okreslony dla pracy mgr,
+% to przyjmuje jedna z wartosci:
+% {metod matematycznych w finansach}
+% {metod matematycznych w ubezpieczeniach}
+% {matematyki stosowanej}
+% {nauczania matematyki}
+% Dla pracy licencjackiej mamy natomiast
+% mozliwosc wpisania takiej wartosci zakresu:
+% {Jednoczesnych Studiow Ekonomiczno--Matematycznych}
+
+% \zakres{Tu wpisac, jesli trzeba, jedna z opcji podanych wyzej}
+
+% Praca wykonana pod kierunkiem:
+% (podać tytuł/stopień imię i nazwisko opiekuna
+% Instytut
+% ew. Wydział ew. Uczelnia (jeżeli nie MIM UW))
+\opiekun{dr inż. Krzysztof Turowski\\
+  Jagiellonian University in Cracow\\
+  }
+
+% miesiąc i~rok:
+\date{July 2020}
+
+%Podać dziedzinę wg klasyfikacji Socrates-Erasmus:
+\dziedzina{ 
+%11.0 Matematyka, Informatyka:\\ 
+%11.1 Matematyka\\ 
+% 11.2 Statystyka\\ 
+% 11.3 Informatyka\\ 
+11.3 Informatics, Computer Science \\
+%11.4 Sztuczna inteligencja\\ 
+%11.5 Nauki aktuarialne\\
+%11.9 Inne nauki matematyczne i informatyczne
+}
+
+%Klasyfikacja tematyczna wedlug AMS (matematyka) lub ACM (informatyka)
+\klasyfikacja{Theory of computation\\
+  Design and analysis of algorithms\\
+  Graph algorithms analysis\\
+  Dynamic graph algorithms}
+
+
+% TODO: Fix acmart
+  % \begin{CCSXML}
+  %   <ccs2012>
+  %   <concept>
+  %   <concept_id>10003752.10003809.10003635.10010038</concept_id>
+  %   <concept_desc>Theory of computation~Dynamic graph algorithms</concept_desc>
+  %   <concept_significance>300</concept_significance>
+  %   </concept>
+  %   </ccs2012>
+  %   \end{CCSXML}
+    
+  %   \ccsdesc[300]{Theory of computation~Dynamic graph algorithms}
+
+
+% Słowa kluczowe:
+\keywords{cographs, cograph recognition, maximum clique, 
+  graph coloring, graph colouring, maximum independent set,
+  hamiltonian path}
+
+% Tu jest dobre miejsce na Twoje własne makra i~środowiska:
+\newtheorem{defi}{Definition}[section]
+
+% koniec definicji
