@@ -81,8 +81,8 @@
 		\let\footnoterule\relax
 		\let \footnote \thanks
 		\begin{center}%
-		  {\LARGE\textbf{ University of Warsaw}\\
-			Faculty of Mathematics, Informatics and Mechanics\par}
+		  {\LARGE\textbf{Jagiellonian University in Cracow}\\
+			Theoretical Computer Science\par}
 		  \vspace{1cm plus .5fill}
 		{
 			\setlength{\parindent}{0em}
@@ -113,7 +113,7 @@
 			\end{tabular}
 		  \end{flushright}
 		  \vspace{1cm plus 1fill}
-		  {\large Warsaw, \@date\par}
+		  {\large Cracow, \@date\par}
 		\end{center}
 		\@thanks
 		\end{titlepage}%
