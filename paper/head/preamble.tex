@@ -19,6 +19,9 @@
 \documentclass[licencjacka,en]{pracamgr}
 \usepackage{hyperref}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
 
 \definecolor{dark-red}{HTML}{B30000}
 \definecolor{dark-green}{HTML}{00B300}
@@ -118,5 +121,29 @@
 
 % Tu jest dobre miejsce na Twoje własne makra i~środowiska:
 \newtheorem{defi}{Definition}[section]
+\newtheorem{observe}{Observation}[section]
+
+\newcommand{\strong}[1]{\textbf{#1}}
+
+\newcommand{\Nats}{\mathbb{B}}
+
+\newcommand{\Cographs}{\mathcal{C}}
+\newcommand{\Vertices}{\mathcal{V}}
+\newcommand{\singleton}[1]{\text{\textcircled{$v$}}}
+
+\DeclareMathOperator{\V}{V}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\C}{C}
+\DeclareMathOperator{\R}{R}
+\DeclareMathOperator{\G}{G}
+\DeclareMathOperator{\id}{v}
+\DeclareMathOperator{\kind}{\mathcal{K}}
+\DeclareMathOperator{\LCA}{LCA}
+
+\newcommand{\Gcomp}[1]{\overline{#1}}
+\newcommand{\Gunion}[2]{#1 \cup #2}
+\newcommand{\BigGunion}[1]{\bigcup #1}
+\newcommand{\Gjoin}[2]{#1 \otimes #2}
+\newcommand{\BigGjoin}[1]{\bigotimes #1}
 
 % koniec definicji

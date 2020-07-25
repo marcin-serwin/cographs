@@ -1,0 +1,55 @@
+% !TEX root = ../main.tex
+
+\section{Terminology and notation}
+
+Fundamental notion in this paper is a graph. All graphs used in this paper are assumed to be \emph{finite undirected graphs} unless specified otherwise. $\Vertices$ is assumed to be vertex universe. Throughout this paper we assume that $\Nats \subseteq \Vertices$. Formal definitions follow below.
+
+\begin{defi}
+    \emph{Graph} $G$ is a tuple $(V,E)$ such that $V \subseteq \Vertices \land |V| \in \Nats$ and $E \subseteq \binom{V}{2}$. Convenience functions $\V, \E$ are defined such that $\V(G) = V$ and $\E(G) = E$. Set $V$ is called \emph{vertices} and set $E$ is called \emph{edges}.
+\end{defi}
+
+\begin{defi}
+    If $G = (V, E)$ is a graph then $\Gcomp{G}$ is a \emph{complementary graph}. Formally $\Gcomp{G} = (V, \binom{V}{2} \setminus E)$.
+\end{defi}
+\begin{defi}
+    If $G_1 = (V_1, E_1), G_2 = (V_2, E_2)$ are graphs then $\Gunion{G_1}{G_2}$ is a \emph{union of graphs}. Formally $\Gunion{G_1}{G_2} = (V_1 \cup V_2, E_1 \cup E_2)$.
+\end{defi}
+\begin{defi}
+    If $G_1 = (V_1, E_1), G_2 = (V_2, E_2)$ are graphs then $\Gjoin{G_1}{G_2}$ is a \emph{join of graphs}. Formally $\Gjoin{G_1}{G_2} = (V_1 \cup V_2, E_1 \cup E_2 \cup \{\{v_1,v_2\}|v_1 \in V_1, v_2 \in V_2\})$.
+\end{defi}
+
+\begin{defi}
+    Graph $\singleton{v}$ is a single vertex graph with vertex $v$. Formally $\singleton{v} = (\{v\}, \emptyset)$.
+\end{defi}
+
+\begin{defi}
+    If $G = (V,E)$ is a graph and $X \subseteq V$ then $G[X]$ is a \emph{subgraph induced by $X$}. Formally $G[X] = (X, E \cap \binom{X}{2})$.
+\end{defi}
+
+\begin{defi}
+    Graphs $G_1 = (V_1, E_1), G_2 = (V_2, E_2)$ are said to be isomorphic if there exists bijection $f: V_1 \mapsto V_2$ such that $\forall_{v, v' \in V_1} \{v,v'\} \in V_1 \iff \{f(v), f(v')\} \in E_2$.
+\end{defi}
+
+\begin{defi}
+    \emph{Tree} $T$ is a tuple $(V, p)$ such that $V \subseteq \Vertices \land |V| \in \Nats$ and $p$ is a function $V \to V \cup \{\bot\}$, where $\bot$ is such that $\bot \not\in V$. Moreover $p$ satisfies
+    \begin{enumerate}
+        \item $\exists_{r \in V} p(r) = \bot \land \forall_{v \in V\setminus\{r\}} p(v) \neq \bot$. $r$ is called \emph{root}.
+        \item If $X$ is the smallest set such that $r \in X \land \forall_{v \in V} p(v) \in X \implies v \in X$ then $X = V$.
+    \end{enumerate}
+    Convenience functions $\V, \R, p_T, \C$ are defined so that $\V(T) = V, \R(T) = r, p_T(v) = p(v)$ and $\C(v) = \{v' | v' \in V \land p(v') = v\}$.
+\end{defi}
+
+\begin{defi}
+    If $(V,p)$ is a tree and $v \in V$ then \emph{subtree rooted at v} denoted as $T[v]$ is a tree $(V', p')$ such that
+    \[
+        p'(x) = \begin{cases}
+            \bot & \text{if } x = v \\
+            p(x) & \text{else}
+        \end{cases}
+    \]
+    and $V'$ is the smallest set such that $v \in V' \land \forall_{v' \in V} p'(v') \in V' \implies v' \in V'$.
+\end{defi}
+
+\begin{defi}
+    If $T$ is a tree and $u,v \in \V(T)$ then \emph{lowest common ancestor} of $u, v$ or $\LCA_T(u,v)$ is a vertex $l \in \V(T)$ such that $u,v \in \V(T[l]) \land \forall_{l' \in \C(l)} u,v \not\in \V(T[l'])$.
+\end{defi}

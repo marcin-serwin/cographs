@@ -1,0 +1,44 @@
+% !TEX root = ../main.tex
+
+\section{Cograph definitions}
+
+Cographs can be defined in several equivalent ways. This paper will provide four different definitions and proofs that these definitions are equivalent.
+
+\begin{defi}\label{codef1}
+    Let us define set of graphs $\Cographs$. $\Cographs$ is the smallest set that satisfies:
+    \begin{enumerate}
+        \item $\forall_v \singleton{v} \in \Cographs$
+        \item $\forall_G \Gcomp{G} \in \Cographs$
+        \item $\forall_{G_1, G_2} \V(G_1) \cap \V(G_2) \implies \Gunion{G_1}{G_2} \in \Cographs$
+    \end{enumerate}
+    Graph $G$ is a \emph{cograph} if and only if $G \in \Cographs$.
+\end{defi}
+\begin{defi}\label{codef2}
+    Let us define set of graphs $\Cographs$. $\Cographs$ is the smallest set that satisfies:
+    \begin{enumerate}
+        \item $\forall_v \singleton{v} \in \Cographs$
+        \item $\forall_{G_1, G_2} \V(G_1) \cap \V(G_2) \implies \Gjoin{G_1}{G_2} \in \Cographs$
+        \item $\forall_{G_1, G_2} \V(G_1) \cap \V(G_2) \implies \Gunion{G_1}{G_2} \in \Cographs$
+    \end{enumerate}
+    Graph $G$ is a \emph{cograph} if and only if $G \in \Cographs$.
+\end{defi}
+
+\begin{defi}
+    \emph{Cotree} $C$ is a tuple $(T, \kind)$ where $T$ is a tree and $\kind$ is a function $\V(T) \to \{s,0,1\}$ such that for each $t \in \V(T)$ it satisfies:
+    \begin{enumerate}
+        \item $\kind(\R(T)) = 1$
+        \item $\kind(t) = s \implies \C(t) = \emptyset$.
+        \item $\kind(t) = 0 \implies \C(t) \neq \emptyset \land \forall_{t' \in \C(t)} \kind(t') \neq 0$.
+        \item $\kind(t) = 1 \implies \C(t) \neq \emptyset \land \forall_{t' \in \C(t)} \kind(t') \neq 1$.
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}\label{codef3}
+    Let $(T, \kind)$ be a cotree and let $L = \{v | v \in \V(T) \land \kind(v) = s\}$. \emph{Cograph defined by cotree $T$} denoted $\G(T)$ is a graph $(L, \{\{u,v\} | \{u,v\} \in L \land \kind(\LCA_T(u,v)\}) = 1)$.
+
+    Graph $G$ is a \emph{cograph} if and only if there exists cotree $T$ such that $G = \G(T)$.
+\end{defi}
+
+\begin{defi}\label{codef4}
+    Graph $G$ is a \emph{cograph} if and only if for each $X \subseteq \V(G)$ graphs $G[X]$ and $(\{0,1,2,3\}, \{\{0,1\},\{1,2\},\{2,3\}\})$ are \strong{NOT} isomorphic.
+\end{defi}
