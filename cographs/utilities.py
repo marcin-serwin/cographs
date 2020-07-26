@@ -1,6 +1,6 @@
 # pyright: strict
 from __future__ import annotations
-from typing import Iterable, TypeVar, Callable
+from typing import Iterable, TypeVar, Callable, Set, Iterator, List
 import networkx as nx
 
 Elem = TypeVar("Elem")
@@ -9,6 +9,28 @@ Elem = TypeVar("Elem")
 def pick(elements: Iterable[Elem]) -> Elem:
     for elem in elements:
         return elem
+
+
+def singleton(element: Elem) -> Set[Elem]:
+    return set([element])
+
+
+def sized_partition(elements: Set[Elem],
+                    size: int) -> Iterator[List[Set[Elem]]]:
+    assert len(elements) >= size
+    if size == 0:
+        return
+    if len(elements) == size:
+        yield [singleton(elem) for elem in elements]
+        return
+
+    first = elements.pop()
+    for partition in sized_partition(elements, size):
+        for part in partition:
+            part.add(first)
+            yield [part.copy() for part in partition]
+            part.remove(first)
+    elements.add(first)
 
 
 VertexOne = TypeVar("VertexOne")
