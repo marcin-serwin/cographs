@@ -1,6 +1,6 @@
 # pyright: strict
 from abc import ABC, abstractmethod
-from typing import Generic, Set, Optional, TypeVar, Any
+from typing import Generic, Set, Optional, TypeVar, Any, List
 
 VertexType = TypeVar("VertexType", covariant=True, bound=Any)
 VT = VertexType
@@ -64,3 +64,8 @@ class InternalNode(TreeNode[VT]):
     def __repr__(self):
         return "InternalNode{{{}, {}}}".format(
             "Union" if self.is_union else "Join", self.children)
+
+
+class Path(List[VT]):
+    def __hash__(self) -> int:
+        return id(self)

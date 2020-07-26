@@ -5,7 +5,7 @@ from itertools import product
 from functools import reduce
 from typing import Callable, TypeVar, Set, List
 import networkx as nx
-from cographs.cotree_classes import InternalNode, LeafNode, TreeNode, VT
+from cographs.cotree_classes import InternalNode, LeafNode, TreeNode, VT, Path
 
 TraversalResult = TypeVar("TraversalResult")
 TR = TraversalResult
@@ -103,11 +103,6 @@ def find_min_coloring(cotree: TreeNode[VT]) -> List[Set[VT]]:
         join_colorings,
         trivial_graph
     ))
-
-
-class Path(List[VT]):
-    def __hash__(self) -> int:
-        return id(self)
 
 
 def find_min_path_cover(cotree: TreeNode[VT]) -> Set[Path[VT]]:
