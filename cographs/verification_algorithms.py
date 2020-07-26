@@ -1,3 +1,5 @@
+# pyright: strict
+from __future__ import annotations
 from typing import Set, List
 from itertools import accumulate, combinations
 import networkx as nx
@@ -9,6 +11,21 @@ def is_independent_set(graph: nx.Graph[VT], independent_set: Set[VT]) -> bool:
         if graph.has_edge(v_1, v_2):
             return False
     return True
+
+
+def independent_set_of_size_exists(graph: nx.Graph[VT], size: int) -> bool:
+    for independent_set in combinations(graph.nodes, size):
+        if is_independent_set(graph, set(independent_set)):
+            return True
+    return False
+
+
+def is_max_independent_set(
+        graph: nx.Graph[VT],
+        independent_set: Set[VT]) -> bool:
+    return (
+        is_independent_set(graph, independent_set) and
+        not independent_set_of_size_exists(graph, len(independent_set) - 1))
 
 
 def is_clique(graph: nx.Graph[VT], clique: Set[VT]) -> bool:
