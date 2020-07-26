@@ -1,7 +1,7 @@
 # pyright: strict
 from __future__ import annotations
 from typing import Set, List
-from itertools import accumulate, combinations
+from itertools import accumulate, combinations, product
 import networkx as nx
 from cographs.cotree_classes import VT, Path
 
@@ -51,15 +51,33 @@ def is_max_clique(
 
 
 def is_coloring(graph: nx.Graph[VT], coloring: List[Set[VT]]) -> bool:
-    if len(list(accumulate(
-            coloring,
-            lambda x, y: x | y))) != len(graph.nodes):
+    coverage = reduce(lambda x, y: x | y, coloring)
+    if len(coverage) != len(graph.nodes):
         return False
     for color in coloring:
         for v_1, v_2 in combinations(color, 2):
             if graph.has_edge(v_1, v_2):
                 return False
     return True
+
+
+def is_graph_colorable_with(
+        graph: nx.Graph[VT],
+        number_of_colors: int) -> bool:
+    nodes = list(graph.nodes)
+
+    for node_colors in product(range(number_of_colors), repeat=len(nodes)):
+        coloring: List[Set[VT]] = [set()] * number_of_colors
+        for node, color in zip(nodes, node_colors):
+            coloring[color].add(node)
+        if is_coloring(graph, coloring):
+            return True
+    return False
+
+
+def is_optimal_coloring(graph: nx.Graph[VT], coloring: List[Set[VT]]) -> bool:
+    return (is_coloring(graph, coloring) and
+            not is_graph_colorable_with(graph, len(coloring) - 1))
 
 
 def is_path_cover(graph: nx.Graph[VT], path_cover: Set[Path[VT]]):
