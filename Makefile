@@ -1,3 +1,5 @@
+TESTS?=*
+
 all: check test
 
 check: lint type-check
@@ -11,4 +13,4 @@ type-check:
 test: test-small
 
 test-small:
-	python3 -m unittest cographs/test/*.py
+	python3 -m unittest cographs/test/$(TESTS).py
