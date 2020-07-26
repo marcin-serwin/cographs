@@ -35,6 +35,21 @@ def is_clique(graph: nx.Graph[VT], clique: Set[VT]) -> bool:
     return True
 
 
+def clique_of_size_exists(graph: nx.Graph[VT], size: int) -> bool:
+    for clique in combinations(graph.nodes, size):
+        if is_clique(graph, set(clique)):
+            return True
+    return False
+
+
+def is_max_clique(
+        graph: nx.Graph[VT],
+        clique: Set[VT]) -> bool:
+    return (
+        is_clique(graph, clique) and
+        not clique_of_size_exists(graph, len(clique) - 1))
+
+
 def is_coloring(graph: nx.Graph[VT], coloring: List[Set[VT]]) -> bool:
     if len(list(accumulate(
             coloring,
