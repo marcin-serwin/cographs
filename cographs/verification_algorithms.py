@@ -1,7 +1,8 @@
 # pyright: strict
 from __future__ import annotations
 from typing import Set, List
-from itertools import accumulate, combinations, permutations, product
+from itertools import combinations, permutations, product
+from functools import reduce
 import networkx as nx
 from cographs.cotree_classes import VT, Path
 
@@ -25,7 +26,7 @@ def is_max_independent_set(
         independent_set: Set[VT]) -> bool:
     return (
         is_independent_set(graph, independent_set) and
-        not independent_set_of_size_exists(graph, len(independent_set) - 1))
+        not independent_set_of_size_exists(graph, len(independent_set) + 1))
 
 
 def is_clique(graph: nx.Graph[VT], clique: Set[VT]) -> bool:
@@ -47,7 +48,7 @@ def is_max_clique(
         clique: Set[VT]) -> bool:
     return (
         is_clique(graph, clique) and
-        not clique_of_size_exists(graph, len(clique) - 1))
+        not clique_of_size_exists(graph, len(clique) + 1))
 
 
 def is_coloring(graph: nx.Graph[VT], coloring: List[Set[VT]]) -> bool:
