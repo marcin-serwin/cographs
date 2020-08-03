@@ -1,11 +1,12 @@
 # pyright: strict
 from __future__ import annotations
 from dataclasses import dataclass
-from itertools import product
+from itertools import product, chain
 from functools import reduce
-from typing import Callable, TypeVar, Set, List
+from typing import Callable, TypeVar, Set, List, Dict
 import networkx as nx
 from cographs.cotree_classes import InternalNode, LeafNode, TreeNode, VT, Path
+from cographs.utilities import flatten, pick, singleton
 
 TraversalResult = TypeVar("TraversalResult")
 TR = TraversalResult
@@ -105,27 +106,67 @@ def find_min_coloring(cotree: TreeNode[VT]) -> List[Set[VT]]:
     ))
 
 
+def _mend_and_merge(leaves: Set[VT], paths: Set[Path[VT]]) -> Set[Path[VT]]:
+    path = paths.pop()
+    paths_vertex_size = sum(len(path) for path in paths)
+    while len(leaves) > 0 and paths_vertex_size >= len(leaves):
+        joined_path = paths.pop()
+        path.append(leaves.pop())
+        path.extend(joined_path)
+        paths_vertex_size -= len(joined_path)
+    if len(leaves) == 0:
+        paths.add(path)
+        return paths
+    else:
+        path, tail = (path[:-(len(leaves) - paths_vertex_size)],
+                      path[-(len(leaves) - paths_vertex_size):])
+        paths.add(Path(tail))
+        path.extend(flatten(zip(chain.from_iterable(paths), leaves)))
+        return singleton(Path(path))
+
+
+def _find_min_path_cover(
+        root: TreeNode[VT], leaves: Dict[int, Set[VT]]) -> Set[Path[VT]]:
+    if isinstance(root, LeafNode):
+        return set([Path([root.node])])
+    assert isinstance(root, InternalNode)
+    if root.is_union:
+        return reduce(
+            lambda x, y: x | y,
+            (find_min_path_cover(child) for child in root.children))
+    else:
+        child = pick(root.children)
+        if len(root.children) == 1:
+            return _find_min_path_cover(child, leaves)
+        child_leaves = leaves[id(child)]
+        if len(child_leaves) > len(leaves[id(root)]) - len(child_leaves):
+            return _mend_and_merge(leaves[id(root)] - child_leaves,
+                                   _find_min_path_cover(child, leaves))
+        else:
+            root.children.remove(child)
+            leaves[id(root)] -= child_leaves
+            result = _mend_and_merge(child_leaves,
+                                     _find_min_path_cover(root, leaves))
+            root.children.add(child)
+            leaves[id(root)] |= child_leaves
+            return result
+
+
 def find_min_path_cover(cotree: TreeNode[VT]) -> Set[Path[VT]]:
-    def union_min_paths(
-            lhs: Set[Path[VT]], rhs: Set[Path[VT]]) -> Set[Path[VT]]:
-        return lhs | rhs
+    def compute_leaves(cotree: TreeNode[VT]) -> Dict[int, Set[VT]]:
+        if isinstance(cotree, LeafNode):
+            return {id(cotree): singleton(cotree.node)}
+        assert isinstance(cotree, InternalNode)
 
-    def join_min_paths(lhs: Set[Path[VT]],
-                       rhs: Set[Path[VT]]) -> Set[Path[VT]]:
-        smaller, bigger = (lhs, rhs) if len(lhs) <= len(rhs) else (rhs, lhs)
-        path: Path[VT] = Path(bigger.pop())
+        def update_dicts(lhs: Dict[int, Set[VT]],
+                         rhs: Dict[int, Set[VT]]) -> Dict[int, Set[VT]]:
+            lhs.update(rhs)
+            return lhs
+        leaves = reduce(update_dicts, (compute_leaves(child)
+                                       for child in cotree.children))
+        leaves[id(cotree)] = set(flatten(leaves[id(child)]
+                                         for child in cotree.children))
+        return leaves
 
-        for path_prime in smaller:
-            path += path_prime
-            if len(bigger) > 0:
-                path += bigger.pop()
-        return bigger | set([path])
-
-    def trivial_graph(leaf: LeafNode[VT]) -> Set[Path[VT]]:
-        return set([Path([leaf.node])])
-
-    return traverse_cotree(cotree, CotreeAlgorithm(
-        union_min_paths,
-        join_min_paths,
-        trivial_graph
-    ))
+    leaves = compute_leaves(cotree)
+    return _find_min_path_cover(cotree, leaves)

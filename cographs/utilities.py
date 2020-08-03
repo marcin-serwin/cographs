@@ -33,6 +33,10 @@ def sized_partition(elements: Set[Elem],
     elements.add(first)
 
 
+def flatten(list_of_lists: Iterable[Iterable[Elem]]) -> Iterable[Elem]:
+    return (elem for sublist in list_of_lists for elem in sublist)
+
+
 VertexOne = TypeVar("VertexOne")
 VertexTwo = TypeVar("VertexTwo")
 VO = VertexOne
