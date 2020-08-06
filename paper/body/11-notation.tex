@@ -37,7 +37,7 @@ Fundamental notion in this paper is a graph. All graphs used in this paper are a
 \begin{defi}
     \emph{Tree} $T$ is a tuple $(V, p)$ such that $V \subseteq \Vertices \land |V| \in \Nats$ and $p$ is a function $V \to V \cup \{\bot\}$, where $\bot$ is such that $\bot \not\in V$. Moreover $p$ satisfies
     \begin{enumerate}
-        \item $\exists_{r \in V} p(r) = \bot \land \forall_{v \in V\setminus\{r\}} p(v) \neq \bot$. $r$ is called \emph{root}.
+        \item $\exists_{r \in V} p(r) = \bot \land \forall_{v \in V\setminus\{r\}} p(v) \neq \bot$. $r$ is called \emph{root} and is denotes as $\Root(T)$.
         \item If $X$ is the smallest set such that $r \in X \land \forall_{v \in V} p(v) \in X \implies v \in X$ then $X = V$.
     \end{enumerate}
     Convenience functions $\V, \R, p_T, \C$ are defined so that $\V(T) = V, \R(T) = r, p_T(v) = p(v)$ and $\C(v) = \{v' | v' \in V \land p(v') = v\}$.

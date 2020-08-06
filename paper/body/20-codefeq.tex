@@ -5,6 +5,7 @@
 In this chapter we will prove that all four aforementioned definitions of graphs are equivalent. Next sections will provide proofs for, in order, \ref{codef1} $\implies$ \ref{codef2}, \ref{codef2} $\implies$ \ref{codef3}, \ref{codef3} $\implies$ \ref{codef4} and \ref{codef4} $\implies$ \ref{codef1}. These four implications together prove the equivalence.
 
 \section{Definition \ref{codef1} $\implies$ definition \ref{codef2}}
+
 Let us notice that in order to prove the implication all we need to show is $\forall_G G \in \Cographs \implies \Gcomp{G} \in \Cographs$ where $\Cographs$ is defined as in \ref{codef2}.
 
 Let's assume the opposite and let $G$ be the smallest graph such that $G \in \Cographs \land \Gcomp{G} \not\in \Cographs$. Since $G \in \Cographs$ one of the following must be true:
@@ -16,6 +17,65 @@ Let's assume the opposite and let $G$ be the smallest graph such that $G \in \Co
 Since one of these must be true and none of them is, it follows that such $G$ does not exist and $\forall_G G \in \Cographs \implies \Gcomp{G} \in \Cographs$.
 
 \section{Definition \ref{codef2} $\implies$ definition \ref{codef3}}
+
+In order to prove the implication it is enough to show that for every graph in $\Cographs$, as defined in \ref{codef2}, there exists a cotree that defines it. Let us show that it is indeed the case
+
+\begin{enumerate}
+    \item $v \in \Vertices \implies \singleton{v} \in \Cographs$
+
+          It is indeed true that that $\singleton{v}$ has a cotree. Let $0_v, 1_v \in \Vertices \setminus \{v\}$. Now
+          \[
+              T = ((\{0_v,1_v,v\}, \{(1_v,\bot), (0_v,1_v),(v,0_v)\}), \{(0_v,0), (1_v,1), (v,s)\})
+          \]
+          is such that $\G(T) = \singleton{v}$.
+
+    \item $G_1,G_2 \in \Cographs \implies \Gunion{G_1}{G_2} \in \Cographs$
+
+          We are inductively assuming that there exist cotrees for $G_1$ and $G_2$, respectively $T_1 = ((V_1, p_1), \kind_1)$ and $T_2 = ((V_2, p_2), \kind_2)$. Moreover let $r_1$ and $r_2$ be respectively $\Root(T_1)$ and $\Root(T_2)$.
+
+          Let $0_v, 1_v \in \Vertices \setminus (V_1 \cup V_2)$. Now let us construct a cotree $T = ((V, p), \kind)$ such that
+          \[
+              \begin{split}
+                  T = & V_1\cup V_2 \cup \{0_v,1_v\}, \\
+                  p = & p_1 \cup p_2 \setminus \{(r_1,\bot), (r_2, \bot)\} \cup \{(1_v, \bot), (0_v, 1_v), (r_1, 0_v), (r_2, 0_v)\}
+                  ), \\
+                  \kind = & \kind_1 \cup \kind_2 \cup \{(0_v,0), (1_v,1)\}
+              \end{split}
+          \]
+
+          Notice that the set of vertices such that $\kind(v) = s$ is the sum of of sets such that $\kind_1(v) = s$ and $\kind_2(v) = s$.
+
+          Let us consider a pair of vertices $v_1, v_2 \in V_i$ the $\kind(\LCA_T(v_1, v_2)) = \kind_{i}(\LCA_{T_{i}}(v_1, v_2))$ and so edges between them will be preserved in graph defined by $T$ for $i \in \{1,2\}$.
+
+          Now let us consider a pair of vertices $v_1 \in V_i, v_2 \in V_j$ where $i,j \in \{1,2\} \land i \neq j$. The $\LCA_T(v_1, v_2) = 0_v$ and so $\kind(\LCA_T(v_1, v_2)) = 0$. This means that there are no edges between vertices from different graphs.
+
+          These three facts together show that $G[T]$ is such that $\V(G[T]) = V_1 \cup V_2, G[T][V_1] = G_1, G[T][V_2] = G_2$ and $\E(G[T]) \cap \{\{v_1, v_2\} | (v_1, v_2) \in V_1 \times V_2\} = \emptyset$ which means that $G[T] = \Gunion{G_1}{G_2}$.
+
+    \item $G_1,G_2 \in \Cographs \implies \Gjoin{G_1}{G_2} \in \Cographs$
+
+          We are inductively assuming that there exist cotrees for $G_1$ and $G_2$, respectively $T_1 = ((V_1, p_1), \kind_1)$ and $T_2 = ((V_2, p_2), \kind_2)$. Moreover let $r_1$ and $r_2$ be respectively $\Root(T_1)$ and $\Root(T_2)$.
+
+          Let $0_v, 0_v', 1_v \in \Vertices \setminus (V_1 \cup V_2)$. Now let us construct a cotree $T = ((V, p), \kind)$ such that
+          \[
+              \begin{split}
+                  V = & V_1\cup V_2 \cup \{0_v,0_v',1_v\}, \\
+                  p = & p_1 \cup p_2 \setminus \{(r_1,\bot), (r_2, \bot)\} \cup \{(1_v, \bot), (0_v, 1_v), (0_v', 1_v), (r_1, 0_v), (r_2, 0_v')\}
+                  ), \\
+                  \kind = & \kind_1 \cup \kind_2 \cup \{(0_v,0), (0_v',0), (1_v,1)\} \\
+              \end{split}
+          \]
+
+          It is easy to verify, using process analogous to the previous case, that $G[T] = \Gjoin{G_1}{G_2}$.
+
+          %   Notice that the set of vertices such that $\kind(v) = s$ is $V_1 \cup V_2$.
+
+          %   Let us consider a pair of vertices $v_1, v_2 \in V_i$ the $\kind(\LCA_T(v_1, v_2)) = \kind_{i}(\LCA_{T_{i}}(v_1, v_2))$ and so edges between them will be preserved in graph defined by $T$ for $i \in \{1,2\}$.
+
+          %   Now let us consider a pair of vertices $v_1 \in V_i, v_2 \in V_j$ where $i,j \in \{1,2\} \land i \neq j$. The $\LCA_T(v_1, v_2) = 1_v$ and so $\kind(\LCA_T(v_1, v_2)) = 1$. This means that there are always edges between vertices from different graphs.
+
+          %   These three facts together show that $G[T]$ is such that $\V(G[T]) = V_1 \cup V_2, G[T][V_1] = G_1, G[T][V_2] = G_2$ and $\E(G[T]) \cap \{\{v_1, v_2\} | (v_1, v_2) \in V_1 \times V_2\} = \{\{v_1, v_2\} | (v_1, v_2) \in V_1 \times V_2\}$ which means that $G[T] = \Gjoin{G_1}{G_2}$.
+
+\end{enumerate}
 
 \section{Definition \ref{codef3} $\implies$ definition \ref{codef4}}
 
