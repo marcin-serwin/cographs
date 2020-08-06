@@ -114,3 +114,11 @@ Let us notice that there must be two vertices $x, y \in X_1$ such that $\{v, x\}
 Indeed $G[\{x,y,z,v\}] = (\{x,y,z,v\}, \{\{v,x\}, \{x, y\}, \{v,z\}\})$ and after applying function $f = \{(y, 0), (x, 1), (v, 2), (z, 3)\}$ we get $(\{1,0,3,2\}, \{\{2,1\}, \{1, 0\}, \{2,3\}\})$ which is indeed $P_4$.
 
 \section{Definition \ref{codef5} $\implies$ definition \ref{codef1}}
+
+Let $G$ be the smallest graph that contradicts the implication.
+
+Let $G$ be disconnected. Since $G$ is the smallest counterexample then all maximal connected subgraphs $G[X_1], \ldots, G[X_n]$ must be in $\Cographs$. But then $\Gunion{G[X_1]}{\ldots} \Gunion{}{G[X_n]} = G \in \Cographs$. This means that $G$ cannot be connected.
+
+Let $\Gcomp{G}$ be disconnected. Since $G$ is the smallest counterexample then all maximal connected subgraphs $\Gcomp{G[X_1]}, \ldots, \Gcomp{G[X_n]}$ must be in $\Cographs$. But then $\Gcomp{\Gunion{\Gcomp{G[X_1]}}{\ldots} \Gunion{}{\Gcomp{G[X_n]}}} = G \in \Cographs$. This means that $G$ cannot be disconnected.
+
+Since either $G$ or $\Gcomp{G}$ must be disconnected but none is, it follows that there is no graph that contradicts the implication.
