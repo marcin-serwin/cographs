@@ -13,6 +13,15 @@ Fundamental notion in this paper is a graph. All graphs used in this paper are a
 \end{defi}
 
 \begin{defi}
+    Graph $G = (V,E)$ is said to be \emph{connected} if for each pair of vertices $u,v \in V$ there exists a sequence of edges $(u_i,v_i)$ for $i \in \{1, \ldots, n\}$ such that:
+    \begin{enumerate}
+        \item $u_1 = u$
+        \item $v_n = v$
+        \item $\forall_{i \in \{1, \ldots, n - 1\}} v_i = u_{i+1}$
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}
     If $G = (V, E)$ is a graph then $\Gcomp{G}$ is a \emph{complementary graph}. Formally $\Gcomp{G} = (V, \binom{V}{2} \setminus E)$.
 \end{defi}
 \begin{defi}
@@ -56,4 +65,14 @@ Fundamental notion in this paper is a graph. All graphs used in this paper are a
 
 \begin{defi}
     If $T$ is a tree and $u,v \in \V(T)$ then \emph{lowest common ancestor} of $u, v$ or $\LCA_T(u,v)$ is a vertex $l \in \V(T)$ such that $u,v \in \V(T[l]) \land \forall_{l' \in \C(l)} u,v \not\in \V(T[l'])$.
+\end{defi}
+
+\begin{defi}
+    The function $\LCA_T^s : 2^{\V(T)} \setminus \{ \emptyset \} \mapsto \V(T)$ for $X \subseteq \V(T)$ is defined such that:
+    \[
+        \LCA_T^s(X) = \begin{cases}
+            v                                      & \text{if } X = \{v\}                \\
+            \LCA_T(v, \LCA_T^s(X \setminus \{v\})) & \text{if } |X| \geq 2 \land v \in X \\
+        \end{cases}
+    \]
 \end{defi}

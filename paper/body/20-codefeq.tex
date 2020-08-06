@@ -79,4 +79,28 @@ In order to prove the implication it is enough to show that for every graph in $
 
 \section{Definition \ref{codef3} $\implies$ definition \ref{codef4}}
 
+Let's assume the opposite and let $T$ be a cotree such that $G = \G[T][X]$ is isomorphic to $P_4$ for some $X \subseteq \V(\G[T])$. Now let's notice that if $v = \LCA_T^s(X)$ then it must be so that $\kind(v) = 1$, otherwise $G$ wouldn't be isomorphic to $P_4$ as it isn't connected.
+
+Let $X = {x_1, x_2, x_3, x_4}$ and let $v_1, v_2, v_3, v_4$ be (not necessarily different) vertices of $T$ such that $\forall_{i \in \{1,2,3,4\}} p_T(v_i) = v \land x_i \in \V(T[v_i])$. Now one of 4 cases must be true
+\begin{enumerate}
+    \item $v_1 \neq v_2 \neq v_3 \neq v_4$
+
+          In this case for all $i,j \in \{1,2,3,4\}$ it's true that $\LCA_T(x_i, x_j) = v$. Therefore \linebreak $\forall_{i,j \in \{1,2,3,4\}}\{x_i,x_j\}\in \E(G)$ and $G = (X, \binom{X}{2})$. There is no isomorphism between $G$ and $P_4$ because $|\E(G)| > |\E(P_4)|$.
+
+    \item $v_1 = v_2 \neq v_3 \neq v_4$
+
+          In this case we know that $\{\{x_3, x_4\}, \{x_1, x_3\}, \{x_1, x_4\}, \{x_2, x_3\}\} \subseteq \E(G)$, which means that $|\E(G)| \geq 4$ which means that $|\E(G)| > |\E(P_4)|$.
+
+
+    \item $v_1 = v_2 = v_3 \neq v_4$
+
+          In this case we know that $\{\{x_1, x_4\}, \{x_2, x_4\}, \{x_3, x_4\}\} \subseteq \E(G)$. Let us assume that there exists isomorphism $f$ from $G$ to $P_4$. It follows that there exists vertex $f(x_4) \in \V(P_4)$ that has edges to all 3 vertices $f(x_1), f(x_2), f(x_3)$. But such vertex does not exist and so $G$ and $P_4$ are not isomorphic.
+
+    \item $v_1 = v_2 \neq v_3 = v_4$
+
+          In this case we know that $\{\{x_1, x_3\}, \{x_1, x_4\}, \{x_2, x_3\}, \{x_2, x_4\}\} \subseteq \E(G)$, which means that $|\E(G)| \geq 4$ which means that $|\E(G)| > |\E(P_4)|$.
+\end{enumerate}
+
+In all four cases $G$ and $P_4$ are not isomorphic which means that which implies that in no case can $G$ be isomorphic to $P_4$ and so if graph is defined by a cotree then it has no subgraph isomorphic to $P_4$.
+
 \section{Definition \ref{codef3} $\implies$ definition \ref{codef1}}
