@@ -105,4 +105,12 @@ In all four cases $G$ and $P_4$ are not isomorphic which means that which implie
 
 \section{Definition \ref{codef4} $\implies$ definition \ref{codef5}}
 
+Let's assume the contrary and that there are such graphs that contradicts this implication. Let $G$ be the smallest of such graphs. Now let $v \in \V(G)$ and $G' = G[\V(G) \setminus \{v\}]$. Since $G'$ is smaller than $G$, it is true that either $G'$ or $\Gcomp{G'}$ is disconnected. Without loss of generality let's assume that $G'$ is disconnected (the other case can be resolved by starting with $\Gcomp{G}$ as the smallest counterexample).
+
+Let $X_1, \ldots, X_n$ be such that $\forall_{i \in \{1, \ldots, n\}} G[X_i]$ is connected and $\forall_{x \in \V(G) \setminus X_i} G[X_i \cup \{x\}]$ is disconnected. Now it must be true that $v$ has edge to at least one vertex in each $X_i$, otherwise $G$ would be disconnected. Let's assume that $\forall_{i \in \{1,\ldots,n\}} \forall_{x \in X_i} \{v,x\} \in \E(G)$. This would mean that $\Gcomp{G'}$ is disconnected since $v$ is an isolated vertex. This means that there exists $i$ such that $\exists_{u, u' \in X_i} \{v, u\} \in \E(G) \land \{v, u'\} \not\in \E(G)$. Without loss of generality let's assume that $i = 1$.
+
+Let us notice that there must be two vertices $x, y \in X_1$ such that $\{v, x\}, \{x, y\} \in \E(G)$ and $\{v,y\} \not\in \E(G)$. If there was no such vertices then the vertex that has an edge to $v$ would not be connected to vertex that has no edge, hence $G[X_1]$ would be disconnected. Now let $z \in X_2$ be such that $\{v, z\} \in \E(G)$. We claim that $G[\{x,y,z,v\}]$ is isomorphic to $P_4$.
+
+Indeed $G[\{x,y,z,v\}] = (\{x,y,z,v\}, \{\{v,x\}, \{x, y\}, \{v,z\}\})$ and after applying function $f = \{(y, 0), (x, 1), (v, 2), (z, 3)\}$ we get $(\{1,0,3,2\}, \{\{2,1\}, \{1, 0\}, \{2,3\}\})$ which is indeed $P_4$.
+
 \section{Definition \ref{codef5} $\implies$ definition \ref{codef1}}

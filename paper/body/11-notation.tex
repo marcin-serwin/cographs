@@ -13,14 +13,24 @@ Fundamental notion in this paper is a graph. All graphs used in this paper are a
 \end{defi}
 
 \begin{defi}
-    Graph $G = (V,E)$ is said to be \emph{connected} if for each pair of vertices $u,v \in V$ there exists a sequence of edges $(u_i,v_i)$ for $i \in \{1, \ldots, n\}$ such that:
+    Let $G = (V,E)$ be a graph and $u, v \in V$. Vertices $u$ and $v$ are \emph{connected} if there exists a sequence of edges $(u_i,v_i)$ for $i \in \{1, \ldots, n\}$ such that:
     \begin{enumerate}
         \item $u_1 = u$
         \item $v_n = v$
         \item $\forall_{i \in \{1, \ldots, n - 1\}} v_i = u_{i+1}$
     \end{enumerate}
 
+    Vertices are \emph{disconnected} if and only if they are not connected.
+\end{defi}
+
+\begin{defi}
+    Graph $G = (V,E)$ is said to be \emph{connected} if for each pair of vertices $u,v \in V$ $u$ and $v$ are connected.
+
     Graph is \emph{disconnected} if and only if it is not connected.
+\end{defi}
+
+\begin{defi}
+    Let $G = (V,E)$ be a graph and $v \in V$. Vertex $v$ is \emph{isolated} if and only if $\forall_{v' \in V} \{v,v'\} \not\in E$.
 \end{defi}
 
 \begin{defi}
