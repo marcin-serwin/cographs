@@ -1,0 +1,11 @@
+% !TEX root = ../main.tex
+
+\chapter{Algorithms implemented}\label{r:codefeq}
+
+In this chapter we will describe the algorithms implemented in order to recognize the cographs and solve some problems on them.
+
+First cograph recognition algorithm is implemented from \cite{habib}. It produces factorizing permutation if input graph is a cograph and some incorrect permutation otherwise. Algorithm checking whether the permutation is factorizing is then run in order to differentiate between cographs and non-cographs.
+
+Second cograph recognition is implemented from \cite{corneil}. It produces cotree and halts if it is not possible. Cotree produced by this algorithm is then used as an input into the other algorithms solving problems for cotrees.
+
+Implemented are also four algorithms which are NP-hard in general case, but can be solved linearly in case of cographs. These algorithms are: minimal path cover, optimal coloring, finding maximal clique, finding minimal independent set. Last three algorithms follow a very similar pattern of combining recursively results from subcotrees. In case of minimal path cover, implementation described in \cite{olariu}. It is worth mentioning that deciding whether cograph is Hamiltonian (which may be seen as a decision version of minimal path cover problem) can also be done in vein similar to the other algorithms as described in \cite{corneil2}.
