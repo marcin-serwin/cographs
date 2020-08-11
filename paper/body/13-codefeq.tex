@@ -1,10 +1,10 @@
 % !TEX root = ../main.tex
 
-\chapter{Cograph definitions equivalence}\label{r:codefeq}
+\section{Cograph definitions equivalence}\label{r:codefeq}
 
-In this chapter we will prove that all five aforementioned definitions of graphs are equivalent. Next sections will provide proofs for, in order, \ref{codef1} $\implies$ \ref{codef2}, \ref{codef2} $\implies$ \ref{codef3}, \ref{codef3} $\implies$ \ref{codef4}, \ref{codef4} $\implies$ \ref{codef5} and \ref{codef5} $\implies$ \ref{codef1}. These five implications together prove the equivalence.
+In this section we will prove that all five aforementioned definitions of graphs are equivalent. Next sections will provide proofs for, in order, \ref{codef1} $\implies$ \ref{codef2}, \ref{codef2} $\implies$ \ref{codef3}, \ref{codef3} $\implies$ \ref{codef4}, \ref{codef4} $\implies$ \ref{codef5} and \ref{codef5} $\implies$ \ref{codef1}. These five implications together prove the equivalence.
 
-\section{Definition \ref{codef1} $\implies$ definition \ref{codef2}}
+\subsection{Definition \ref{codef1} $\implies$ definition \ref{codef2}}
 
 Let us notice that in order to prove the implication all we need to show is $\forall_G G \in \Cographs \implies \Gcomp{G} \in \Cographs$ where $\Cographs$ is defined as in \ref{codef2}.
 
@@ -16,7 +16,7 @@ Let's assume the opposite and let $G$ be the smallest graph such that $G \in \Co
 \end{enumerate}
 Since one of these must be true and none of them is, it follows that such $G$ does not exist and $\forall_G G \in \Cographs \implies \Gcomp{G} \in \Cographs$.
 
-\section{Definition \ref{codef2} $\implies$ definition \ref{codef3}}
+\subsection{Definition \ref{codef2} $\implies$ definition \ref{codef3}}
 
 In order to prove the implication it is enough to show that for every graph in $\Cographs$, as defined in \ref{codef2}, there exists a cotree that defines it. Let us show that it is indeed the case
 
@@ -77,7 +77,7 @@ In order to prove the implication it is enough to show that for every graph in $
 
 \end{enumerate}
 
-\section{Definition \ref{codef3} $\implies$ definition \ref{codef4}}
+\subsection{Definition \ref{codef3} $\implies$ definition \ref{codef4}}
 
 Let's assume the opposite and let $T$ be a cotree such that $G = \G[T][X]$ is isomorphic to $P_4$ for some $X \subseteq \V(\G[T])$. Now let's notice that if $v = \LCA_T^s(X)$ then it must be so that $\kind(v) = 1$, otherwise $G$ wouldn't be isomorphic to $P_4$ as it isn't connected.
 
@@ -103,7 +103,7 @@ Let $X = {x_1, x_2, x_3, x_4}$ and let $v_1, v_2, v_3, v_4$ be (not necessarily 
 
 In all four cases $G$ and $P_4$ are not isomorphic which means that which implies that in no case can $G$ be isomorphic to $P_4$ and so if graph is defined by a cotree then it has no subgraph isomorphic to $P_4$.
 
-\section{Definition \ref{codef4} $\implies$ definition \ref{codef5}}
+\subsection{Definition \ref{codef4} $\implies$ definition \ref{codef5}}
 
 Let's assume the contrary and that there are such graphs that contradicts this implication. Let $G$ be the smallest of such graphs. Now let $v \in \V(G)$ and $G' = G[\V(G) \setminus \{v\}]$. Since $G'$ is smaller than $G$, it is true that either $G'$ or $\Gcomp{G'}$ is disconnected. Without loss of generality let's assume that $G'$ is disconnected (the other case can be resolved by starting with $\Gcomp{G}$ as the smallest counterexample).
 
@@ -113,7 +113,7 @@ Let us notice that there must be two vertices $x, y \in X_1$ such that $\{v, x\}
 
 Indeed $G[\{x,y,z,v\}] = (\{x,y,z,v\}, \{\{v,x\}, \{x, y\}, \{v,z\}\})$ and after applying function $f = \{(y, 0), (x, 1), (v, 2), (z, 3)\}$ we get $(\{1,0,3,2\}, \{\{2,1\}, \{1, 0\}, \{2,3\}\})$ which is indeed $P_4$.
 
-\section{Definition \ref{codef5} $\implies$ definition \ref{codef1}}
+\subsection{Definition \ref{codef5} $\implies$ definition \ref{codef1}}
 
 Let $G$ be the smallest graph that contradicts the implication.
 
