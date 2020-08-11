@@ -10,7 +10,7 @@ Let us notice that in order to prove the implication all we need to show is $\fo
 
 Let's assume the opposite and let $G$ be the smallest graph such that $G \in \Cographs \land \Gcomp{G} \not\in \Cographs$. Since $G \in \Cographs$ one of the following must be true:
 \begin{enumerate}
-    \item $\exists_v G = \singleton{v}$. But $\Gcomp{\singleton{v}} = \singleton{v}$, so $\Gcomp{G} \in \Cographs$, therefore it cannot be so.
+    \item $\exists_v G = \singleton{v}$. But $\Gcomp{\mbox{\singleton{v}}\raisebox{3mm}{}} = \singleton{v}$, so $\Gcomp{G} \in \Cographs$, therefore it cannot be so.
     \item $\exists_{G_1, G_2 \in \Cographs} G = \Gunion{G_1}{G_2}$. But since $G$ is the smallest graph that violates the thesis and $G_1$ and $G_2$ are both smaller, it follows that $\Gcomp{G_1}, \Gcomp{G_2} \in \Cographs$. On the other hand it is easy to see that $\Gcomp{\Gunion{G_1}{G_2}} = \Gjoin{\Gcomp{G_1}}{\Gcomp{G_2}}$, so $\Gcomp{G} \in \Cographs$, therefore it cannot be so.
     \item $\exists_{G_1, G_2 \in \Cographs} G = \Gjoin{G_1}{G_2}$. But since $G$ is the smallest graph that violates the thesis and $G_1$ and $G_2$ are both smaller, it follows that $\Gcomp{G_1}, \Gcomp{G_2} \in \Cographs$. On the other hand it is easy to see that $\Gcomp{\Gjoin{G_1}{G_2}} = \Gunion{\Gcomp{G_1}}{\Gcomp{G_2}}$, so $\Gcomp{G} \in \Cographs$, therefore it cannot be so.
 \end{enumerate}
