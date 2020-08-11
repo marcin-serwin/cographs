@@ -49,7 +49,7 @@ In order to prove the implication it is enough to show that for every graph in $
 
           Now let us consider a pair of vertices $v_1 \in V_i, v_2 \in V_j$ where $i,j \in \{1,2\} \land i \neq j$. The $\LCA_T(v_1, v_2) = 0_v$ and so $\kind(\LCA_T(v_1, v_2)) = 0$. This means that there are no edges between vertices from different graphs.
 
-          These three facts together show that $G[T]$ is such that $\V(G[T]) = V_1 \cup V_2, G[T][V_1] = G_1, G[T][V_2] = G_2$ and $\E(G[T]) \cap \{\{v_1, v_2\} | (v_1, v_2) \in V_1 \times V_2\} = \emptyset$ which means that $G[T] = \Gunion{G_1}{G_2}$.
+          These three facts together show that $G[T]$ is such that $\V(G[T]) = V_1 \cup V_2, G[T][V_1] = G_1, G[T][V_2] = G_2$ and $\E(G[T]) \cap \{\{v_1, v_2\} : (v_1, v_2) \in V_1 \times V_2\} = \emptyset$ which means that $G[T] = \Gunion{G_1}{G_2}$.
 
     \item $G_1,G_2 \in \Cographs \implies \Gjoin{G_1}{G_2} \in \Cographs$
 

@@ -34,7 +34,7 @@ Cographs can be defined in several equivalent ways. This paper will provide four
 \end{defi}
 
 \begin{defi}\label{codef3}
-    Let $(T, \kind)$ be a cotree and let $L = \{v | v \in \V(T) \land \kind(v) = s\}$. \emph{Cograph defined by cotree $T$} denoted $\G(T)$ is a graph $(L, \{\{u,v\} | \{u,v\} \in L \land \kind(\LCA_T(u,v)\}) = 1)$.
+    Let $(T, \kind)$ be a cotree and let $L = \{v : v \in \V(T) \land \kind(v) = s\}$. \emph{Cograph defined by cotree $T$} denoted $\G(T)$ is a graph $(L, \{\{u,v\} : \{u,v\} \in L \land \kind(\LCA_T(u,v)\}) = 1)$.
 
     Graph $G$ is a \emph{cograph} if and only if there exists cotree $T$ such that $G = \G(T)$.
 \end{defi}
