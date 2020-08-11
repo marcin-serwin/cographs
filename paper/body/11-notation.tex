@@ -2,7 +2,11 @@
 
 \section{Terminology and notation}
 
-Fundamental notion in this paper is a graph. All graphs used in this paper are assumed to be \emph{finite undirected graphs} unless specified otherwise. $\Vertices$ is assumed to be vertex universe. Throughout this paper we assume that $\Vertices = \Nats$. All set theoretic notations used throughout this paper are compatible with \cite{jech}. Formal definitions follow below.
+Fundamental notion in this paper is a graph. All graphs used in this paper are assumed to be \emph{finite undirected graphs} unless specified otherwise. $\Vertices$ is assumed to be vertex universe. Throughout this paper we assume that $\Vertices = \Nats$. All set theoretic notations used throughout this paper are compatible with \cite{jech} unless specified otherwise. All graph theory notations used throughout this paper are compatible with \cite{bollobas} unless specified otherwise. Formal definitions of some graph related concepts follow below.
+
+\begin{defi}
+    If $X$ is a set and $n$ is a natural number then $\binom{X}{n}$ is the biggest set such that if $x \in \binom{X}{n}$ then $x \subseteq X$ and $|x| = n$.
+\end{defi}
 
 \begin{defi}
     \emph{Graph} $G$ is a tuple $(V,E)$ such that $V \subseteq \Vertices \land |V| \in \Nats$ and $E \subseteq \binom{V}{2}$. Convenience functions $\V, \E$ are defined such that $\V(G) = V$ and $\E(G) = E$. Set $V$ is called \emph{vertices} and set $E$ is called \emph{edges}.
@@ -56,12 +60,14 @@ Fundamental notion in this paper is a graph. All graphs used in this paper are a
 \end{defi}
 
 \begin{defi}
-    \emph{Tree} $T$ is a tuple $(V, p)$ such that $V \subseteq \Vertices \land |V| \in \Nats$ and $p$ is a function $V \to V \cup \{\bot\}$, where $\bot$ is such that $\bot \not\in V$. Moreover $p$ satisfies
+    \emph{Rooted tree} $T$ is a tuple $(V, p)$ such that $V \subseteq \Vertices \land |V| \in \Nats$ and $p$ is a function $V \to V \cup \{\bot\}$, where $\bot$ is such that $\bot \not\in V$. Moreover $p$ satisfies
     \begin{enumerate}
         \item $\exists_{r \in V} p(r) = \bot \land \forall_{v \in V\setminus\{r\}} p(v) \neq \bot$. $r$ is called \emph{root} and is denotes as $\Root(T)$.
         \item If $X$ is the smallest set such that $r \in X \land \forall_{v \in V} p(v) \in X \implies v \in X$ then $X = V$.
     \end{enumerate}
     Convenience functions $\V, \R, p_T, \C$ are defined so that $\V(T) = V, \R(T) = r, p_T(v) = p(v)$ and $\C(v) = \{v' : v' \in V \land p(v') = v\}$.
+
+    Whenever a term \emph{tree} is used it implicitly refers to \emph{rooted tree} unless specified otherwise.
 \end{defi}
 
 \begin{defi}
