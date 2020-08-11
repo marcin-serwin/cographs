@@ -81,7 +81,7 @@ In order to prove the implication it is enough to show that for every graph in $
 
 Let's assume the opposite and let $T$ be a cotree such that $G = \G[T][X]$ is isomorphic to $P_4$ for some $X \subseteq \V(\G[T])$. Now let's notice that if $v = \LCA_T^s(X)$ then it must be so that $\kind(v) = 1$, otherwise $G$ wouldn't be isomorphic to $P_4$ as it isn't connected.
 
-Let $X = {x_1, x_2, x_3, x_4}$ and let $v_1, v_2, v_3, v_4$ be (not necessarily different) vertices of $T$ such that $\forall_{i \in \{1,2,3,4\}} p_T(v_i) = v \land x_i \in \V(T[v_i])$. Now one of 4 cases must be true
+Let $X = \{x_1, x_2, x_3, x_4\}$ and let $v_1, v_2, v_3, v_4$ be (not necessarily different) vertices of $T$ such that $\forall_{i \in \{1,2,3,4\}} p_T(v_i) = v \land x_i \in \V(T[v_i])$. In other words, $v_i$ is a child of $v$ that contains $x_i$ in their subtree. They are not necessarily different since some $x_j$ may be in the same child's subtree as $x_i$. Now one of 4 cases must be true
 \begin{enumerate}
     \item $v_1 \neq v_2 \neq v_3 \neq v_4$
 
