@@ -1,0 +1,151 @@
+\section{Factorizing permutation algorithm}
+
+This algorithm is described fully in \cite{habib}.
+
+The algorithm is divided into two phases. The first phase is creating the factorizing permutation (which will be defined in a moment) and the second phase consists of sweeping the permutation in order to check if graph is a cograph.
+
+\subsection{Computing factorizing permutation}
+
+In order to define the factorizing permutation we will need the concept of modules
+
+\begin{defi}
+    If $G=(V,E)$ is a graph then a subset of vertices $M \subseteq V$ is called a \emph{module} if and only if $\N(u)\setminus M = \N(v) \setminus M$ for any $u,v \in M$.
+
+    A module $M$ is called a \emph{strong module} if for any module $M'$ either $M' \subseteq M$, $M \subseteq M'$ or $M' \cap M = \emptyset$.
+\end{defi}
+
+\begin{defi}
+    If $G=(V,E)$ is a graph then a permutation $\sigma$ of $V$ is called \emph{factorizing permutation} if for any strong modules $M, N$ and any indices $i < j < k$ it is not the case that $\sigma(i), \sigma(k) \in M$ and $\sigma(j) \in N$. In other words vertices of any strong modules appear consecutively in $\sigma$.
+\end{defi}
+
+The main idea of the algorithm is to start with a partition and then, through a series of refinements, turn it into a permutation.
+
+\begin{defi}
+    \emph{Partition $\Part{P}$} of set $V$ is a tuple $(\Part{X}_1, \ldots, \Part{X}_k)$ such that $\forall_{i \neq j} \Part X_i \cap \Part X_j = \emptyset$ and $\bigcup_{i=1}^k X_i = V$. Each $\Part{X}_i$ is called a \emph{part}.
+
+    If $u,v \in V$ and $u \in \Part X_i, v \in \Part X_j$ then we write $u <_{\Part P} v$ if and only if $i < j$.
+\end{defi}
+
+\begin{defi}
+    If $\Part P, \Part Q$ are partitions then we say that \emph{$\Part P$ is compatible with $\Part Q$} if and only if:
+    \begin{enumerate}
+        \item $\forall_{\Part X \in \Part P} \exists_{\Part Y \in \Part Q} \Part X \subseteq \Part Y$
+        \item $\forall_{u,v \in V} u <_{\Part P} v \implies u <_{\Part Q} v$.
+    \end{enumerate}
+\end{defi}
+
+Each factorizing permutation $\sigma$ has a corresponding partition of the form $\Part X_i = \{\sigma(i)\}$. The algorithm starts with trivial vertex partition $(V)$ and through refinements described in \cite{habib2} turns it into factorizing permutation. The refinements in question are
+
+\begin{defi}[Refinement rule 1]\label{habib:refrule1}
+    Let $\Part P = (\Part X_1, \ldots, \Part X_k)$ be a partition of $\V(G)$ and $\Part X_i$ be a part in this partition. Pick vertex $v \in \Part X_i$ as a pivot and refine $\Part P$ into
+    \[
+        (\Part X_1, \ldots, \Part X_{i-1}, \Nbar(v) \cap \Part X_i, \{v\}, \N(v) \cap \Part X_i, \Part X_{i+1}, \ldots, \Part X_k).
+    \]
+\end{defi}
+
+\begin{defi}[Refinement rule 2]\label{habib:refrule2}
+    Let $\Part P = (\Part X_1, \ldots, \Part X_k)$ be a partition of $\V(G)$ and $\Part X_i$ be a part in this partition. Let $v \not\in \Part X_i$ be a vertex such that $\exists_{u,u' \in \Part X_i} \{u,v\} \in \E(G) \land \{u',v\} \not\in \E(G)$. Now refine $\Part P$ into
+    \[
+        (\Part X_1, \ldots, \Part X_{i-1}, \Nbar(v) \cap \Part X_i, \N(v) \cap \Part X_i, \Part X_{i+1}, \ldots, \Part X_k).
+    \]
+\end{defi}
+
+Proofs that these refinements produce permutations compatible with factorizing permutation can be found in \cite{habib} and \cite{habib2}. Pseudo code of implementation of the first rule is presented in \ref{habib:refrule1impl}.
+
+\begin{function}
+    \caption{RefineRule1($\Part P, G, \Part X_O, O$)}
+    \label{habib:refrule1impl}
+    \DontPrintSemicolon
+
+    \KwIn{Permutation $\Part P = (\Part X_1, \ldots, \Part X_k)$, graph $G=(V,E)$, origin part $\Part X_O$ and origin $O$}
+    \KwOut{A permutation compatible with $\Part P$ that is refined using \ref{habib:refrule1}}
+    \Begin{
+        \Return{$(\Part X_1, \ldots, \Nbar_G(O) \cap \Part X_O, \{O\}, \N_G(O) \cap \Part X_O, \ldots, \Part X_k)$}
+    }
+\end{function}
+
+Pseudo code of implementation of the second rule is presented in \ref{habib:refrule2impl}.
+
+\begin{function}
+    \caption{RefineRule2($\Part P, \Part X', S, Q, P$)}
+    \label{habib:refrule2impl}
+    \DontPrintSemicolon
+
+    \KwIn{Permutation $\Part P = (\Part X_1, \ldots, \Part X_k)$, part $\Part X'$, pivot set $S$, queue $Q$ and map $P$}
+    \KwOut{A permutation compatible with $\Part P$ that is refined using \ref{habib:refrule2}}
+    \Begin{
+        \If{$\Part X' \cap S = \emptyset$}{\Return{$\Part P $}}
+        $\Part X'_a = \Part X' \cap S$ \;
+        \eIf{$\Part X' \in Q$}{
+            $Q$.remove($\Part X'$) \;
+            $Q$.append($\Part X' \setminus S$) \;
+            $Q$.append($\Part X' \cap S$) \;
+        }{
+            \eIf{$P[\Part X'] \in \Part X' \setminus S$}{
+                $P[\Part X' \setminus S] = P[\Part X']$ \;
+                $Q$.append($\Part X' \cap S$) \;
+            }{
+                $P[\Part X' \cap S] = P[\Part X']$ \;
+                $Q$.append($\Part X' \setminus S$) \;
+            }
+        }
+        \Return{$(\Part X_1, \ldots, \Part X' \setminus S, \Part X' \cap S, \ldots, \Part X_k)$}
+    }
+\end{function}
+
+These refinement functions can now be used in order to write our main function to compute a factorizing permutation. Pseudo code is presented in \ref{habib:mainpseudo}.
+
+\begin{function}
+    \caption{ComputePermutation(G)}
+    \label{habib:mainpseudo}
+    \SetKwFunction{FPick}{PickRandom}
+    \SetKwFunction{FMain}{ComputePermutation}
+    \SetKwFunction{FRefOne}{RefineRule1}
+    \SetKwFunction{FRefTwo}{RefineRule2}
+    \DontPrintSemicolon
+
+    \KwIn{A graph $G=(V,E)$}
+    \KwOut{A permutation of $V$ that is a factorizing permutation of $G$ if it is a cograph}
+    \Begin{
+        $\Part P = (V)$\;
+        $O = \FPick{V}$\;
+        $Q = $ empty queue \;
+        $P = $ empty map \;
+        \If{$\forall_v \{O, v\} \in E \lor \forall_v \{O, v\} \not\in E$}{
+            \Return{(\FMain($V \setminus \{O\}, E \cap \binom{V \setminus \{O\}}{2}$), O)} \;
+        }
+        \While{$\exists_{\Part X_i \in \Part P} |\Part X_i| > 1$}{
+            $\Part X_O\colon \Part X_O \in \Part P \land O \in \Part X_O$ \;
+            $\Part P$ = \FRefOne($G, X_O, O$) \;
+            $Q$.append($\Nbar(O) \cap \Part X_O$) \;
+            $Q$.append($\N(O) \cap \Part X_O$) \;
+            \While{$Q$.size() > $0$}{
+                $\Part X = Q$.pop() \;
+                $v\colon v \in \Part X$ \;
+                $P[\Part X] = v$ \;
+                \ForAll{$\Part X'\colon \Part X' \in \Part P \land \Part X' \neq \Part X \land |\Part X'| > 1$}{
+                    $\Part P$ = \FRefTwo($G, \Part X_O, O, \Part X', P$) \;
+                }
+            }
+            $z_l \colon z_l <_{\Part P} O \land P[\Part X_i] = z_l \land \abs{\Part X_i} > 1 \land i$ is largest
+            $z_r \colon z_l >_{\Part P} O \land P[\Part X_i] = z_r \land \abs{\Part X_i} > 1 \land i$ is smallest
+
+            \leIf{$\{z_l, z_r\} \in E$}{$O = z_l$}{$O = z_r$}
+        }
+
+        \Return{$\Part P$}
+    }
+\end{function}
+
+In order to prove that algorithm \ref{habib:mainpseudo} computes a factorizing permutation it is enough to show that at each step of computation the partition $\Part P$ is compatible with a factorizing permutation. This can be shown by first showing validity of refinement rules in relation to current permutation and then using the refinement rules themselves. For the details of the proof see Theorem 20 in \cite{habib}.
+
+This algorithm runs in $O(|\V(G)| + |\E(G)|)$ if implemented correctly.
+
+\begin{lemma}
+    The neighborhood of each vertex is used at most 3 times to refine the partition.
+\end{lemma}
+\begin{proof}
+    The neighborhood of a vertex can only be used once in the \ref{habib:refrule2} as after that the vertex will no longer be in the $Q$ queue. It is then used in the line 23 of \ref{habib:mainpseudo}, but it can be ensured by always picking the smaller neighborhood that it is used at most once by charging the new origin. The next use of it is in the \ref{habib:refrule1}, but after that the vertex is in singleton part and ignored by algorithm.
+\end{proof}
+
+Since we will touch each neighborhood $O(1)$ times, it follows that the whole algorithm runs in $O\left(\sum_{v\in V} \abs{\N(v)}\right) = O(|\V(G)| + |\E(G)|)$.

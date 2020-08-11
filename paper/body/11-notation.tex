@@ -17,6 +17,12 @@ Fundamental notion in this paper is a graph. All graphs used in this paper are a
 \end{defi}
 
 \begin{defi}
+    If $G = (V,E)$ is a graph then the \emph{neighborhood of vertex $v$} denoted as $\N(v)$ is a set of vertices such that $\N(v) = \{v' : v' \in V \land \{v, v'\} \in E\}$.
+
+    \emph{Non-neighborhood}, denoted as $\Nbar(v)$ is $V \setminus \N(v)$.
+\end{defi}
+
+\begin{defi}
     Let $G = (V,E)$ be a graph and $u, v \in V$. Vertices $u$ and $v$ are \emph{connected} if there exists a sequence of edges $\{u_i,v_i\}$ for $i \in \{1, \ldots, n\}$ such that:
     \begin{enumerate}
         \item $u_1 = u$

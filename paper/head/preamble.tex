@@ -22,6 +22,9 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage[algosection, boxruled, linesnumbered]{algorithm2e}
+\usepackage{mathtools}
 
 \definecolor{dark-red}{HTML}{B30000}
 \definecolor{dark-green}{HTML}{00B300}
@@ -122,8 +125,10 @@
 % Tu jest dobre miejsce na Twoje własne makra i~środowiska:
 \newtheorem{defi}{Definition}[section]
 \newtheorem{observe}{Observation}[section]
+\newtheorem{lemma}{Lemma}[section]
 
 \newcommand{\strong}[1]{\textbf{#1}}
+\newcommand{\Part}[1]{\mathscr{#1}}
 
 \newcommand{\Nats}{\mathbb{N}}
 
@@ -135,6 +140,8 @@
 \DeclareMathOperator{\E}{E}
 \DeclareMathOperator{\C}{C}
 \DeclareMathOperator{\R}{R}
+\DeclareMathOperator{\N}{N}
+\DeclareMathOperator{\Nbar}{\overline{N}}
 \DeclareMathOperator{\Root}{r}
 \DeclareMathOperator{\G}{G}
 \DeclareMathOperator{\id}{v}
@@ -146,5 +153,7 @@
 \newcommand{\BigGunion}[1]{\bigcup #1}
 \newcommand{\Gjoin}[2]{#1 \otimes #2}
 \newcommand{\BigGjoin}[1]{\bigotimes #1}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
 
 % koniec definicji
