@@ -36,7 +36,7 @@ In order to prove the implication it is enough to show that for every graph in $
           Let $0_v, 1_v \in \Vertices \setminus (V_1 \cup V_2)$. Now let us construct a cotree $T = ((V, p), \kind)$ such that
           \[
               \begin{split}
-                  T = & V_1\cup V_2 \cup \{0_v,1_v\}, \\
+                  V = & V_1\cup V_2 \cup \{0_v,1_v\}, \\
                   p = & p_1 \cup p_2 \setminus \{(r_1,\bot), (r_2, \bot)\} \cup \{(1_v, \bot), (0_v, 1_v), (r_1, 0_v), (r_2, 0_v)\}
                   ), \\
                   \kind = & \kind_1 \cup \kind_2 \cup \{(0_v,0), (1_v,1)\}
@@ -49,7 +49,7 @@ In order to prove the implication it is enough to show that for every graph in $
 
           Now let us consider a pair of vertices $v_1 \in V_i, v_2 \in V_j$ where $i,j \in \{1,2\} \land i \neq j$. The $\LCA_T(v_1, v_2) = 0_v$ and so $\kind(\LCA_T(v_1, v_2)) = 0$. This means that there are no edges between vertices from different graphs.
 
-          These three facts together show that $G[T]$ is such that $\V(G[T]) = V_1 \cup V_2, G[T][V_1] = G_1, G[T][V_2] = G_2$ and $\E(G[T]) \cap \{\{v_1, v_2\} : (v_1, v_2) \in V_1 \times V_2\} = \emptyset$ which means that $G[T] = \Gunion{G_1}{G_2}$.
+          These three facts together show that $\G(T)$ is such that $\V(\G(T)) = V_1 \cup V_2, \G(T)[V_1] = G_1, \G(T)[V_2] = G_2$ and $\E(\G(T)) \cap \{\{v_1, v_2\} : (v_1, v_2) \in V_1 \times V_2\} = \emptyset$ which means that $\G(T) = \Gunion{G_1}{G_2}$.
 
     \item $G_1,G_2 \in \Cographs \implies \Gjoin{G_1}{G_2} \in \Cographs$
 
@@ -65,7 +65,7 @@ In order to prove the implication it is enough to show that for every graph in $
               \end{split}
           \]
 
-          It is easy to verify, using process analogous to the previous case, that $G[T] = \Gjoin{G_1}{G_2}$.
+          It is easy to verify, using process analogous to the previous case, that $\G(T) = \Gjoin{G_1}{G_2}$.
 
           %   Notice that the set of vertices such that $\kind(v) = s$ is $V_1 \cup V_2$.
 
@@ -73,13 +73,13 @@ In order to prove the implication it is enough to show that for every graph in $
 
           %   Now let us consider a pair of vertices $v_1 \in V_i, v_2 \in V_j$ where $i,j \in \{1,2\} \land i \neq j$. The $\LCA_T(v_1, v_2) = 1_v$ and so $\kind(\LCA_T(v_1, v_2)) = 1$. This means that there are always edges between vertices from different graphs.
 
-          %   These three facts together show that $G[T]$ is such that $\V(G[T]) = V_1 \cup V_2, G[T][V_1] = G_1, G[T][V_2] = G_2$ and $\E(G[T]) \cap \{\{v_1, v_2\} | (v_1, v_2) \in V_1 \times V_2\} = \{\{v_1, v_2\} | (v_1, v_2) \in V_1 \times V_2\}$ which means that $G[T] = \Gjoin{G_1}{G_2}$.
+          %   These three facts together show that $\G(T)$ is such that $\V(\G(T)) = V_1 \cup V_2, \G(T)[V_1] = G_1, \G(T)[V_2] = G_2$ and $\E(\G(T)) \cap \{\{v_1, v_2\} | (v_1, v_2) \in V_1 \times V_2\} = \{\{v_1, v_2\} | (v_1, v_2) \in V_1 \times V_2\}$ which means that $\G(T) = \Gjoin{G_1}{G_2}$.
 
 \end{enumerate}
 
 \subsection{Definition \ref{codef3} $\implies$ definition \ref{codef4}}
 
-Let's assume the opposite and let $T$ be a cotree such that $G = \G[T][X]$ is isomorphic to $P_4$ for some $X \subseteq \V(\G[T])$. Now let's notice that if $v = \LCA_T^s(X)$ then it must be so that $\kind(v) = 1$, otherwise $G$ wouldn't be isomorphic to $P_4$ as it isn't connected.
+Let's assume the opposite and let $T$ be a cotree such that $G = \G(T)[X]$ is isomorphic to $P_4$ for some $X \subseteq \V(\G(T))$. Now let's notice that if $v = \LCA_T^s(X)$ then it must be so that $\kind(v) = 1$, otherwise $G$ wouldn't be isomorphic to $P_4$ as it isn't connected.
 
 Let $X = \{x_1, x_2, x_3, x_4\}$ and let $v_1, v_2, v_3, v_4$ be (not necessarily different) vertices of $T$ such that $\forall_{i \in \{1,2,3,4\}} p_T(v_i) = v \land x_i \in \V(T[v_i])$. In other words, $v_i$ is a child of $v$ that contains $x_i$ in their subtree. They are not necessarily different since some $x_j$ may be in the same child's subtree as $x_i$. Now one of 4 cases must be true
 \begin{enumerate}
