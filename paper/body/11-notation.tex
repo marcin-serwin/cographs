@@ -71,9 +71,26 @@ Fundamental notion in this paper is a graph. All graphs used in this paper are a
         \item $\exists_{r \in V} p(r) = \bot \land \forall_{v \in V\setminus\{r\}} p(v) \neq \bot$. $r$ is called \emph{root} and is denotes as $\Root(T)$.
         \item If $X$ is the smallest set such that $r \in X \land \forall_{v \in V} p(v) \in X \implies v \in X$ then $X = V$.
     \end{enumerate}
-    Convenience functions $\V, \R, p_T, \C$ are defined so that $\V(T) = V, \R(T) = r, p_T(v) = p(v)$ and $\C(v) = \{v' : v' \in V \land p(v') = v\}$.
+    Convenience functions $\V, \R, p_T, \C$ are defined so that $\V(T) = V, \R(T) = r, p_T(v) = p(v)$ and $\C_T(v) = \{v' : v' \in V \land p_T(v') = v\}$. When it is known from context, the subscript $_T$ is dropped and we write simply $p$ and $\C$ instead of $p_T$ and $\C_T$.
 
     Whenever a term \emph{tree} is used it implicitly refers to \emph{rooted tree} unless specified otherwise.
+
+    It is worth noting that a tree is not a graph, since graphs are tuples of vertices and edges and trees are tuples of vertices and parent functions.
+
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}[sibling distance=5em]
+            \node {0}
+            child { node {1} }
+            child { node {2}
+                    child { node {3}
+                            child { node {4} }
+                            child { node {5} }
+                            child { node {6} } }
+                    child { node {7} } };
+        \end{tikzpicture}
+        \caption{An Example of rooted tree $T$. In this case $\V(T) = \{0,\ldots,7\}, \R(T) = 0, p_T = \{(0, \bot), (1,0), (2,0), (3,2), (4,3), (5,3), (6,3), (7,2)\}$ and $\C_T = \{(0,\{1,2\}), (1,\emptyset), (2,\{3,7\}), (3,\{4,5,6\}), (4, \emptyset), (5, \emptyset), (6, \emptyset), (7, \emptyset)\}$}
+    \end{figure}
 \end{defi}
 
 \begin{defi}
