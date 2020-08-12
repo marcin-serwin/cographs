@@ -142,7 +142,7 @@ In order to prove that algorithm \ref{habib:mainpseudo} computes a factorizing p
 
 This algorithm runs in $O(\abs{\V(G)} + \abs{\E(G)})$ if implemented correctly.
 
-\begin{lemma}
+\begin{lemma}\label{habib:complexity}
     The neighborhood of each vertex is used at most 3 times to refine the partition.
 \end{lemma}
 \begin{proof}
@@ -150,3 +150,44 @@ This algorithm runs in $O(\abs{\V(G)} + \abs{\E(G)})$ if implemented correctly.
 \end{proof}
 
 Since we will touch each neighborhood $O(1)$ times, it follows that the whole algorithm runs in $O\left(\sum_{v\in V} \abs{\N(v)}\right) = O(\abs{\V(G)} + \abs{\E(G)})$.
+
+\subsection{Checking factorizing permutation}
+
+In order to test whether the output permutation is a factorizing permutation we will use twin-elimination.
+
+\begin{defi}
+    Let $G = (V,E)$ be a graph and let $u,v \in V$ be vertices in this graph. $u$ and $v$ are said to be \emph{twins} if and only if either $\N(u) = \N(v)$ or $\N(u)\cup\{u\} = \N(v)\cup\{v\}$.
+\end{defi}
+
+It is easy to see that if $G = (V,E)$ is a cograph then $u$ and $v$ are twins only if they are brothers in a cotree. Since brothers in a cotree are part of the same strong module then, by definition of factorizing permutation, they must appear consecutively. It naturally follows that checking algorithm will simply merge consecutive twins into a single vertex whenever possible. Details are presented in \ref{habib:testperm}.
+
+\begin{function}
+    \caption{TestPermutation($\sigma, G$)}
+    \label{habib:testperm}
+    \DontPrintSemicolon
+
+    \KwIn{Permutation $\sigma = (v_1, \ldots, v_n)$, graph $G=(V,E)$ ($\forall_i v_i \in V$). Permutation is represented as doubly linked list.}
+    \KwOut{True if $\sigma$ is factorizing permutation, else False}
+    \Begin{
+        Let $v_0$ and $v_{n+1}$ be added to $\sigma$. They are such that they are not twins with any other vertex in $V$. \;
+        $x = v_1$ \;
+        \While{$x \neq v_{n+1}$}{
+            \uIf{$x$ and $x$.prev are twins}{
+                $\sigma$.remove($x$.prev) \;
+            }
+            \uElseIf{$x$ and $x$.next are twins}{
+                $x = x$.next \;
+                $\sigma$.remove($x$.prev) \;
+            }
+            \Else{
+                $x = x$.next \;
+            }
+        }
+
+        \Return{$\abs{\sigma} = 3$}
+    }
+\end{function}
+
+It is easy to see that if algorithms ends with $\sigma$ being a single vertex (and two dummy ones), then successful twin vertex elimination was found. The proof of the fact that for any factorizing permutation twin vertex elimination can found is presented in Theorem 26 of \cite{habib}.
+
+Let us notice that this function consists of a single run over vertices of $G = (V,E)$. In each step we either remove a vertex from $\sigma$, move on to another vertex, or both. Each of these operations can be executed at most $\abs{V}$. Moreover, when checking if vertices are twins, neighborhood of each will be only used at most twice (once when the vertex is current and once when it is eliminated). It is therefore clear that running time of this function is $O(\abs(V) + \abs(E))$. Together with lemma \ref{habib:complexity} this gives the running time of the whole recognition algorithm to be $O(\abs{V} + \abs{E})$.
