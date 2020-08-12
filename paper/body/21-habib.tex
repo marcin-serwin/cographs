@@ -140,7 +140,7 @@ These refinement functions can now be used in order to write our main function t
 
 In order to prove that algorithm \ref{habib:mainpseudo} computes a factorizing permutation it is enough to show that at each step of computation the partition $\Part P$ is compatible with a factorizing permutation. This can be shown by first showing validity of refinement rules in relation to current permutation and then using the refinement rules themselves. For the details of the proof see Theorem 20 in \cite{habib}.
 
-This algorithm runs in $O(|\V(G)| + |\E(G)|)$ if implemented correctly.
+This algorithm runs in $O(\abs{\V(G)} + \abs{\E(G)})$ if implemented correctly.
 
 \begin{lemma}
     The neighborhood of each vertex is used at most 3 times to refine the partition.
@@ -149,4 +149,4 @@ This algorithm runs in $O(|\V(G)| + |\E(G)|)$ if implemented correctly.
     The neighborhood of a vertex can only be used once in the \ref{habib:refrule2} as after that the vertex will no longer be in the $Q$ queue. It is then used in the line 23 of \ref{habib:mainpseudo}, but it can be ensured by always picking the smaller neighborhood that it is used at most once by charging the new origin. The next use of it is in the \ref{habib:refrule1}, but after that the vertex is in singleton part and ignored by algorithm.
 \end{proof}
 
-Since we will touch each neighborhood $O(1)$ times, it follows that the whole algorithm runs in $O\left(\sum_{v\in V} \abs{\N(v)}\right) = O(|\V(G)| + |\E(G)|)$.
+Since we will touch each neighborhood $O(1)$ times, it follows that the whole algorithm runs in $O\left(\sum_{v\in V} \abs{\N(v)}\right) = O(\abs{\V(G)} + \abs{\E(G)})$.
