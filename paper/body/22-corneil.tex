@@ -1,0 +1,60 @@
+\section{Generating cotree algorithm}
+
+The algorithm, described fully in \cite{corneil}, is incremental in the sense that vertices are processed one at a time. Formally this means that given a cotree for a graph $G' = (V \setminus \{v\}, E \setminus \{\{u,v\} : u \in V\})$, the algorithm modifies cotree so that it is a valid cotree for a graph $G = (V,E)$ (if it is possible).
+
+\subsection{"Marking" vertices}
+
+Before proceeding to the main loop of the algorithm let us present a \ref{corneil:mark} function which will be used therein. For any node $v$ of cotree $T$, $v$.md denotes the number of $v$ which were marked or unmarked. Initially this value is $0$ and it is set to $0$ when $v$ is unmarked.
+
+
+\begin{function}
+    \caption{Mark($G, T, v$)}
+    \label{corneil:mark}
+    \DontPrintSemicolon
+
+    \KwIn{Graph $G=(V,E)$, cotree $T$ which defines graph $G[X]$ for some $X$ and vertex $v \not \in X$.}
+    \KwOut{Set of marked vertices}
+    \Begin{
+        $M = \N(v) \cap X$
+        $Q = M$
+
+        \While{$\abs{Q} > 0$}{
+            $v = Q$.pop() \;
+            $M$.remove($v$) \;
+            $v$.md $= 0$ \;
+            $p = p_T(v)$ \;
+            $M$.insert($p$) \;
+            $p$.md $+= 1$ \;
+            \If{$p$.md = $\abs{\C_T(p)}$}{
+                $Q$.append($p$) \;
+            }
+        }
+        \If{$\abs{M} > 0 \land \abs{\C(\Root(T))} = 1$}{
+            $M$.insert($\Root(T)$) \;
+        }
+        \Return{$M$}
+    }
+\end{function}
+
+Let $M$ be the result of the function \ref{corneil:mark}. This result alone is enough to determine whether the graph $G[X \cup \{v\}]$ is a cograph. To do so we must introduce some definitions.
+
+\begin{defi}
+    If $v \in M$ and $\kind_T(v) = 1$, we say that $v$ is \emph{properly marked} if $v$.md = $\abs{\C(v)} -1$.
+\end{defi}
+
+\begin{defi}
+    If $T$ is a marked cotree, then a path $(v_1, \ldots, v_n)$ is a \emph{legitimate alternating path} if $v_1, v_n$ are properly marked nodes and $v_2, v_4, \ldots, v_{n-1}$ are unmarked nodes such that $\kind(v_{2k}) = 0$.
+\end{defi}
+
+With these definitions we can present the main lemma used to identify cographs.
+
+\begin{lemma}
+    \label{corneil:mainlemma}
+    Let $\alpha$ be a node in $M$ in the lowest level of cotree and let $\beta$ be a node in $M \setminus \{\alpha\}$ in the lowest level of cotree. If $G[X]$ is a cograph then $G[X \cup \{v\}]$ is a cograph if and only if either $M = \emptyset$ or
+    \begin{enumerate}
+        \item $M \setminus \{\alpha\}$ consists only of properly marked nodes of a (possibly empty) legitimate alternating path which ends at $\Root(T)$ and
+        \item $\alpha$ is such that $\kind_T(\alpha) = 0$ and $p_T(\alpha) = \beta$ or $\alpha$ is such that $\kind_T(\alpha) = 1$ and $p_T(p_T(\alpha)) = \beta$.
+    \end{enumerate}
+\end{lemma}
+
+Proof of \ref{corneil:mainlemma} can be found in \cite{corneil}.
