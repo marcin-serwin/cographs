@@ -35,7 +35,7 @@ The main idea of the algorithm is to start with a partition and then, through a 
 Each factorizing permutation $\sigma$ has a corresponding partition of the form $\Part X_i = \{\sigma(i)\}$. The algorithm starts with trivial vertex partition $(V)$ and through refinements described in \cite{habib2} turns it into factorizing permutation. The refinements in question are
 
 \begin{defi}[Refinement rule 1]\label{habib:refrule1}
-    Let $G=(V,E)$ be a graph, $\Part P = (\Part X_1, \ldots, \Part X_k)$ be a partition of $V$ and $\Part X_i$ be a part in this partition. Pick vertex $v \in \Part X_i$ as a pivot and refine $\Part P$ into
+    Let $G=(V,E)$ be a graph, $\Part P = (\Part X_1, \ldots, \Part X_k)$ be a partition of $V$ and $\Part X_i$ be a part in this partition. Pick any vertex $v \in \Part X_i$ as a pivot and refine $\Part P$ into
     \[
         (\Part X_1, \ldots, \Part X_{i-1}, \Nbar(v) \cap \Part X_i, \{v\}, \N(v) \cap \Part X_i, \Part X_{i+1}, \ldots, \Part X_k).
     \]
