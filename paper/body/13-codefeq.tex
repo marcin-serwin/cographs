@@ -92,11 +92,11 @@ Let $X = \{x_1, x_2, x_3, x_4\}$ and let $v_1, v_2, v_3, v_4$ be (not necessaril
           In this case we know that $\{\{x_3, x_4\}, \{x_1, x_3\}, \{x_1, x_4\}, \{x_2, x_3\}\} \subseteq \E(G)$, which means that $|\E(G)| \geq 4$ which means that $|\E(G)| > |\E(P_4)|$.
 
 
-    \item $|\{v_1, v_2, v_3, v_4\}| = 2$ and the split is $3$ to $1$. We assume that $v_1 = v_2 = v_3 \neq v_4$.
+    \item $|\{v_1, v_2, v_3, v_4\}| = 2$ and one vertex is distinct from all others. We assume, without loss of generality, that $v_1 = v_2 = v_3 \neq v_4$.
 
           In this case we know that $\{\{x_1, x_4\}, \{x_2, x_4\}, \{x_3, x_4\}\} \subseteq \E(G)$. Let us assume that there exists isomorphism $f$ from $G$ to $P_4$. It follows that there exists vertex $f(x_4) \in \V(P_4)$ that has edges to all 3 vertices $f(x_1), f(x_2), f(x_3)$. But such vertex does not exist and so $G$ and $P_4$ are not isomorphic.
 
-    \item $|\{v_1, v_2, v_3, v_4\}| = 2$ and the split is $2$ to $2$. We assume that $v_1 = v_2 \neq v_3 = v_4$.
+    \item $|\{v_1, v_2, v_3, v_4\}| = 2$ and there are two pairs of identical vertices. We assume, without loss of generality, that $v_1 = v_2 \neq v_3 = v_4$.
 
           In this case we know that $\{\{x_1, x_3\}, \{x_1, x_4\}, \{x_2, x_3\}, \{x_2, x_4\}\} \subseteq \E(G)$, which means that $|\E(G)| \geq 4$ which means that $|\E(G)| > |\E(P_4)|$.
 \end{enumerate}
