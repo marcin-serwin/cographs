@@ -35,33 +35,36 @@ The main idea of the algorithm is to start with a partition and then, through a 
 Each factorizing permutation $\sigma$ has a corresponding partition of the form $\Part X_i = \{\sigma(i)\}$. The algorithm starts with trivial vertex partition $(V)$ and through refinements described in \cite{habib2} turns it into factorizing permutation. The refinements in question are
 
 \begin{defi}[Refinement rule 1]\label{habib:refrule1}
-    Let $\Part P = (\Part X_1, \ldots, \Part X_k)$ be a partition of $\V(G)$ and $\Part X_i$ be a part in this partition. Pick vertex $v \in \Part X_i$ as a pivot and refine $\Part P$ into
+    Let $G=(V,E)$ be a graph, $\Part P = (\Part X_1, \ldots, \Part X_k)$ be a partition of $V$ and $\Part X_i$ be a part in this partition. Pick vertex $v \in \Part X_i$ as a pivot and refine $\Part P$ into
     \[
         (\Part X_1, \ldots, \Part X_{i-1}, \Nbar(v) \cap \Part X_i, \{v\}, \N(v) \cap \Part X_i, \Part X_{i+1}, \ldots, \Part X_k).
     \]
 \end{defi}
 
 \begin{defi}[Refinement rule 2]\label{habib:refrule2}
-    Let $\Part P = (\Part X_1, \ldots, \Part X_k)$ be a partition of $\V(G)$ and $\Part X_i$ be a part in this partition. Let $v \not\in \Part X_i$ be a vertex such that $\exists_{u,u' \in \Part X_i} \{u,v\} \in \E(G) \land \{u',v\} \not\in \E(G)$. Now refine $\Part P$ into
+    Let $G=(V,E)$ be a graph, $\Part P = (\Part X_1, \ldots, \Part X_k)$ be a partition of $V$ and $\Part X_i$ be a part in this partition. Let $v \not\in \Part X_i$ be a vertex such that $\exists_{u,u' \in \Part X_i} \{u,v\} \in E \land \{u',v\} \not\in E$. Now refine $\Part P$ into
     \[
         (\Part X_1, \ldots, \Part X_{i-1}, \Nbar(v) \cap \Part X_i, \N(v) \cap \Part X_i, \Part X_{i+1}, \ldots, \Part X_k).
     \]
 \end{defi}
 
-Proofs that these refinements produce permutations compatible with factorizing permutation can be found in \cite{habib} and \cite{habib2}. Pseudo code of implementation of the first rule is presented in \ref{habib:refrule1impl}.
+Proofs that these refinements produce permutations compatible with factorizing permutation can be found in \cite{habib} and \cite{habib2}. Implementation of rule 1 consists of simply receiving returning $\Part P = (\Part X_1, \ldots, \Part X_k)$, graph $G=(V,E)$, origin part $\Part X_O$ and origin $O$, and returning partition
+\[
+    (\Part X_1, \ldots, \Nbar(O) \cap \Part X_O, \{O\}, \N(O) \cap \Part X_O, \ldots, \Part X_k).
+\]
+% 
+% \begin{function}
+%     \caption{RefineRule1($\Part P, G, \Part X_O, O$)}
+%     \label{habib:refrule1impl}
+%     \DontPrintSemicolon
 
-\begin{function}
-    \caption{RefineRule1($\Part P, G, \Part X_O, O$)}
-    \label{habib:refrule1impl}
-    \DontPrintSemicolon
-
-    \KwIn{Permutation $\Part P = (\Part X_1, \ldots, \Part X_k)$, graph $G=(V,E)$, origin part $\Part X_O$ and origin $O$}
-    \KwOut{A permutation compatible with $\Part P$ that is refined using \ref{habib:refrule1}}
-    \Begin{
-        \Return{$(\Part X_1, \ldots, \Nbar_G(O) \cap \Part X_O, \{O\}, \N_G(O) \cap \Part X_O, \ldots, \Part X_k)$}
-    }
-\end{function}
-
+%     \KwIn{Permutation $\Part P = (\Part X_1, \ldots, \Part X_k)$, graph $G=(V,E)$, origin part $\Part X_O$ and origin $O$}
+%     \KwOut{A permutation compatible with $\Part P$ that is refined using \ref{habib:refrule1}}
+%     \Begin{
+%         \Return{$(\Part X_1, \ldots, \Nbar(O) \cap \Part X_O, \{O\}, \N(O) \cap \Part X_O, \ldots, \Part X_k)$}
+%     }
+% \end{function}
+% 
 Pseudo code of implementation of the second rule is presented in \ref{habib:refrule2impl}.
 
 \begin{function}
