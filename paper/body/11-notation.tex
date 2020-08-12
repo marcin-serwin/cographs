@@ -121,3 +121,18 @@ Fundamental notion in this paper is a graph. All graphs used in this paper are a
         \end{cases}
     \]
 \end{defi}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[sibling distance=5em]
+        \node {0}
+        child { node {1} }
+        child { node {2}
+                child { node {3}
+                        child { node {4} }
+                        child { node {5} }
+                        child { node {6} } }
+                child { node {7} } };
+    \end{tikzpicture}
+    \caption{Given a rooted tree $T$, $\LCA_T^s$ return the lowest common ancestor of all vertices in input set. Assuming that we use the tree pictured above, example values are: $\LCA_T^s(\{4\}) = 4, \LCA_T^s(\{1,7\}) = 0, \LCA_T^s(\{4, 6, 7\}) = 2, \LCA_T^s(\{2,3\}) = 2$.}
+\end{figure}
