@@ -1,0 +1,35 @@
+\section{General template for cotree operating algorithms}
+
+Three of the four implemented algorithms here will be following a very similar template. This template revolves around recursively running the algorithm on subcotrees of a cotree and then combining the results based on the type of node. Details of this template algorithm are described in \ref{algos:template}.
+
+
+\begin{function}
+    \caption{TraverseCotree($T, hl, hj, hu$)}
+    \SetKwFunction{FMain}{TraverseCotree}
+    \label{algos:template}
+    \DontPrintSemicolon
+
+    \KwIn{Cotree $T = ((V, p), \kind)$ and three functions: $hl$ - handle leafs, $hj$ - handle join and $hu$ - handle union.}
+    \KwOut{Effect of recursively applying $hl, hj, hu$ to the cotree.}
+    \Begin{
+        \lIf{$\kind(\Root(T)) = s$}{\Return{$hl(\Root(T))$}}
+
+        $r = \bot$ \;
+        \ForAll{$v \in V$}{
+            $sr =$ \FMain($T[v], hl, hj, hu$)
+
+            \lIf{$r \neq \bot \land \kind(\Root(T) = 1)$}{
+                $r = hj(r, sr)$
+            }
+            \lElseIf{$r \neq \bot \land \kind(\Root(T) = 0)$}{
+                $r = hu(r, sr)$
+            }
+            \lElse{
+                $r = sr$
+            }
+        }
+        \Return{r}
+    }
+\end{function}
+
+The code for this function is rather self explanatory. For example, if we run the function with $hl(v) = \singleton{v}, hj(G_1, G_2) = \Gjoin{G_1}{G_2}, hu(G_1, G_2) = \Gunion{G_1}{G_2}$ we would simply get a graph defined by cotree $T$ inputted to the function.
