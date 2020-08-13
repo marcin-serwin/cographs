@@ -58,3 +58,120 @@ With these definitions we can present the main lemma used to identify cographs.
 \end{lemma}
 
 Proof of \ref{corneil:mainlemma} can be found in \cite{corneil}.
+
+The \ref{corneil:mark} function will only examine $O(\abs{\N(v)})$ vertices. It is easy to see since initially at most $\abs{\N(v)}$ are marked and since all internal nodes (except root) have at least two children, pushing upward will be decreasing the number of marked vertices.
+
+\subsection{Cograph recognition}
+
+Using the \ref{corneil:mark} we can implement the main cotree constructing algorithm. As was mentioned this algorithm is incremental we start with a cotree with two vertices and then add next vertices until cotree for a full graph is constructed. Algorithm is stopped if adding another vertex the graph stops being a cograph. Algorithm is fully described below in \ref{corneil:main}.
+
+\begin{function}
+    \caption{ConstructCotree($G$)}
+    \label{corneil:main}
+    \DontPrintSemicolon
+    \SetKwFunction{FMark}{Mark}
+    \SetKwFunction{FLowest}{FindLowest}
+
+    \KwIn{Graph $G=(V,E)$.}
+    \KwOut{Cotree $T$ such that $\G(T) = G$, if $G$ is a cograph, $\bot$ otherwise.}
+    \Begin{
+        $v_1, v_2 \colon v_1, v_2 \in V$ \;
+        $T =$ cotree with a single (1) vertex as a root \;
+        \lIf{$\{v_1, v_2\} \in E$}{
+            $\Root(T)$.add\_children($v_1, v_2$)
+        }\lElse{
+            $\Root(T)$.add\_children(new (0) node with $v_1, v_2$ as children
+        }
+
+        \ForEach{$v \in V\setminus\{v_1, v_2\}$}{
+            $M =$ \FMark($G,T,v$) \;
+            \uIf{all nodes of $T$ were marked and unmarked}{
+                $\Root(T)$.add\_children($v$)\;
+            }
+            \uElseIf{no nodes were marked}{
+                \eIf{$\abs{\C(\Root(T))} = 1$}{
+                    $c\colon c \in \C(\Root(T))$\;
+                    $c$.add\_children($v$)\;
+                }{
+                    $c =$ new (0) node with $\Root(T)$ and $v$ as a children \;
+                    $T =$ cotree with (new (1) node with $c$ as a child) as a root\;
+                }
+            }
+            \Else{
+                $u =$ \FLowest($T, M$)\;
+                \lIf{$u = \bot$}{\Return{$\bot$}}
+                $C = $ \leIf{$\kind(u) = 1$}{$\{v:v\in \C(u) \land v$ were marked$\}$}{$\{v:v\in \C(u) \land v$ were not marked$\}$}
+
+                \eIf{$\abs{C}= 1$}{
+                    \eIf{$w \in C \land \kind(w) = s$}
+                    {
+                        $c =$ new ($1-\kind(u)$) node with $w, v$ as children \;
+                        replace $w$ with $c$ as a new $u$ child \;
+                    }
+                    {$w$.add\_children($v$)}
+                }{
+                    $y =$ new ($\kind(u)$) node with $\{v:v\in \C(u) \land v$ were marked$\}$ as children\;
+                    $\C(u) = \C(u) \setminus \{v:v\in \C(u) \land v$ were marked$\}$ \;
+                    \eIf{$\kind(u) = 0$}{
+                        $u$.add\_children(new (1) node with $v,y$ as children)
+                    }{
+                        replace $u$ with $y$ as a new $p_T(u)$ child \;
+                        $y$.add\_children(new (0) node with $v,u$ as children)
+                    }
+                }
+            }
+        }
+        \Return{$T$}
+    }
+\end{function}
+
+Within \ref{corneil:main} function a \ref{corneil:findlowest} is used. This function checks whether the graph after adding a new vertex is still a cograph and if it is it returns the lowest marked vertex. The function goes through marked vertices and checks whether they are on a legitimate alternating path. It unmarks the vertices along this paths so that we always choose a lower one in new iteration. If a necessary condition fails it stops and returns $\bot$, otherwise the main loop is repeated until no marked vertices remain.
+
+\begin{function}
+    \caption{FindLowest($T, M$)}
+    \label{corneil:findlowest}
+    \DontPrintSemicolon
+
+    \KwIn{Cotree $T$ and marked vertices $M$.}
+    \KwOut{Lowest marked vertex of cotree $T$ if $G[X \cup v]$ is a cograph, $\bot$ otherwise.}
+    \Begin{
+        $y = \top$ \;
+        \lIf{$\Root(T) \not\in M$}{\Return{$\bot$}}
+        \If{$\abs{\C(\Root(T))} - 1 \neq \Root(T)$.md}{
+            $y = \bot$ \;
+            $M = M \setminus \Root(T)$ \;
+            $\Root(T)$.md = 0 \;
+            $u = w = \Root(T)$ \;
+        }
+
+        \While{$M \neq \emptyset$}{
+            $u = M$.pop() \;
+            \lIf{$y \neq \top$}{\Return{$\bot$}}
+            \eIf{$\kind(u) = 1$}{
+                \lIf{$u$.md $\neq \abs{\C(u)} - 1$}{$y = \bot$}
+                \lIf{$p_T(u) \in M$}{\Return{$\bot$}}
+                $t = p_T(p_T(u))$ \;
+            }{
+                $y = \bot$\;
+                $t = p_T(u)$
+            }
+            $M = M \setminus \{u\}$ \;
+            $u$.md = 0
+
+            \While{$t \neq w$}{
+                \lIf{$t = \Root(T)$}{\Return{$\bot$}}
+                \lIf{$t \not\in M$}{\Return{$\bot$}}
+                \lIf{$t$.md $\neq \abs{\C(t)}$}{\Return{$\bot$}}
+                \lIf{$p_T(t) \in M$}{\Return{$\bot$}}
+                $M = M \setminus \{t\}$ \;
+                $t$.md = 0 \;
+                $t = p_T(p_T(t))$ \;
+            }
+            $w = u$
+        }
+        \Return{$u$}
+    }
+\end{function}
+
+Almost all tree alterations can be done in $O(1)$ time. The only exception is when the lowest marked node has two or more children which have been marked and unmarked, or not marked (depending of the kind of node). Since the set of marked and unmarked is bounded by $O(\abs{\N(v)})$ (as it was produced by \ref{corneil:mark} function), this operation can be done in $O(\abs{\N(v)})$.
+Combining this fact with $O(\abs{\N(v)})$ timing of \ref{corneil:mark} function it is easy to conclude that the whole algorithm runs in $O(\sum_{v \in V} \abs{\N(v)}) = O(\abs{V} + \abs{E})$ time.
