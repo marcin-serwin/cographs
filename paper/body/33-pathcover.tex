@@ -1,0 +1,52 @@
+\section{Minimal path cover}
+
+The last algorithm implemented solves the minimal path cover algorithm. The problem asks us to find smallest set of paths $S = \{(v_1^1, \ldots, v_{n_1}^1), \ldots, (v_1^k, \ldots, v_{n_k}^k) \}$ such that
+\[
+    \begin{split}
+        & \{v_1^1, \ldots, v_{n_1}^1, \ldots, v_1^k, \ldots, v_{n_k}^k\} = V \land \\
+        & \forall_{i_1,i_2 \in \{1,\ldots,k\},j_1 \in \in \{1, \ldots, n_{i_1}\},j_2 \in \in \{1, \ldots, n_{i_2}\}}  \land \\
+        & \forall_{i \in \{1, \ldots, k\}, j \in \{1, \ldots, n_i - 1\}} \{v_j^k\}.
+    \end{split}
+\]
+In other words the objective is to find smallest set of disjoint paths covering the whole graph. The algorithm implemented is fully described in \cite{olariu}.
+
+\subsection{Mend and merge}
+
+The main section of the algorithm consists of \ref{pathcover:mendmerge} function. This function handles (1) nodes of cotree by joining minimum path cover of one subgraph with vertices of the second subgraph. The details are described below.
+
+
+\begin{function}
+    \caption{MendAndMerge($V, S$)}
+    \label{pathcover:mendmerge}
+    \DontPrintSemicolon
+    \SetKwFunction{FSum}{sum}
+
+    \KwIn{Set of vertices $V$ of graph $G_1$ and minimal path cover $S$ of graph $G_2$.}
+    \KwOut{Minmial path cover of graph $\Gjoin{G_1}{G_2}$.}
+    \Begin{
+        $P = S$.pop() \;
+        $s =$ \FSum($\{\abs{p} : p \in S\}$) \;
+        \While{$V \neq \emptyset \land s \geq \abs{V}$}{
+            $P' = S$.pop() \;
+            $v = V$.pop() \;
+            $P = (P, v, P')$ \;
+            $s = s - \abs{P'}$ \;
+        }
+        \If{$V = \emptyset$}{
+            \Return{$S \cup \{P\}$}
+        }
+        $S' = \{u_1, \ldots, u_k : \forall_{i \in \{1, \ldots, k\}}\exists_{p \in S} u_i \in p\}$ \;
+        $P = (v_1, \ldots, v_n)$\;
+        $V = \{w_1, \ldots, w_m\}$\;
+        \Return{$\{(
+                v_1, \ldots, v_{n - m + k},
+                w_1, v_{n - m + k + 1},\ldots, v_n,
+                w_{m-k}, u_1, w_{m-k + 1} \ldots, u_k, w_m)\}$} \;
+
+    }
+\end{function}
+
+The basic idea of the function is to take all vertices of graph $G_1$ and use them to connect the paths from minimal path cover of $G_2$. If the vertices of $G_1$ run out while connecting paths we return the merged paths and the remaining ones as the minimal path cover. Otherwise if the number of unused vertices in $G_1$ drops below the number of vertices in the remaining paths, we construct Hamiltonian path and return it as a minimal path cover. The fact that this Hamiltonian path is a proper path and always exists is proved in Lemma 2 of \cite{olariu}.
+
+If the sets in this algorithm are maintained using linked lists it is easy to see that the first while loop in the algorithm takes at most $O(\abs{V})$ steps. Similarly the second stage comprises of first removing at most $O(\abs{V})$ elements from path $P$ and then extending that path with at most $2\abs{A} - 1 \in O(\abs{V})$ elements. This means that the function \ref{pathcover:mendmerge} is bounded by $O(\abs{V})$.
+
