@@ -50,3 +50,41 @@ The basic idea of the function is to take all vertices of graph $G_1$ and use th
 
 If the sets in this algorithm are maintained using linked lists it is easy to see that the first while loop in the algorithm takes at most $O(\abs{V})$ steps. Similarly the second stage comprises of first removing at most $O(\abs{V})$ elements from path $P$ and then extending that path with at most $2\abs{A} - 1 \in O(\abs{V})$ elements. This means that the function \ref{pathcover:mendmerge} is bounded by $O(\abs{V})$.
 
+\subsection{Main algorithm}
+
+In order for this algorithm to work we must ensure that there are always fewer vertices in $V$ than in $S$ when passing it to \ref{pathcover:mendmerge} function. This forces us to process the nodes of the cotree in a certain order. Details can be seen in \ref{pathcover:minpathcover} function.
+
+
+\begin{function}
+    \caption{FindMinPathCover($T$)}
+    \label{pathcover:minpathcover}
+    \DontPrintSemicolon
+    \SetKwFunction{FMain}{FindMinPathCover}
+    \SetKwFunction{FMandM}{MendAndMerge}
+
+    \KwIn{Cotree $T = ((V, p), \kind)$.}
+    \KwOut{Minmial path cover of graph $\G(T)$.}
+    \Begin{
+        \lIf{$\kind(\Root(T)) = s$}{\Return{$\{\Root(T)\}$}}
+
+        \If{$\kind(\Root(T)) = 0$}{
+            $r = \emptyset$
+            \ForEach{$c \in \C(\Root(T))$}{
+                $r = r \cup$ \FMain($T[c]$)
+            }
+            \Return{$r$}
+        }
+
+        \lIf{$\C(\Root(T)) = \{v\}$} {\Return{\FMain($T[v]$)}}
+
+        \ForEach{$c \in \C(\Root(T))$}{
+            \eIf{$\abs{\V(T[c])} > \abs{\V(T)} - \abs{\V(T[c])}$}{
+                \Return{\FMandM($\V(T) \setminus \V(T[c])$, \FMain($T[c]$))}
+            }{
+                \Return{\FMandM($\V(T[c])$, \FMain($(V \setminus \V(T[c]), p \setminus (p_{T[c]}\cup \{(c, \Root(T))\}), \kind \setminus \kind_{T[c]}$))}
+            }
+        }
+    }
+\end{function}
+
+It is easy to see that if sets are maintained as linked lists the (0) nodes are take $O(1)$ time to process. In case of (1) nodes we use \ref{pathcover:mendmerge} function which is bounded by $O(\abs{V})$. But since we make sure that $\abs{V} < \abs{v : \exists{p \in S} v\in p\}}$ at each step it follows that the whole algorithm runs in $O(\abs{\V(T)})$ time.
