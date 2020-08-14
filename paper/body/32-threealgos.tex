@@ -39,3 +39,41 @@ The functions $hl, hj$ and $hu$ are presented below:
 \end{enumerate}
 
 If the functions are represented as lists of lists of vertices, one can simply implement the $hu$ and $hj$ by concatenating respectively lists of vertices and the whole list. Concatenation of the whole list can be done in $O(1)$ time, and concatenation of the lists of vertices can be done in $O(\min(|L_1|, |L_2|))$ time, where $L_1, L_2$ are the main lists being merged. Since in order to extend the main lists the $hj$ function must be run it follows that $\sum \min(|L_1|, |L_2|) = O(\text{number of $hj$ calls})$, which means that the whole algorithm runs in $O(\abs{\V(T)})$ size which is $O(\abs{\V(\G(T))} + \abs{\E(\G(T))})$.
+
+\subsection{Maximal independent set and maximal clique}
+
+The problem of maximal clique is to find biggest set $S \subseteq V$ for graph $G = (V,E)$ such that $\forall_{v_1, v_2 \in S} \{v_1, v_2\} \in E$. The problem of maximal independent set is to find biggest set $S \subseteq V$ for graph $G = (V,E)$ such that $\forall_{v_1, v_2 \in S} \{v_1, v_2\} \not\in E$. Similarly to the previous problem, these problems are NP-complete in general case as was shown in \cite{karp}.
+
+Since they are dual problems (maximal independent set of $G$ is a maximal clique of $\Gcomp{G}$) we will fully describe only one of them. Specifically we will describe the algorithm of finding maximal clique in a cograph. In order to transform this algorithm into the maximal independent set algorithm one only has to switch $hj$ and $hu$ functions.
+
+The functions $hl, hj$ and $hu$ for maximal clique problem are presented below:
+
+\begin{enumerate}
+    \item $hl$
+
+          This is the base case and it represents a single leaf. The $\singleton{v}$ is a clique itself, so all vertices of graph are returned as a clique. Therefore the function is defined as:
+          \[
+              hl(v) = \{v\}
+          \]
+
+    \item $hj$
+
+          In this case we have to return a maximal clique $S$ for $\Gjoin{G_1}{G_2} = (V,E)$ given maximal cliques $S_1,S_2$ for $G_1 = (V_1, E_1), G_2 = (V_2, E_2)$ respectively. Since $\{v_1, v_2\} \in E$ for each $v_1 \in V_1, v_2 \in V_2$ it follows that $S_1 \cup S_2$ is also a clique. We can therefore define $hj$ so that
+          \[
+              hj(S_1, S_2) = S_1 \cup S_2
+          \]
+          Let us notice that $S_1 \cup S_2$ is indeed the maximal clique since if there was a bigger clique $S$ then $S \cap V_1$ and $S \cap V_2$ would also be a cliques. But the fact that $\abs{S} > \abs{S_1 \cup S_2} = \abs{S_1} + \abs{S_2}$ implies that $\abs{S \cap V_1} > \abs{S_1}$ or $\abs{S \cap V_2} > \abs{S_2}$. But this would imply that $S_1$ or $S_2$ is not the maximal clique, which contradicts the assumption.
+
+    \item $hu$
+
+          In this case we have to return a maximal clique $S$ for $\Gunion{G_1}{G_2} = (V,E)$ given maximal cliques $S_1,S_2$ for $G_1 = (V_1, E_1), G_2 = (V_2, E_2)$ respectively. Since $E = E_1 \cup E_2$ it is easy to see that no new clique might have appeared other than already present in $G_1$ or $G_2$. All we have to do is pick the biggest one already present so:
+
+          \[
+              hu(f_1, f_2) = \begin{cases}
+                  S_1 & \text{if } \abs{S_1} \geq \abs{S_2} \\
+                  S_2 & \text{else}
+              \end{cases}
+          \]
+\end{enumerate}
+
+If we implement the maximal clique sets as lists and remember their lengths it is easy to see that both $hj$ and $hu$ operations are in $O(1)$ time. This means that the whole algorithm runs in $O(\abs{\V(T)})$ size which is $O(\abs{\V(\G(T))} + \abs{\E(\G(T))})$.
