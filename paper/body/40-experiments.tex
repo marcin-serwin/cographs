@@ -1,8 +1,8 @@
-\section{Implementation and experiments}
+\chapter{Implementation and experiments}
 
 All aforementioned algorithms were implemented in Python and are available at \url{https://github.com/marcin-serwin/cographs}. In this chapter we will compare the experimental execution times of cograph recognition algorithms and compare algorithms operating on cotrees to brute force algorithms for general graphs. Times are presented as average over a sample of 100 graphs, and worst time in the same sample. All times are given in milliseconds.
 
-\subsection{Cograph recognition}
+\section{Cograph recognition}
 These tests are split into categories by size - 16, 128 and 1024 vertices - and by whether they are cographs or not.
 
 \begin{center}
@@ -46,7 +46,7 @@ These tests are split into categories by size - 16, 128 and 1024 vertices - and 
     \end{tabular}
 \end{center}
 
-\subsection{Cotree algorithms}
+\section{Cotree algorithms}
 
 The tests are split into categories by size - 4, 8, 16, 128 and 1024  vertices. Brute force algorithms are only presented on graphs of size 4, 8 and, when feasible, 16. Since they are exponential it is not feasible to evaluate them for bigger graphs.
 
