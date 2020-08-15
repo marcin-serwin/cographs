@@ -7,34 +7,41 @@ These tests are split into categories by size - 16, 128 and 1024 vertices - and 
 
 \begin{center}
 
-    \begin{tabular}{ |c|c|c|c|}
+    \begin{tabular}{ |c|c|c|c|c|}
         \hline
-        \multicolumn{4}{|c|}{Cograph recognition - positive answer} \\
+        \multicolumn{5}{|c|}{Cograph recognition - positive answer}                                                  \\
         \hline
-         & 16 vertices & 128 vertices & 1024 vertices               \\
+                                                                 & number of vertices & 16     & 128     & 1024      \\
         \hline
-        \makecell{Brute force algorithm                             \\ from \cite{habib}} & \makecell{mean: 0.1426                                \\ max: 0.2230} & \makecell{mean: 12.7623 \\ max: 46.9928} & \makecell{mean: 191.4707 \\ max: 670.3810} \\
+        \multirow{2}{*}{Brute force algorithm from \cite{habib}} & mean               & 0.1426 & 12.7623 & 191.4707  \\
+                                                                 & max                & 0.2230 & 46.9928 & 670.3810  \\
         \hline
-        \makecell{Main algorithm                                    \\ from \cite{habib}} & \makecell{mean: 0.4309                                \\ max: 0.7717} & \makecell{mean: 46.9146 \\ max: 96.5842} & \makecell{mean: 707.2815 \\ max: 1603.7385} \\
+        \multirow{2}{*}{Main algorithm from \cite{habib}}        & mean               & 0.4309 & 46.9146 & 707.2815  \\
+                                                                 & max                & 0.7717 & 96.5842 & 1603.7385 \\
         \hline
-        \makecell{Main algorithm                                    \\ from \cite{corneil}} & \makecell{mean: 0.2517                                \\ max: 0.6341} & \makecell{mean: 31.0962 \\ max: 60.9331} & \makecell{mean: 477.1022 \\ max: 1617.7562} \\
+        \multirow{2}{*}{Main algorithm from \cite{corneil}}      & mean               & 0.2517 & 31.0962 & 477.1022  \\
+                                                                 & max                & 0.6341 & 60.9331 & 1617.7562 \\
         \hline
     \end{tabular}
 \end{center}
 
 \begin{center}
 
-    \begin{tabular}{ |c|c|c|c|}
+    \begin{tabular}{ |c|c|c|c|c|}
         \hline
-        \multicolumn{4}{|c|}{Cograph recognition - negative answer} \\
+        \multicolumn{5}{|c|}{Cograph recognition - negative answer}                                                  \\
         \hline
-         & 16 vertices & 128 vertices & 1024 vertices               \\
+                                                                 & number of vertices & 16     & 128     & 1024      \\
         \hline
-        \makecell{Brute force algorithm                             \\ from \cite{habib}} & \makecell{mean: 0.1539                                \\ max: 0.3384} & \makecell{mean: 15.1173 \\ max: 21.9287} & \makecell{mean: 283.3024 \\ max: 524.0242} \\
+        \multirow{2}{*}{Brute force algorithm from \cite{habib}} & mean               & 0.1539 & 15.1173 & 283.3024  \\
+                                                                 & max                & 0.3384 & 21.9287 & 524.0242  \\
         \hline
-        \makecell{Main algorithm                                    \\ from \cite{habib}} & \makecell{mean: 0.4133                                 \\ max: 0.7340} & \makecell{mean: 46.2553 \\ max: 80.9675} & \makecell{mean: 808.2423 \\ max: 1360.4159} \\
+        \multirow{2}{*}{Main algorithm from \cite{habib}}        & mean               & 0.4133 & 46.2553 & 808.2423  \\
+                                                                 & max                & 0.7340 & 80.9675 & 1360.4159 \\
         \hline
-        \makecell{Main algorithm                                    \\ from \cite{corneil}} & \makecell{mean:  0.1033                                 \\ max: 0.3972} & \makecell{mean: 0.3357  \\ max: 1.1045} & \makecell{mean:  1.0391  \\ max: 1.7819} \\
+        \multirow{2}{*}{Main algorithm from \cite{corneil}}      & mean               & 0.1033 & 0.3357  & 1.0391    \\
+                                                                 & max                & 0.3972 & 1.1045  & 1.7819    \\
+
         \hline
     \end{tabular}
 \end{center}
