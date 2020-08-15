@@ -46,6 +46,10 @@ These tests are split into categories by size - 16, 128 and 1024 vertices - and 
     \end{tabular}
 \end{center}
 
+As can be easily noticed there isn't much different brute force and efficient algorithms in case of positive answers. In fact the efficient algorithms seem to perform worse. This is caused by the fact that during implementation Python sets were used to simplify the code. They are used much more frequently and extensively in main algorithms when compared to brute force and hence the much worse performance.
+
+Worth noting is also much better performance of \cite{corneil} algorithm in case of negative answer. This is caused by the fact that algorithm is incremental and trying build cotrees one vertex at a time. In case of random graphs it is quite easy to find $P_4$ within the first few chosen vertices. In contrast factorizing permutation algorithms must always process all vertices before checking whether graph is a cograph.
+
 \section{Cotree algorithms}
 
 The tests are split into categories by size - 4, 8, 16, 128 and 1024  vertices. Brute force algorithms are only presented on graphs of size 4, 8 and, when feasible, 16. Since they are exponential it is not feasible to evaluate them for bigger graphs.
