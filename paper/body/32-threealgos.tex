@@ -3,6 +3,7 @@
 These three algorithms are implemented using \ref{algos:template} template. Their implementation is described by simply describing $hl, hj, hu$ functions and proving their correctness.
 
 \subsection{Coloring}
+\label{32-coloring}
 
 Coloring is a problem of finding a function $f\colon V \mapsto \{1, \ldots, n\}$ for a graph $G = (V,E)$, such that $\forall_{\{u,v\} \in E} f(u) \neq f(v)$ and $n$ is the smallest possible. This problem is NP-Complete in general case as shown in \cite{karp}, but can be solved in polynomial time on cographs.
 
@@ -41,6 +42,7 @@ The functions $hl, hj$ and $hu$ are presented below:
 If the functions are represented as lists of lists of vertices, one can simply implement the $hu$ and $hj$ by concatenating respectively lists of vertices and the whole list. Concatenation of the whole list can be done in $O(1)$ time, and concatenation of the lists of vertices can be done in $O(\min(|L_1|, |L_2|))$ time, where $L_1, L_2$ are the main lists being merged. Since in order to extend the main lists the $hj$ function must be run it follows that $\sum \min(|L_1|, |L_2|) = O(\text{number of $hj$ calls})$, which means that the whole algorithm runs in $O(\abs{\V(T)})$ size which is $O(\abs{\V(\G(T))} + \abs{\E(\G(T))})$.
 
 \subsection{Maximal independent set and maximal clique}
+\label{32-cliq}
 
 The problem of maximal clique is to find biggest set $S \subseteq V$ for graph $G = (V,E)$ such that $\forall_{v_1, v_2 \in S} \{v_1, v_2\} \in E$. The problem of maximal independent set is to find biggest set $S \subseteq V$ for graph $G = (V,E)$ such that $\forall_{v_1, v_2 \in S} \{v_1, v_2\} \not\in E$. Similarly to the previous problem, these problems are NP-complete in general case as was shown in \cite{karp}.
 
