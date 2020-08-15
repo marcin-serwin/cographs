@@ -16,10 +16,10 @@ In order to define the factorizing permutation we will need the concept of modul
     If $G=(V,E)$ is a graph then a permutation $\sigma$ of $V$ is called \emph{factorizing permutation} if for any strong modules $M, N$ and any indices $i < j < k$ it is not the case that $\sigma(i), \sigma(k) \in M$ and $\sigma(j) \in N$. In other words vertices of any strong modules appear consecutively in $\sigma$.
 \end{defi}
 
-The main idea of the algorithm is to start with a partition and then, through a series of refinements, turn it into a permutation.
+The main idea of the algorithm is to start with a partition and then, through a series of refinements, turn it into a factorizing permutation.
 
 \begin{defi}
-    \emph{Partition $\Part{P}$} of set $V$ is a tuple $(\Part{X}_1, \ldots, \Part{X}_k)$ such that $\forall_{i \neq j} \Part X_i \cap \Part X_j = \emptyset$ and $\bigcup_{i=1}^k X_i = V$. Each $\Part{X}_i$ is called a \emph{part}.
+    \emph{Partition $\Part{P}$} of set $V$ is a tuple $(\Part{X}_1, \ldots, \Part{X}_k)$ such that $\forall_{i \neq j} \Part X_i \cap \Part X_j = \emptyset$ and $\bigcup_{i=1}^k \Part X_i = V$. Each $\Part{X}_i$ is called a \emph{part}.
 
     If $u,v \in V$ and $u \in \Part X_i, v \in \Part X_j$ then we write $u <_{\Part P} v$ if and only if $i < j$.
 \end{defi}
@@ -113,7 +113,7 @@ These refinement functions can now be used in order to write our main function t
         $Q = $ empty queue \;
         $P = $ empty map \;
         \If{$\forall_v \{O, v\} \in E \lor \forall_v \{O, v\} \not\in E$}{
-            \Return{(\FMain($V \setminus \{O\}, E \cap \binom{V \setminus \{O\}}{2}$), O)} \;
+            \Return{$($\FMain$(V \setminus \{O\}, E \cap \binom{V \setminus \{O\}}{2}), O)$} \;
         }
         \While{$\exists_{\Part X_i \in \Part P} |\Part X_i| > 1$}{
             $\Part X_O\colon \Part X_O \in \Part P \land O \in \Part X_O$ \;
@@ -166,7 +166,7 @@ It is easy to see that if $G = (V,E)$ is a cograph then $u$ and $v$ are twins on
     \label{habib:testperm}
     \DontPrintSemicolon
 
-    \KwIn{Permutation $\sigma = (v_1, \ldots, v_n)$, graph $G=(V,E)$ ($\forall_i v_i \in V$). Permutation is represented as doubly linked list.}
+    \KwIn{Permutation $\sigma = (v_1, \ldots, v_n)$, graph $G=(V,E)$ ($\forall_i v_i \in V$).}
     \KwOut{True if $\sigma$ is factorizing permutation, else False}
     \Begin{
         Let $v_0$ and $v_{n+1}$ be added to $\sigma$. They are such that they are not twins with any other vertex in $V$. \;
@@ -188,6 +188,6 @@ It is easy to see that if $G = (V,E)$ is a cograph then $u$ and $v$ are twins on
     }
 \end{function}
 
-It is easy to see that if algorithms ends with $\sigma$ being a single vertex (and two dummy ones), then successful twin vertex elimination was found. The proof of the fact that for any factorizing permutation twin vertex elimination can found is presented in Theorem 26 of \cite{habib}.
+It is easy to see that if algorithms ends with $\sigma$ being a single vertex (and two dummy ones), then successful twin vertex elimination was found. The proof of the fact that for any factorizing permutation twin vertex elimination can be found is presented in Theorem 26 of \cite{habib}.
 
-Let us notice that this function consists of a single run over vertices of $G = (V,E)$. In each step we either remove a vertex from $\sigma$, move on to another vertex, or both. Each of these operations can be executed at most $\abs{V}$. Moreover, when checking if vertices are twins, neighborhood of each will be only used at most twice (once when the vertex is current and once when it is eliminated). It is therefore clear that running time of this function is $O(\abs(V) + \abs(E))$. Together with lemma \ref{habib:complexity} this gives the running time of the whole recognition algorithm to be $O(\abs{V} + \abs{E})$.
+Let us notice that this function consists of a single run over vertices of $G = (V,E)$. In each step we either remove a vertex from $\sigma$, move on to another vertex, or both. Each of these operations can be executed at most $\abs{V}$. Moreover, when checking if vertices are twins, neighborhood of each will be only used at most twice (once when the vertex is current and once when it is eliminated). It is therefore clear that running time of this function is $O(\abs{V} + \abs{E})$. Together with lemma \ref{habib:complexity} this gives the running time of the whole recognition algorithm to be $O(\abs{V} + \abs{E})$.

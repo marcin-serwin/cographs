@@ -10,21 +10,19 @@ Fundamental notion in this paper is a graph. All graphs used in this paper are a
 
 \begin{defi}
     \emph{Graph} $G$ is a tuple $(V,E)$ such that $V \subseteq \Vertices$ and $E \subseteq \binom{V}{2}$. Convenience functions $\V, \E$ are defined such that $\V(G) = V$ and $\E(G) = E$. Set $V$ is called \emph{vertices} and set $E$ is called \emph{edges}.
-
-    Throughout this paper all graphs are assumed to be finite (i.e. $|V| < \infty)$.
 \end{defi}
+Throughout this paper all graphs are assumed to be finite (i.e. $|V| < \infty)$.
 
 \begin{defi}
-    \emph{Order of graph $G$} is $|\V(G)|$. Whenever a word referring to size is used in context of graphs (e.g. "bigger", "smallest") it refers to the order of graph.
+    \emph{Order of a graph $G$} is $|\V(G)|$. Whenever a word referring to size is used in context of graphs (e.g. "bigger", "smallest") it refers to the order of graph.
 \end{defi}
 
 \begin{defi}
     If $G = (V,E)$ is a graph then the \emph{neighborhood} of vertex $v$ denoted as $\N_G(v)$ is a set of vertices such that $\N(v) = \{v' : v' \in V \land \{v, v'\} \in E\}$.
 
-    \emph{Non-neighborhood}, denoted as $\Nbar_G(v)$ is $V \setminus \N(v)$.
-
-    When graph is known from context the subscript $_G$ may be omitted in notation.
+    \emph{Non-neighborhood}, denoted as $\Nbar_G(v)$ is $V \setminus \N_G(v)$.
 \end{defi}
+When graph is known from context the subscript may be omitted in notation.
 
 \begin{defi}
     Let $G = (V,E)$ be a graph and $u, v \in V$. Vertices $u$ and $v$ are \emph{connected} if there exists a sequence of edges $\{u_i,v_i\}$ for $i \in \{1, \ldots, n\}$ such that:
@@ -78,28 +76,28 @@ Fundamental notion in this paper is a graph. All graphs used in this paper are a
         \item If $X$ is the smallest set such that $r \in X \land \forall_{v \in V} p(v) \in X \implies v \in X$ then $X = V$.
     \end{enumerate}
     Convenience functions $\V, \R, p_T, \C$ are defined so that $\V(T) = V, \R(T) = r, p_T(v) = p(v)$ and $\C_T(v) = \{v' : v' \in V \land p_T(v') = v\}$. When it is known from context, the subscript $_T$ is dropped and we write simply $p$ and $\C$ instead of $p_T$ and $\C_T$.
-
-    Whenever a term \emph{tree} is used it implicitly refers to \emph{rooted tree} unless specified otherwise.
-
-    Throughout this paper all trees are assumed to be finite (i.e. $|V| < \infty)$.
-
-    It is worth noting that a tree is not a graph, since graphs are tuples of vertices and edges and trees are tuples of vertices and parent functions.
-
-    \begin{figure}[h]
-        \centering
-        \begin{tikzpicture}[sibling distance=5em]
-            \node {0}
-            child { node {1} }
-            child { node {2}
-                    child { node {3}
-                            child { node {4} }
-                            child { node {5} }
-                            child { node {6} } }
-                    child { node {7} } };
-        \end{tikzpicture}
-        \caption{An Example of rooted tree $T$. In this case $\V(T) = \{0,\ldots,7\}, \R(T) = 0, p_T = \{(0, \bot), (1,0), (2,0), (3,2), (4,3), (5,3), (6,3), (7,2)\}$ and $\C_T = \{(0,\{1,2\}), (1,\emptyset), (2,\{3,7\}), (3,\{4,5,6\}), (4, \emptyset), (5, \emptyset), (6, \emptyset), (7, \emptyset)\}$}
-    \end{figure}
 \end{defi}
+
+Whenever a term \emph{tree} is used it implicitly refers to \emph{rooted tree} unless specified otherwise.
+
+Throughout this paper all trees are assumed to be finite (i.e. $|V| < \infty)$.
+
+It is worth noting that a tree is not a graph, since graphs are tuples of vertices and edges and trees are tuples of vertices and parent functions.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[sibling distance=5em]
+        \node {0}
+        child { node {1} }
+        child { node {2}
+                child { node {3}
+                        child { node {4} }
+                        child { node {5} }
+                        child { node {6} } }
+                child { node {7} } };
+    \end{tikzpicture}
+    \caption{An Example of rooted tree $T$. In this case $\V(T) = \{0,\ldots,7\}, \R(T) = 0, p_T = \{(0, \bot), (1,0), (2,0), (3,2), (4,3), (5,3), (6,3), (7,2)\}$ and $\C_T = \{(0,\{1,2\}), (1,\emptyset), (2,\{3,7\}), (3,\{4,5,6\}), (4, \emptyset), (5, \emptyset), (6, \emptyset), (7, \emptyset)\}$}
+\end{figure}
 
 \begin{defi}
     If $(V,p)$ is a tree and $v \in V$ then \emph{subtree rooted at v} denoted as $T[v]$ is a tree $(V', p')$ such that
