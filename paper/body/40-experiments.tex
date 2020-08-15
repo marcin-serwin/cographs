@@ -1,0 +1,39 @@
+\section{Implementation and experiments}
+
+All aforementioned algorithms were implemented in Python and are available at \url{https://github.com/marcin-serwin/cographs}. In this chapter we will compare the experimental execution times of cograph recognition algorithms and compare algorithms operating on cotrees to brute force algorithms for general graphs. The tests are split into categories by size (around 16, 128 and 1024  vertices) and, in case of recognition, by whether they are cographs or not. Times are presented as average over a sample of 100 graphs, and worst time in the same sample. All times are given in milliseconds.
+
+\subsection{Cograph recognition}
+
+\begin{center}
+
+    \begin{tabular}{ |c|c|c|c|}
+        \hline
+        \multicolumn{4}{|c|}{Cograph recognition - positive answer} \\
+        \hline
+         & 16 vertices & 128 vertices & 1024 vertices               \\
+        \hline
+        \makecell{Brute force algorithm                             \\ from \cite{habib}} & \makecell{mean: 0.1426                                \\ max: 0.2230} & \makecell{mean: 12.7623 \\ max: 46.9928} & \makecell{mean: 191.4707 \\ max: 670.3810} \\
+        \hline
+        \makecell{Main algorithm                                    \\ from \cite{habib}} & \makecell{mean: 0.4309                                \\ max: 0.7717} & \makecell{mean: 46.9146 \\ max: 96.5842} & \makecell{mean: 707.2815 \\ max: 1603.7385} \\
+        \hline
+        \makecell{Main algorithm                                    \\ from \cite{corneil}} & \makecell{mean: 0.2517                                \\ max: 0.6341} & \makecell{mean: 31.0962 \\ max: 60.9331} & \makecell{mean: 477.1022 \\ max: 1617.7562} \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+
+    \begin{tabular}{ |c|c|c|c|}
+        \hline
+        \multicolumn{4}{|c|}{Cograph recognition - negative answer} \\
+        \hline
+         & 16 vertices & 128 vertices & 1024 vertices               \\
+        \hline
+        \makecell{Brute force algorithm                             \\ from \cite{habib}} & \makecell{mean: 0.1539                                \\ max: 0.3384} & \makecell{mean: 15.1173 \\ max: 21.9287} & \makecell{mean: 283.3024 \\ max: 524.0242} \\
+        \hline
+        \makecell{Main algorithm                                    \\ from \cite{habib}} & \makecell{mean: 0.4133                                 \\ max: 0.7340} & \makecell{mean: 46.2553 \\ max: 80.9675} & \makecell{mean: 808.2423 \\ max: 1360.4159} \\
+        \hline
+        \makecell{Main algorithm                                    \\ from \cite{corneil}} & \makecell{mean:  0.1033                                 \\ max: 0.3972} & \makecell{mean: 0.3357  \\ max: 1.1045} & \makecell{mean:  1.0391  \\ max: 1.7819} \\
+        \hline
+    \end{tabular}
+\end{center}
