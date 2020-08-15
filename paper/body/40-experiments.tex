@@ -1,8 +1,9 @@
 \section{Implementation and experiments}
 
-All aforementioned algorithms were implemented in Python and are available at \url{https://github.com/marcin-serwin/cographs}. In this chapter we will compare the experimental execution times of cograph recognition algorithms and compare algorithms operating on cotrees to brute force algorithms for general graphs. The tests are split into categories by size (around 16, 128 and 1024  vertices) and, in case of recognition, by whether they are cographs or not. Times are presented as average over a sample of 100 graphs, and worst time in the same sample. All times are given in milliseconds.
+All aforementioned algorithms were implemented in Python and are available at \url{https://github.com/marcin-serwin/cographs}. In this chapter we will compare the experimental execution times of cograph recognition algorithms and compare algorithms operating on cotrees to brute force algorithms for general graphs. Times are presented as average over a sample of 100 graphs, and worst time in the same sample. All times are given in milliseconds.
 
 \subsection{Cograph recognition}
+These tests are split into categories by size - 16, 128 and 1024 vertices - and by whether they are cographs or not.
 
 \begin{center}
 
@@ -34,6 +35,80 @@ All aforementioned algorithms were implemented in Python and are available at \u
         \makecell{Main algorithm                                    \\ from \cite{habib}} & \makecell{mean: 0.4133                                 \\ max: 0.7340} & \makecell{mean: 46.2553 \\ max: 80.9675} & \makecell{mean: 808.2423 \\ max: 1360.4159} \\
         \hline
         \makecell{Main algorithm                                    \\ from \cite{corneil}} & \makecell{mean:  0.1033                                 \\ max: 0.3972} & \makecell{mean: 0.3357  \\ max: 1.1045} & \makecell{mean:  1.0391  \\ max: 1.7819} \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\subsection{Cotree algorithms}
+
+The tests are split into categories by size - 4, 8, 16, 128 and 1024  vertices. Brute force algorithms are only presented on graphs of size 4, 8 and, when feasible, 16. Since they are exponential it is not feasible to evaluate them for bigger graphs.
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \multicolumn{7}{|c|}{Maximal clique}                                                                    \\
+        \hline
+                                          & number of vertices & 4      & 8      & 16      & 256     & 1024     \\
+        \hline
+
+        \multirow{2}{*}{Brute force}      & mean               & 0.0110 & 0.1048 & 40.7479 & -       & -        \\
+                                          & max                & 0.0257 & 0.1543 & 59.5149 & -       & -        \\
+        \hline
+        \multirow{2}{*}{Cotree algorithm} & mean               & 0.0773 & 0.1101 & 0.4547  & 52.2826 & 546.1888 \\
+                                          & max                & 0.2268 & 0.1294 & 0.9377  & 97.7709 & 828.4875 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \multicolumn{7}{|c|}{Maximal independent set}                                                           \\
+        \hline
+                                          & number of vertices & 4      & 8      & 16      & 256     & 1024     \\
+        \hline
+
+        \multirow{2}{*}{Brute force}      & mean               & 0.0090 & 0.0138 & 48.6511 & -       & -        \\
+                                          & max                & 0.1029 & 0.1544 & 80.6760 & -       & -        \\
+        \hline
+        \multirow{2}{*}{Cotree algorithm} & mean               & 0.0379 & 0.0795 & 0.2231  & 29.5271 & 532.1662 \\
+                                          & max                & 0.0505 & 0.1012 & 0.2801  & 51.9213 & 819.6035 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \multicolumn{7}{|c|}{Coloring}                                                                         \\
+        \hline
+                                          & number of vertices & 4      & 8      & 16     & 256     & 1024     \\
+        \hline
+
+        \multirow{2}{*}{Brute force}      & mean               & 0.0223 & 0.8052 & -      & -       & -        \\
+                                          & max                & 0.0360 & 1.7010 & -      & -       & -        \\
+        \hline
+        \multirow{2}{*}{Cotree algorithm} & mean               & 0.0457 & 0.0850 & 0.2297 & 29.4746 & 522.1232 \\
+                                          & max                & 0.0617 & 0.1049 & 0.3083 & 51.7872 & 825.6476 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \multicolumn{7}{|c|}{Coloring}                                                                          \\
+        \hline
+                                          & number of vertices & 4      & 8       & 16     & 256     & 1024     \\
+        \hline
+
+        \multirow{2}{*}{Brute force}      & mean               & 0.0302 & 15.4148 & -      & -       & -        \\
+                                          & max                & 0.0578 & 28.5275 & -      & -       & -        \\
+        \hline
+        \multirow{2}{*}{Cotree algorithm} & mean               & 0.0642 & 0.1263  & 0.3237 & 30.1733 & 535.0532 \\
+                                          & max                & 0.0906 & 0.1529  & 0.4883 & 51.9272 & 826.6458 \\
         \hline
     \end{tabular}
 \end{center}
