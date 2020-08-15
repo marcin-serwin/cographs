@@ -9,18 +9,18 @@ These tests are split into categories by size - 16, 128 and 1024 vertices - and 
 
     \begin{tabular}{ |c|c|c|c|c|}
         \hline
-        \multicolumn{5}{|c|}{Cograph recognition - positive answer}                                                  \\
+        \multicolumn{5}{|c|}{Cograph recognition - positive answer}                                            \\
         \hline
-                                                                 & number of vertices & 16     & 128     & 1024      \\
+                                                                 & number of vertices & 16   & 128   & 1024    \\
         \hline
-        \multirow{2}{*}{Brute force algorithm from \cite{habib}} & mean               & 0.1426 & 12.7623 & 191.4707  \\
-                                                                 & max                & 0.2230 & 46.9928 & 670.3810  \\
+        \multirow{2}{*}{Brute force algorithm from \cite{habib}} & mean               & 0.14 & 12.76 & 191.47  \\
+                                                                 & max                & 0.22 & 46.99 & 670.38  \\
         \hline
-        \multirow{2}{*}{Main algorithm from \cite{habib}}        & mean               & 0.4309 & 46.9146 & 707.2815  \\
-                                                                 & max                & 0.7717 & 96.5842 & 1603.7385 \\
+        \multirow{2}{*}{Main algorithm from \cite{habib}}        & mean               & 0.43 & 46.91 & 707.28  \\
+                                                                 & max                & 0.77 & 96.58 & 1603.73 \\
         \hline
-        \multirow{2}{*}{Main algorithm from \cite{corneil}}      & mean               & 0.2517 & 31.0962 & 477.1022  \\
-                                                                 & max                & 0.6341 & 60.9331 & 1617.7562 \\
+        \multirow{2}{*}{Main algorithm from \cite{corneil}}      & mean               & 0.25 & 31.09 & 477.10  \\
+                                                                 & max                & 0.63 & 60.93 & 1617.75 \\
         \hline
     \end{tabular}
 \end{center}
@@ -29,18 +29,18 @@ These tests are split into categories by size - 16, 128 and 1024 vertices - and 
 
     \begin{tabular}{ |c|c|c|c|c|}
         \hline
-        \multicolumn{5}{|c|}{Cograph recognition - negative answer}                                                  \\
+        \multicolumn{5}{|c|}{Cograph recognition - negative answer}                                            \\
         \hline
-                                                                 & number of vertices & 16     & 128     & 1024      \\
+                                                                 & number of vertices & 16   & 128   & 1024    \\
         \hline
-        \multirow{2}{*}{Brute force algorithm from \cite{habib}} & mean               & 0.1539 & 15.1173 & 283.3024  \\
-                                                                 & max                & 0.3384 & 21.9287 & 524.0242  \\
+        \multirow{2}{*}{Brute force algorithm from \cite{habib}} & mean               & 0.15 & 15.11 & 283.30  \\
+                                                                 & max                & 0.33 & 21.92 & 524.02  \\
         \hline
-        \multirow{2}{*}{Main algorithm from \cite{habib}}        & mean               & 0.4133 & 46.2553 & 808.2423  \\
-                                                                 & max                & 0.7340 & 80.9675 & 1360.4159 \\
+        \multirow{2}{*}{Main algorithm from \cite{habib}}        & mean               & 0.41 & 46.25 & 808.24  \\
+                                                                 & max                & 0.73 & 80.96 & 1360.41 \\
         \hline
-        \multirow{2}{*}{Main algorithm from \cite{corneil}}      & mean               & 0.1033 & 0.3357  & 1.0391    \\
-                                                                 & max                & 0.3972 & 1.1045  & 1.7819    \\
+        \multirow{2}{*}{Main algorithm from \cite{corneil}}      & mean               & 0.10 & 0.33  & 1.03    \\
+                                                                 & max                & 0.39 & 1.10  & 1.78    \\
 
         \hline
     \end{tabular}
@@ -53,16 +53,16 @@ The tests are split into categories by size - 4, 8, 16, 128 and 1024  vertices. 
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
-        \multicolumn{7}{|c|}{Maximal clique}                                                                    \\
+        \multicolumn{7}{|c|}{Maximal clique}                                                          \\
         \hline
-                                          & number of vertices & 4      & 8      & 16      & 256     & 1024     \\
+                                          & number of vertices & 4    & 8    & 16    & 256   & 1024   \\
         \hline
 
-        \multirow{2}{*}{Brute force}      & mean               & 0.0110 & 0.1048 & 40.7479 & -       & -        \\
-                                          & max                & 0.0257 & 0.1543 & 59.5149 & -       & -        \\
+        \multirow{2}{*}{Brute force}      & mean               & 0.01 & 0.10 & 40.74 & -     & -      \\
+                                          & max                & 0.02 & 0.15 & 59.51 & -     & -      \\
         \hline
-        \multirow{2}{*}{Cotree algorithm} & mean               & 0.0773 & 0.1101 & 0.4547  & 52.2826 & 546.1888 \\
-                                          & max                & 0.2268 & 0.1294 & 0.9377  & 97.7709 & 828.4875 \\
+        \multirow{2}{*}{Cotree algorithm} & mean               & 0.07 & 0.11 & 0.45  & 52.28 & 546.18 \\
+                                          & max                & 0.22 & 0.12 & 0.93  & 97.77 & 828.48 \\
         \hline
     \end{tabular}
 \end{center}
@@ -71,16 +71,16 @@ The tests are split into categories by size - 4, 8, 16, 128 and 1024  vertices. 
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
-        \multicolumn{7}{|c|}{Maximal independent set}                                                           \\
+        \multicolumn{7}{|c|}{Maximal independent set}                                                 \\
         \hline
-                                          & number of vertices & 4      & 8      & 16      & 256     & 1024     \\
+                                          & number of vertices & 4    & 8    & 16    & 256   & 1024   \\
         \hline
 
-        \multirow{2}{*}{Brute force}      & mean               & 0.0090 & 0.0138 & 48.6511 & -       & -        \\
-                                          & max                & 0.1029 & 0.1544 & 80.6760 & -       & -        \\
+        \multirow{2}{*}{Brute force}      & mean               & 0.00 & 0.01 & 48.65 & -     & -      \\
+                                          & max                & 0.10 & 0.15 & 80.67 & -     & -      \\
         \hline
-        \multirow{2}{*}{Cotree algorithm} & mean               & 0.0379 & 0.0795 & 0.2231  & 29.5271 & 532.1662 \\
-                                          & max                & 0.0505 & 0.1012 & 0.2801  & 51.9213 & 819.6035 \\
+        \multirow{2}{*}{Cotree algorithm} & mean               & 0.03 & 0.07 & 0.22  & 29.52 & 532.16 \\
+                                          & max                & 0.05 & 0.10 & 0.28  & 51.92 & 819.60 \\
         \hline
     \end{tabular}
 \end{center}
@@ -89,16 +89,16 @@ The tests are split into categories by size - 4, 8, 16, 128 and 1024  vertices. 
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
-        \multicolumn{7}{|c|}{Coloring}                                                                         \\
+        \multicolumn{7}{|c|}{Coloring}                                                               \\
         \hline
-                                          & number of vertices & 4      & 8      & 16     & 256     & 1024     \\
+                                          & number of vertices & 4    & 8    & 16   & 256   & 1024   \\
         \hline
 
-        \multirow{2}{*}{Brute force}      & mean               & 0.0223 & 0.8052 & -      & -       & -        \\
-                                          & max                & 0.0360 & 1.7010 & -      & -       & -        \\
+        \multirow{2}{*}{Brute force}      & mean               & 0.02 & 0.80 & -    & -     & -      \\
+                                          & max                & 0.03 & 1.70 & -    & -     & -      \\
         \hline
-        \multirow{2}{*}{Cotree algorithm} & mean               & 0.0457 & 0.0850 & 0.2297 & 29.4746 & 522.1232 \\
-                                          & max                & 0.0617 & 0.1049 & 0.3083 & 51.7872 & 825.6476 \\
+        \multirow{2}{*}{Cotree algorithm} & mean               & 0.04 & 0.08 & 0.22 & 29.47 & 522.12 \\
+                                          & max                & 0.06 & 0.10 & 0.30 & 51.78 & 825.64 \\
         \hline
     \end{tabular}
 \end{center}
@@ -106,16 +106,16 @@ The tests are split into categories by size - 4, 8, 16, 128 and 1024  vertices. 
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
-        \multicolumn{7}{|c|}{Coloring}                                                                          \\
+        \multicolumn{7}{|c|}{Coloring}                                                                \\
         \hline
-                                          & number of vertices & 4      & 8       & 16     & 256     & 1024     \\
+                                          & number of vertices & 4    & 8     & 16   & 256   & 1024   \\
         \hline
 
-        \multirow{2}{*}{Brute force}      & mean               & 0.0302 & 15.4148 & -      & -       & -        \\
-                                          & max                & 0.0578 & 28.5275 & -      & -       & -        \\
+        \multirow{2}{*}{Brute force}      & mean               & 0.03 & 15.41 & -    & -     & -      \\
+                                          & max                & 0.05 & 28.52 & -    & -     & -      \\
         \hline
-        \multirow{2}{*}{Cotree algorithm} & mean               & 0.0642 & 0.1263  & 0.3237 & 30.1733 & 535.0532 \\
-                                          & max                & 0.0906 & 0.1529  & 0.4883 & 51.9272 & 826.6458 \\
+        \multirow{2}{*}{Cotree algorithm} & mean               & 0.06 & 0.12  & 0.32 & 30.17 & 535.05 \\
+                                          & max                & 0.09 & 0.15  & 0.48 & 51.92 & 826.64 \\
         \hline
     \end{tabular}
 \end{center}
