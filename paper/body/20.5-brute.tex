@@ -1,0 +1,35 @@
+\section{Brute force algorithm}
+
+Before we proceed to the main algorithms we will present brute force algorithm described in \cite{habib}. This algorithm uses similar theories and definitions to the main \cite{habib} algorithm so for description of those refer to \ref{21-habib}. Full pseudo code is presented in \ref{brute:main}.
+
+\begin{function}
+    \caption{BruteForcePermutation($G$)}
+    \label{brute:main}
+    \DontPrintSemicolon
+
+    \KwIn{A graph $G = (V,E)$.}
+    \KwOut{Factorizing permutation of $G$.}
+    \Begin{
+        $\Part P = (V)$ \;
+        \While{$\exists_{\Part X_i \in \Part P} |\Part X_i| > 1$}{
+            $\Part P\colon (\Part X_1, \ldots, \Part X_n)$ \;
+            $\Part X\colon \Part X \in \Part P \land \abs{\Part X} > 1$\;
+            $x \colon x \in \Part X$\;
+            $L = \Part X \cap \Nbar(x)$\;
+            $R = \Part X \cap \N(x)$\;
+
+            \ForEach{$y \in \Part X \cap \Nbar(x), \Part X' \in R$} {
+                $R$.replace($\Part X'$).with($\Part X' \cap \Nbar(y), \Part X' \cap \N(y)$) \;
+            }
+            \ForEach{$y \in \Part X \cap \N(x), \Part X' \in L$} {
+                $L$.replace($\Part X'$).with($\Part X' \cap \Nbar(y), \Part X' \cap \N(y)$) \;
+            }
+
+            $\Part P = (\Part X_1, \ldots L, \{x\}, R, \ldots, \Part X_n)$
+        }
+
+        \Return{$\Part P$}
+    }
+\end{function}
+
+Each time the inside of the while loop is executed we create at least one singleton part is added to permutation. Since there may be at most $\abs{V}$ singleton it is clear that the while loop will execute at most $O(\abs{V})$ times. Each loop execution requires looking through potentially $O(\abs{V})$ vertices in order to apply the second refinement rule. Therefore the whole algorithm takes up $O(\abs{V}^2)$.
