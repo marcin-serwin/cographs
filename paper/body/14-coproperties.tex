@@ -4,10 +4,48 @@
 
 As can be already seen cographs have a lot of properties, among others that they are $P_4$-free, that every induced subgraph of a cograph is also a cograph and that either cograph or its complement is always disconnected. A lot of algorithms that are NP-hard in general case can be solved in polynomial time because of these properties or due to the fact that cographs are subclass of other class of graphs.
 
-For example, cographs are special case of permutation graphs as proved in \cite{bose}. This in turn means that there exists linear algorithm deciding whether two cographs are isomorphic as proved in \cite{colbourn}. Another algorithm that can be done linearly on permutation graphs is finding dominating sets as proved in \cite{chao}.
+For example, cographs are special case of permutation graphs as proved in \cite{bose}. This in turn means that there exists linear algorithm deciding whether two cographs are isomorphic as proved in \cite{colbourn}. Another algorithm that can be done linearly on permutation graphs is finding dominating sets as proved in \cite{chao}. Cographs are also special case of comparability graphs as shown in \cite{jung}, which means that weighted clique problem can be solved in linear time as shown in \cite{golumbic}.
 
-It is also worth noting that number of cographs on $n$ vertices, i.e. function
+Another interesting fact is that all cographs have clique-width bound by 2 (and in fact it is another equivalent definition) as shown in \cite{courcelle}. To show this fact recall the definition of clique-width:
+
+\begin{defi}
+    Let $\mathcal{C}$ be a countable set of labels. \emph{Labeled graph $L$} is a pair $(G, \gamma)$ such that $G$ is a graph and $\gamma$ is a function $\gamma \colon \V(G) \mapsto \mathcal{C}$.
+
+    Convenience functions $\G, \V$, $\gamma_L$ are defined such that $\G(L) = G$, $\V(L) = \V(G)$ and $\gamma_L(v) = \gamma(v)$.
+\end{defi}
+\begin{defi}
+    For $C \subseteq \mathcal{C}$ we denote by $T(C)$ minimal set of labeled graphs such that
+    \begin{enumerate}
+        \item $\forall_{v \in \Vertices, c \in C} (\singleton{v}, \{(v,c)\}) \in T(C)$
+        \item $\forall_{G_1, G_2 \in T(C)} \V(G_1) \cap \V(G_2) = \emptyset \implies (\Gunion{\G(G_1)}{\G(G_2)}, \gamma_{G_1} \cup \gamma_{G_2}) \in T(C)$ \label{cwd:2}
+        \item $\forall_{(G, \gamma) \in T(c), (a,b) \in C^2} (G, \gamma') \in T(C)$, where $\gamma'$ is such that
+              \[
+                  \gamma'(v) = \begin{cases}
+                      b         & \text{if } \gamma(v) = a    \\
+                      \gamma(v) & \text{if } \gamma(v) \neq a \\
+                  \end{cases}
+              \] \label{cwd:3}
+        \item $\forall_{(G, \gamma) \in T(c), (a,b) \in C^2} (G', \gamma) \in T(C)$, where $G'$ is such that
+              \[
+                  G' = (\V(G), \E(G) \cup \{\{u, v\}: u,v\in\V(G) \land u \neq v\land \gamma(u) = a \land \gamma(v) = b\})
+              \] \label{cwd:4}
+    \end{enumerate}
+\end{defi}
+\begin{defi}
+    If $G$ is a graph, then \emph{clique-width} denoted by $\cwd(G)$ is such that
+    \[
+        \cwd(G) = \min\{\abs{C} : \exists_\gamma (G, \gamma) \in T(C)\}
+    \]
+\end{defi}
+
+Given these definitions it is easy to see that cographs as defined in \ref{codef2} have clique width of at most 2. Indeed if we set $C$ to be $\{a,b\}$, the union of graphs is already defined in point \ref{cwd:2} of definition and the join of graphs $\Gjoin{G_1}{G_2}$ can be obtained by relabeling all vertices of a graph $G_1$ to $a$ and all vertices of  $G_2$ to $b$ using point \ref{cwd:3} and then joining these two graphs using point \ref{cwd:4}.
+
+It is also worth noting that this implies that the number of cographs on $n$ vertices, i.e. function
 \[
     f(n) = \abs{\{G : G = (V,E) \text{ is a cograph } \land \abs{V} = n\}}
 \]
-is growing in a factorial fashion. Upper bound for it can be derived from \cite{lozin} and the fact that cograph are $P_4$-free, on the other hand lower bound is shown in \cite{allen} from the fact that cographs have bounded clique width of 2, which in turn is shown in \cite{courcelle}.
+is growing in a factorial fashion. Upper bound for it can be derived from \cite{lozin} and the fact that cograph are $P_4$-free, on the other hand lower bound is shown in \cite{allen} from the fact that cographs have bounded clique width of 2.
+
+Concepts related to clique-width include tree-width and path-width which turn out to be equal in case of cographs and we are able compute them linearly for this class of graphs as shown in \cite{bodlaender}.
+
+The representation of cographs as cotrees presented in \ref{codef3} also allows us to solve some NP-hard problems efficiently in case of cotrees. Examples of these problems include finding maximal clique, finding maximal independent set, coloring and minimum path cover, all of which are presented in chapter \ref{r:algos}.
