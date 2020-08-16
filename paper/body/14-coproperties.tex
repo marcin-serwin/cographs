@@ -2,11 +2,11 @@
 
 \section{Cograph properties}
 
-As can be already seen cographs have a lot of properties, among others that they are $P_4$-free, that every induced subgraph of a cograph is also a cograph and that either cograph or its complement is always disconnected. A lot of algorithms that are NP in general case can be solved in polynomial time because of these properties or due to the fact that cographs are subclass of other class of graphs.
+As can be already seen cographs have a lot of properties, among others that they are $P_4$-free, that every induced subgraph of a cograph is also a cograph and that either cograph or its complement is always disconnected. A lot of algorithms that are NP-hard in general case can be solved in polynomial time because of these properties or due to the fact that cographs are subclass of other class of graphs.
 
 For example, cographs are special case of permutation graphs as proved in \cite{bose}. This in turn means that there exists linear algorithm deciding whether two cographs are isomorphic as proved in \cite{colbourn}. Another algorithm that can be done linearly on permutation graphs is finding dominating sets as proved in \cite{chao}.
 
-It is also worth noting that the speed of cographs, i.e. function
+It is also worth noting that number of cographs on $n$ vertices, i.e. function
 \[
     f(n) = \abs{\{G : G = (V,E) \text{ is a cograph } \land \abs{V} = n\}}
 \]

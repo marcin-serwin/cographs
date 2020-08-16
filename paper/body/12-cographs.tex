@@ -9,7 +9,7 @@ Cographs can be defined in several equivalent ways. This paper will provide four
     \begin{enumerate}
         \item $\forall_v \singleton{v} \in \Cographs$
         \item $\forall_G \Gcomp{G} \in \Cographs$
-        \item $\forall_{G_1, G_2} \V(G_1) \cap \V(G_2) \implies \Gunion{G_1}{G_2} \in \Cographs$
+        \item $\forall_{G_1, G_2} \V(G_1) \cap \V(G_2) = \emptyset \implies \Gunion{G_1}{G_2} \in \Cographs$
     \end{enumerate}
     Graph $G$ is a \emph{cograph} if and only if $G \in \Cographs$.
 \end{defi}
@@ -17,8 +17,8 @@ Cographs can be defined in several equivalent ways. This paper will provide four
     Let us define set of graphs $\Cographs$ as the smallest set that satisfies:
     \begin{enumerate}
         \item $\forall_v \singleton{v} \in \Cographs$
-        \item $\forall_{G_1, G_2} \V(G_1) \cap \V(G_2) \implies \Gjoin{G_1}{G_2} \in \Cographs$
-        \item $\forall_{G_1, G_2} \V(G_1) \cap \V(G_2) \implies \Gunion{G_1}{G_2} \in \Cographs$
+        \item $\forall_{G_1, G_2} \V(G_1) \cap \V(G_2) = \emptyset \implies \Gjoin{G_1}{G_2} \in \Cographs$
+        \item $\forall_{G_1, G_2} \V(G_1) \cap \V(G_2) = \emptyset \implies \Gunion{G_1}{G_2} \in \Cographs$
     \end{enumerate}
     Graph $G$ is a \emph{cograph} if and only if $G \in \Cographs$.
 \end{defi}
