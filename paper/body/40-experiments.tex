@@ -47,7 +47,7 @@ These tests are split into categories by size - 16, 64, 128 and 1024 vertices - 
     \end{tabular}
 \end{center}
 
-As can be easily noticed there isn't much different brute force and efficient algorithms in case of positive answers. In fact the efficient algorithms seem to perform worse. This is caused by the fact that during implementation Python sets were used to simplify the code. They are used much more frequently and extensively in main algorithms when compared to brute force and hence the much worse performance.
+As can be easily noticed there isn't much different brute force and efficient algorithms in case of positive answers. In fact the efficient algorithms seem to perform worse. This is caused by the fact that during implementation Python sets were used to simplify the code. Since original descriptions of the algorithms required custom implementations of linked lists in order to guarantee the linear worst case performance, after replacing them with sets the performance becomes quadratic since many operation which were assumed to be amortized $O(1)$ are often linear in execution. Moreover sets are used much more frequently and extensively in main algorithms when compared to brute force which causes even worse performance, as can be seen in the case of \cite{habib} algorithm.
 
 Worth noting is also much better performance of \cite{corneil} algorithm in case of negative answer. This is caused by the fact that algorithm is incremental and trying build cotrees one vertex at a time. In case of random graphs it is quite easy to find $P_4$ within the first few chosen vertices. In contrast factorizing permutation algorithms must always process all vertices before checking whether graph is a cograph.
 
