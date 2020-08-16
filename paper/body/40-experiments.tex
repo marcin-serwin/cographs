@@ -4,44 +4,44 @@
 All aforementioned algorithms were implemented in Python and are available at \url{https://github.com/marcin-serwin/cographs}. In this chapter we will compare the experimental execution times of cograph recognition algorithms and compare algorithms operating on cotrees to brute force algorithms for general graphs. Times are presented as average over a sample of 100 graphs, and worst time in the same sample. All times are given in milliseconds.
 
 \section{Cograph recognition}
-These tests are split into categories by size - 16, 128 and 1024 vertices - and by whether they are cographs or not.
+These tests are split into categories by size - 16, 64, 128 and 1024 vertices - and by whether they are cographs or not.
 
 \begin{center}
 
-    \begin{tabular}{ |c|c|c|c|c|}
+    \begin{tabular}{ |c|c|c|c|c|c|}
         \hline
-        \multicolumn{5}{|c|}{Cograph recognition - positive answer}                                                 \\
+        \multicolumn{6}{|c|}{Cograph recognition - positive answer}                                                        \\
         \hline
-                                                                      & number of vertices & 16   & 128   & 1024    \\
+                                                                      & number of vertices & 16   & 64   & 128   & 1024    \\
         \hline
-        \multirow{2}{*}{Brute force algorithm (\ref{20.5-brute})}     & mean               & 0.14 & 12.76 & 191.47  \\
-                                                                      & max                & 0.22 & 46.99 & 670.38  \\
+        \multirow{2}{*}{Brute force algorithm (\ref{20.5-brute})}     & mean               & 0.14 & 1.11 & 12.76 & 191.47  \\
+                                                                      & max                & 0.22 & 1.91 & 46.99 & 670.38  \\
         \hline
-        \multirow{2}{*}{\cite{habib} algorithm (\ref{21-habib})}      & mean               & 0.43 & 46.91 & 707.28  \\
-                                                                      & max                & 0.77 & 96.58 & 1603.73 \\
+        \multirow{2}{*}{\cite{habib} algorithm (\ref{21-habib})}      & mean               & 0.43 & 3.50 & 46.91 & 707.28  \\
+                                                                      & max                & 0.77 & 5.23 & 96.58 & 1603.73 \\
         \hline
-        \multirow{2}{*}{\cite{corneil} algorithm (\ref{22-corneil}) } & mean               & 0.25 & 31.09 & 477.10  \\
-                                                                      & max                & 0.63 & 60.93 & 1617.75 \\
+        \multirow{2}{*}{\cite{corneil} algorithm (\ref{22-corneil}) } & mean               & 0.25 & 1.99 & 31.09 & 477.10  \\
+                                                                      & max                & 0.63 & 3.51 & 60.93 & 1617.75 \\
         \hline
     \end{tabular}
 \end{center}
 
 \begin{center}
 
-    \begin{tabular}{ |c|c|c|c|c|}
+    \begin{tabular}{ |c|c|c|c|c|c|}
         \hline
-        \multicolumn{5}{|c|}{Cograph recognition - negative answer}                                                \\
+        \multicolumn{6}{|c|}{Cograph recognition - negative answer}                                                       \\
         \hline
-                                                                     & number of vertices & 16   & 128   & 1024    \\
+                                                                     & number of vertices & 16   & 64   & 128   & 1024    \\
         \hline
-        \multirow{2}{*}{Brute force algorithm (\ref{20.5-brute})}    & mean               & 0.15 & 15.11 & 283.30  \\
-                                                                     & max                & 0.33 & 21.92 & 524.02  \\
+        \multirow{2}{*}{Brute force algorithm (\ref{20.5-brute})}    & mean               & 0.15 & 1.12 & 15.11 & 283.30  \\
+                                                                     & max                & 0.33 & 1.89 & 21.92 & 524.02  \\
         \hline
-        \multirow{2}{*}{\cite{habib} algorithm (\ref{21-habib})}     & mean               & 0.41 & 46.25 & 808.24  \\
-                                                                     & max                & 0.73 & 80.96 & 1360.41 \\
+        \multirow{2}{*}{\cite{habib} algorithm (\ref{21-habib})}     & mean               & 0.41 & 3.28 & 46.25 & 808.24  \\
+                                                                     & max                & 0.73 & 8.34 & 80.96 & 1360.41 \\
         \hline
-        \multirow{2}{*}{\cite{corneil} algorithm (\ref{22-corneil})} & mean               & 0.10 & 0.33  & 1.03    \\
-                                                                     & max                & 0.39 & 1.10  & 1.78    \\
+        \multirow{2}{*}{\cite{corneil} algorithm (\ref{22-corneil})} & mean               & 0.10 & 0.19 & 0.33  & 1.03    \\
+                                                                     & max                & 0.39 & 2.97 & 1.10  & 1.78    \\
 
         \hline
     \end{tabular}
@@ -53,76 +53,76 @@ Worth noting is also much better performance of \cite{corneil} algorithm in case
 
 \section{Cotree algorithms}
 
-The tests are split into categories by size - 4, 8, 16, 128 and 1024  vertices. Brute force algorithms are only presented on graphs of size 4, 8 and, when feasible, 16. Since they are exponential it is not feasible to evaluate them for bigger graphs.
+The tests are split into categories by size - 4, 8, 16, 64, 128 and 1024 vertices. Brute force algorithms are only presented on graphs of size 4, 8 and, when feasible, 16. Since they are exponential it is not feasible to evaluate them for bigger graphs.
 
 Brute force algorithms are naive algorithms that check every potential solution for a problem and finish when they find a correct one. For example in maximal clique problem, brute force algorithm would first check all sets of size $\abs{V}$, then of size $\abs{V}-1$ and so on, until it found set that is a clique.
 
 \begin{center}
-    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
         \hline
-        \multicolumn{7}{|c|}{Maximal clique}                                                                          \\
+        \multicolumn{8}{|c|}{Maximal clique}                                                                                 \\
         \hline
-                                                          & number of vertices & 4    & 8    & 16    & 256   & 1024   \\
+                                                          & number of vertices & 4    & 8    & 16    & 64   & 256   & 1024   \\
         \hline
 
-        \multirow{2}{*}{Brute force}                      & mean               & 0.01 & 0.10 & 40.74 & -     & -      \\
-                                                          & max                & 0.02 & 0.15 & 59.51 & -     & -      \\
+        \multirow{2}{*}{Brute force}                      & mean               & 0.01 & 0.10 & 40.74 & -    & -     & -      \\
+                                                          & max                & 0.02 & 0.15 & 59.51 & -    & -     & -      \\
         \hline
-        \multirow{2}{*}{Cotree algorithm (\ref{32-cliq})} & mean               & 0.07 & 0.11 & 0.45  & 52.28 & 546.18 \\
-                                                          & max                & 0.22 & 0.12 & 0.93  & 97.77 & 828.48 \\
+        \multirow{2}{*}{Cotree algorithm (\ref{32-cliq})} & mean               & 0.07 & 0.11 & 0.45  & 2.08 & 52.28 & 546.18 \\
+                                                          & max                & 0.22 & 0.12 & 0.93  & 3.98 & 97.77 & 828.48 \\
         \hline
     \end{tabular}
 \end{center}
 
 
 \begin{center}
-    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
         \hline
-        \multicolumn{7}{|c|}{Maximal independent set}                                                                 \\
+        \multicolumn{8}{|c|}{Maximal independent set}                                                                        \\
         \hline
-                                                          & number of vertices & 4    & 8    & 16    & 256   & 1024   \\
+                                                          & number of vertices & 4    & 8    & 16    & 64   & 256   & 1024   \\
         \hline
 
-        \multirow{2}{*}{Brute force}                      & mean               & 0.00 & 0.01 & 48.65 & -     & -      \\
-                                                          & max                & 0.10 & 0.15 & 80.67 & -     & -      \\
+        \multirow{2}{*}{Brute force}                      & mean               & 0.00 & 0.01 & 48.65 & -    & -     & -      \\
+                                                          & max                & 0.10 & 0.15 & 80.67 & -    & -     & -      \\
         \hline
-        \multirow{2}{*}{Cotree algorithm (\ref{32-cliq})} & mean               & 0.03 & 0.07 & 0.22  & 29.52 & 532.16 \\
-                                                          & max                & 0.05 & 0.10 & 0.28  & 51.92 & 819.60 \\
+        \multirow{2}{*}{Cotree algorithm (\ref{32-cliq})} & mean               & 0.03 & 0.07 & 0.22  & 2.09 & 29.52 & 532.16 \\
+                                                          & max                & 0.05 & 0.10 & 0.28  & 4.40 & 51.92 & 819.60 \\
         \hline
     \end{tabular}
 \end{center}
 
 
 \begin{center}
-    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
         \hline
-        \multicolumn{7}{|c|}{Coloring}                                                                                   \\
+        \multicolumn{8}{|c|}{Coloring}                                                                                          \\
         \hline
-                                                              & number of vertices & 4    & 8    & 16   & 256   & 1024   \\
+                                                              & number of vertices & 4    & 8    & 16   & 64   & 256   & 1024   \\
         \hline
 
-        \multirow{2}{*}{Brute force}                          & mean               & 0.02 & 0.80 & -    & -     & -      \\
-                                                              & max                & 0.03 & 1.70 & -    & -     & -      \\
+        \multirow{2}{*}{Brute force}                          & mean               & 0.02 & 0.80 & -    & -    & -     & -      \\
+                                                              & max                & 0.03 & 1.70 & -    & -    & -     & -      \\
         \hline
-        \multirow{2}{*}{Cotree algorithm (\ref{32-coloring})} & mean               & 0.04 & 0.08 & 0.22 & 29.47 & 522.12 \\
-                                                              & max                & 0.06 & 0.10 & 0.30 & 51.78 & 825.64 \\
+        \multirow{2}{*}{Cotree algorithm (\ref{32-coloring})} & mean               & 0.04 & 0.08 & 0.22 & 2.11 & 29.47 & 522.12 \\
+                                                              & max                & 0.06 & 0.10 & 0.30 & 3.93 & 51.78 & 825.64 \\
         \hline
     \end{tabular}
 \end{center}
 
 \begin{center}
-    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
         \hline
-        \multicolumn{7}{|c|}{Minimal path cover}                                                                       \\
+        \multicolumn{8}{|c|}{Minimal path cover}                                                                                \\
         \hline
-                                                           & number of vertices & 4    & 8     & 16   & 256   & 1024   \\
+                                                           & number of vertices & 4    & 8     & 16   & 64     & 256   & 1024   \\
         \hline
 
-        \multirow{2}{*}{Brute force}                       & mean               & 0.03 & 15.41 & -    & -     & -      \\
-                                                           & max                & 0.05 & 28.52 & -    & -     & -      \\
+        \multirow{2}{*}{Brute force}                       & mean               & 0.03 & 15.41 & -    & -      & -     & -      \\
+                                                           & max                & 0.05 & 28.52 & -    & -      & -     & -      \\
         \hline
-        \multirow{2}{*}{Cotree algorithm (\ref{33-paths})} & mean               & 0.06 & 0.12  & 0.32 & 30.17 & 535.05 \\
-                                                           & max                & 0.09 & 0.15  & 0.48 & 51.92 & 826.64 \\
+        \multirow{2}{*}{Cotree algorithm (\ref{33-paths})} & mean               & 0.06 & 0.12  & 0.32 & 2.29   & 30.17 & 535.05 \\
+                                                           & max                & 0.09 & 0.15  & 0.48 & 3.9106 & 51.92 & 826.64 \\
         \hline
     \end{tabular}
 \end{center}

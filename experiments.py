@@ -22,17 +22,17 @@ def get_graph(logsize: int, seed: int) -> nx.Graph:
 
 
 NOT_COGRAPHS = {(logsize, seed): get_graph(logsize, seed)
-                for logsize in [4, 8, 10] for seed in range(SAMPLE_SIZE)}
+                for logsize in [4, 6, 8, 10] for seed in range(SAMPLE_SIZE)}
 
 COGRAPHS = {(logsize, seed): get_cograph(logsize, seed)
-            for logsize in [2, 3, 4, 8, 10] for seed in range(SAMPLE_SIZE)}
+            for logsize in [2, 3, 4, 6, 8, 10] for seed in range(SAMPLE_SIZE)}
 
 
 def test_recognition_algo(algo: Callable, name: str, positive_answer: bool):
 
     print(name, "positive" if positive_answer else "negative")
     graph_generator = COGRAPHS if positive_answer else NOT_COGRAPHS
-    for log_graph_order in [4, 8, 10]:
+    for log_graph_order in [4, 6, 8, 10]:
         deltas = [
             1000 * timeit.timeit(
                 lambda: algo(graph_generator[(log_graph_order, seed)]),
@@ -47,7 +47,7 @@ def test_recognition_algo(algo: Callable, name: str, positive_answer: bool):
 def test_cotree_algo(algo: Callable, brute: Callable, name: str):
     print(name)
 
-    for log_graph_order in [2, 3, 4, 8, 10]:
+    for log_graph_order in [2, 3, 4, 6, 8, 10]:
         deltas = [
             1000 *
             timeit.timeit(
