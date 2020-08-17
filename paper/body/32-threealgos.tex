@@ -18,7 +18,7 @@ The functions $hl, hj$ and $hu$ are presented below:
 
     \item $hj$
 
-          In this case we have to return a coloring function $f$ for $\Gjoin{G_1}{G_2} = (V,E)$ given coloring functions $f_1,f_2$ for $G_1 = (V_1, E_1), G_2 = (V_2, E_2)$ respectively. Since $\{v_1, v_2\} \in E$ for each $v_1 \in V_1, v_2 \in V_2$ it follows that $f(v_1) \neq f(v_2)$. Moreover for each $\{u,v\} \in E_i$ it must be so that $f(u) \neq f(v)$. Let $n$ be the highest number in the image of $f_1$ ($n = \max\{f(v) : v \in V_1\}$). We define $hj$ so that
+          In this case we have to return a coloring function $f$ for $\Gjoin{G_1}{G_2} = (V,E)$ given coloring functions $f_1,f_2$ for $G_1 = (V_1, E_1), G_2 = (V_2, E_2)$ respectively. Since $\{v_1, v_2\} \in E$ for each $v_1 \in V_1, v_2 \in V_2$ it follows that $f(v_1) \neq f(v_2)$. Moreover for each $\{u,v\} \in E_i$ it must be so that $f(u) \neq f(v)$. Let $n$ be the highest number in the image of $f_1$ ($n = \max\{f_1(v) : v \in V_1\}$). We define $hj$ so that
           \[
               hj(f_1, f_2)(v) = \begin{cases}
                   f_1(v)     & \text{if } v \in V_1 \\
