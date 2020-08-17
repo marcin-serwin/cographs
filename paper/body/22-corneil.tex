@@ -127,7 +127,7 @@ Using the \ref{corneil:mark} we can implement the main cotree constructing algor
     }
 \end{function}
 
-Within \ref{corneil:main} function a \ref{corneil:findlowest} is used. This function checks whether the graph after adding a new vertex is still a cograph and if it is it returns the lowest marked vertex. The function goes through marked vertices and checks whether they are on a legitimate alternating path. It unmarks the vertices along this paths so that we always choose a lower one in new iteration. If a necessary condition fails it stops and returns $\bot$, otherwise the main loop is repeated until no marked vertices remain.
+Within \ref{corneil:main} function a \ref{corneil:findlowest} is used. This function checks whether the graph after adding a new vertex is still a cograph and if it is the case then it returns the lowest marked vertex. The function goes through marked vertices and checks whether they are on a legitimate alternating path. It unmarks the vertices along this paths so that we always choose a lower one in new iteration. If a necessary condition fails it stops and returns $\bot$, otherwise the main loop is repeated until no marked vertices remain.
 
 \begin{function}
     \caption{FindLowest($T, M$)}

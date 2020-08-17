@@ -18,14 +18,14 @@ The functions $hl, hj$ and $hu$ are presented below:
 
     \item $hj$
 
-          In this case we have to return a coloring function $f$ for $\Gjoin{G_1}{G_2} = (V,E)$ given coloring functions $f_1,f_2$ for $G_1 = (V_1, E_1), G_2 = (V_2, E_2)$ respectively. Since $\{v_1, v_2\} \in E$ for each $v_1 \in V_1, v_2 \in V_2$ it follows that $f(v_1) \neq f(v_2)$. Moreover for each $\{u,v\} \in E_i$ it must be so that $f(u) \neq f(v)$. Let $n$ be the highest number in the image of $f_1$ ($f\colon V_1 \mapsto \{1, \ldots, n\}$). We define $hj$ so that
+          In this case we have to return a coloring function $f$ for $\Gjoin{G_1}{G_2} = (V,E)$ given coloring functions $f_1,f_2$ for $G_1 = (V_1, E_1), G_2 = (V_2, E_2)$ respectively. Since $\{v_1, v_2\} \in E$ for each $v_1 \in V_1, v_2 \in V_2$ it follows that $f(v_1) \neq f(v_2)$. Moreover for each $\{u,v\} \in E_i$ it must be so that $f(u) \neq f(v)$. Let $n$ be the highest number in the image of $f_1$ ($n = \max\{f(v) : v \in V_1\}$). We define $hj$ so that
           \[
               hj(f_1, f_2)(v) = \begin{cases}
                   f_1(v)     & \text{if } v \in V_1 \\
                   n + f_2(v) & \text{if } v \in V_2 \\
               \end{cases}
           \]
-          Let us notice that function $f = hj(f_1, f_2)$ satisfies the first condition since $f(v_1) = f_1(v_1) \leq n < n+1 \leq n + f_2(v_2) = f(v_2)$. It also satisfies the second condition since $f(u) = f_1(u) \neq f_1(v) = f(v)$ for $i = 1$ and $f(u) = n + f_2(u) \neq n + f_2(v) = f(v)$ for $i = 2$ (the central inequalities arise from the fact that $f_1, f_2$ are proper colorings of $G_1, G2$ respectively).
+          Let us notice that function $f = hj(f_1, f_2)$ satisfies the first condition since $f(v_1) = f_1(v_1) \leq n < n+1 \leq n + f_2(v_2) = f(v_2)$. It also satisfies the second condition since $f(u) = f_1(u) \neq f_1(v) = f(v)$ for $i = 1$ and $f(u) = n + f_2(u) \neq n + f_2(v) = f(v)$ for $i = 2$ (the central inequalities arise from the fact that $f_1, f_2$ are proper colorings of $G_1, G_2$ respectively).
 
           This also produces $f$ with the smallest image since if smaller existed one could easily obtain smaller colorings for $G_1$ or $G_2$ by restricting the $f$ to $V_1$ or $V_2$ respectively. This would contradict the assumption that $f_1$ and $f_2$ are proper colorings.
 

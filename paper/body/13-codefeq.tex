@@ -10,7 +10,7 @@ Let us notice that in order to prove the implication all we need to show is $\fo
 
 Let's assume the opposite and let $G$ be the smallest graph such that $G \in \Cographs \land \Gcomp{G} \not\in \Cographs$. Since $G \in \Cographs$ one of the following must be true:
 \begin{enumerate}
-    \item $\exists_v G = \singleton{v}$. But $\Gcomp{\mbox{\singleton{v}}\raisebox{3mm}{}} = \singleton{v}$, so $\Gcomp{G} \in \Cographs$, therefore it cannot be so.
+    \item $\exists_{v\in \Vertices} G = \singleton{v}$. But $\Gcomp{\mbox{\singleton{v}}\raisebox{3mm}{}} = \singleton{v}$, so $\Gcomp{G} \in \Cographs$, therefore it cannot be so.
     \item $\exists_{G_1, G_2 \in \Cographs} G = \Gunion{G_1}{G_2}$. But since $G$ is the smallest graph that violates the thesis and $G_1$ and $G_2$ are both smaller, it follows that $\Gcomp{G_1}, \Gcomp{G_2} \in \Cographs$. On the other hand it is easy to see that $\Gcomp{\Gunion{G_1}{G_2}} = \Gjoin{\Gcomp{G_1}}{\Gcomp{G_2}}$, so $\Gcomp{G} \in \Cographs$, therefore it cannot be so.
     \item $\exists_{G_1, G_2 \in \Cographs} G = \Gjoin{G_1}{G_2}$. But since $G$ is the smallest graph that violates the thesis and $G_1$ and $G_2$ are both smaller, it follows that $\Gcomp{G_1}, \Gcomp{G_2} \in \Cographs$. On the other hand it is easy to see that $\Gcomp{\Gjoin{G_1}{G_2}} = \Gunion{\Gcomp{G_1}}{\Gcomp{G_2}}$, so $\Gcomp{G} \in \Cographs$, therefore it cannot be so.
 \end{enumerate}
@@ -101,7 +101,7 @@ Let $X = \{x_1, x_2, x_3, x_4\}$ and let $v_1, v_2, v_3, v_4$ be (not necessaril
           In this case we know that $\{\{x_1, x_3\}, \{x_1, x_4\}, \{x_2, x_3\}, \{x_2, x_4\}\} \subseteq \E(G)$, which means that $|\E(G)| \geq 4$ which means that $|\E(G)| > |\E(P_4)|$.
 \end{enumerate}
 
-In all four cases $G$ and $P_4$ are not isomorphic implies that in no case can $G$ be isomorphic to $P_4$ and so if graph is defined by a cotree then it has no subgraph isomorphic to $P_4$.
+In all four cases $G$ and $P_4$ are not isomorphic which implies that if graph is defined by a cotree then it has no subgraph isomorphic to $P_4$.
 
 \subsection{Definition \ref{codef4} $\implies$ definition \ref{codef5}}
 

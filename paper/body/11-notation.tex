@@ -96,7 +96,7 @@ It is worth noting that a tree is not a graph, since graphs are tuples of vertic
                         child { node {6} } }
                 child { node {7} } };
     \end{tikzpicture}
-    \caption{An Example of rooted tree $T$. In this case $\V(T) = \{0,\ldots,7\}, \R(T) = 0, p_T = \{(0, \bot), (1,0), (2,0), (3,2), (4,3), (5,3), (6,3), (7,2)\}$ and $\C_T = \{(0,\{1,2\}), (1,\emptyset), (2,\{3,7\}), (3,\{4,5,6\}), (4, \emptyset), (5, \emptyset), (6, \emptyset), (7, \emptyset)\}$}
+    \caption{An example of rooted tree $T$. In this case $\V(T) = \{0,\ldots,7\}, \R(T) = 0, p_T = \{(0, \bot), (1,0), (2,0), (3,2), (4,3), (5,3), (6,3), (7,2)\}$ and $\C_T = \{(0,\{1,2\}), (1,\emptyset), (2,\{3,7\}), (3,\{4,5,6\}), (4, \emptyset), (5, \emptyset), (6, \emptyset), (7, \emptyset)\}$}
 \end{figure}
 
 \begin{defi}
@@ -115,7 +115,7 @@ It is worth noting that a tree is not a graph, since graphs are tuples of vertic
 \end{defi}
 
 \begin{defi}
-    The function $\LCA_T^s : 2^{\V(T)} \setminus \{ \emptyset \} \mapsto \V(T)$ is the extension of $\LCA_T$ function to sets of vertices. Formally for $X \subseteq \V(T)$ it is defined such that:
+    The function $\LCA_T^s : 2^{\V(T)} \setminus \{ \emptyset \} \mapsto \V(T)$ is an extension of $\LCA_T$ function to sets of vertices. Formally for $X \subseteq \V(T)$ it is defined such that:
     \[
         \LCA_T^s(X) = \begin{cases}
             v                                      & \text{if } X = \{v\}                \\

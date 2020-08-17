@@ -4,7 +4,7 @@
 
 As can be already seen cographs have a lot of properties, among others that they are $P_4$-free, that every induced subgraph of a cograph is also a cograph and that either cograph or its complement is always disconnected. A lot of algorithms that are NP-hard in general case can be solved in polynomial time because of these properties or due to the fact that cographs are subclass of other class of graphs.
 
-For example, cographs are special case of permutation graphs as proved in \cite{bose}. This in turn means that there exists linear algorithm deciding whether two cographs are isomorphic as proved in \cite{colbourn}. Another algorithm that can be done linearly on permutation graphs is finding dominating sets as proved in \cite{chao}. Cographs are also special case of comparability graphs as shown in \cite{jung}, which means that weighted clique problem can be solved in linear time as shown in \cite{golumbic}. In fact most of weighted problems can be solved linearly. These include weighted feedback vertex set (\cite{coudert}), weighted independent dominating set (\cite{coudert}),  weighted independent set (\cite{bodlaender2}). Exception to this rule is weighted maximum cut which is NP-complete (\cite{kaminski}).
+For example, cographs are special case of permutation graphs as proved in \cite{bose}. This in turn means that there exists linear algorithm deciding whether two cographs are isomorphic as proved in \cite{colbourn}. Another algorithm that can be done in linear time on permutation graphs is finding dominating sets as proved in \cite{chao}. Cographs are also special case of comparability graphs as shown in \cite{jung}, which means that weighted clique problem can be solved in linear time as shown in \cite{golumbic}. In fact most of weighted problems have linear time complexity. These include weighted feedback vertex set (\cite{coudert}), weighted independent dominating set (\cite{coudert}),  weighted independent set (\cite{bodlaender2}). Exception to this rule is weighted maximum cut which is NP-hard (\cite{kaminski}).
 
 Another interesting fact is that all cographs have clique-width bound by 2 (and in fact it is another equivalent definition) as shown in \cite{courcelle}. To show this fact recall the definition of clique-width:
 
@@ -38,14 +38,14 @@ Another interesting fact is that all cographs have clique-width bound by 2 (and 
     \]
 \end{defi}
 
-Given these definitions it is easy to see that cographs as defined in \ref{codef2} have clique width of at most 2. Indeed if we set $C$ to be $\{a,b\}$, the union of graphs is already defined in point \ref{cwd:2} of definition and the join of graphs $\Gjoin{G_1}{G_2}$ can be obtained by relabeling all vertices of a graph $G_1$ to $a$ and all vertices of  $G_2$ to $b$ using point \ref{cwd:3} and then joining these two graphs using point \ref{cwd:4}.
+Given these definitions it is easy to see that cographs as defined in \ref{codef2} have clique-width of at most 2. Indeed if we set $C$ to be $\{a,b\}$, the union of graphs is already defined in point \ref{cwd:2} of definition and the join of graphs $\Gjoin{G_1}{G_2}$ can be obtained by relabeling all vertices of a graph $G_1$ to $a$ and all vertices of  $G_2$ to $b$ using point \ref{cwd:3} and then joining these two graphs using point \ref{cwd:4}.
 
 It is also worth noting that this implies that the number of cographs on $n$ vertices, i.e. function
 \[
     f(n) = \abs{\{G : G = (V,E) \text{ is a cograph } \land \abs{V} = n\}}
 \]
-is growing in a factorial fashion. Upper bound for it can be derived from \cite{lozin} and the fact that cograph are $P_4$-free, on the other hand lower bound is shown in \cite{allen} from the fact that cographs have bounded clique width of 2.
+is growing in a factorial fashion. Upper bound for it can be derived from \cite{lozin} and the fact that cograph are $P_4$-free, on the other hand lower bound is shown in \cite{allen} from the fact that cographs have bounded clique-width of 2.
 
-Concepts related to clique-width include tree-width and path-width which turn out to be equal in case of cographs and we are able compute them linearly for this class of graphs as shown in \cite{bodlaender}.
+Concepts related to clique-width include tree-width and path-width which turn out to be equal in case of cographs and we are able compute them in linear time for this class of graphs as shown in \cite{bodlaender}.
 
 The representation of cographs as cotrees presented in \ref{codef3} also allows us to solve some NP-hard problems efficiently in case of cotrees. Examples of these problems include finding maximal clique, finding maximal independent set, coloring and minimum path cover, all of which are presented in chapter \ref{r:algos}.
