@@ -11,7 +11,7 @@ networkx==2.4
 pycodestyle==2.6.0
 pylint==2.5.3
 python-jsonrpc-server==0.3.4
-PyYAML==5.3.1
+PyYAML==5.4
 rope==0.17.0
 six==1.15.0
 timeout-decorator==0.4.1
